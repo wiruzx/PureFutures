@@ -11,6 +11,7 @@
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
 		E6E79F821A8A432800F09BC6 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
+		E6E79F841A8A468500F09BC6 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +32,7 @@
 		E65E6FCF1A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
 		E6E79F811A8A432800F09BC6 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		E6E79F831A8A468500F09BC6 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 			children = (
 				E65E6FC31A86BF41001B514C /* PureFutures.h */,
 				E6E79F811A8A432800F09BC6 /* Box.swift */,
+				E6E79F831A8A468500F09BC6 /* Result.swift */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
 			);
 			path = PureFutures;
@@ -212,6 +215,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6E79F841A8A468500F09BC6 /* Result.swift in Sources */,
 				E6E79F821A8A432800F09BC6 /* Box.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
