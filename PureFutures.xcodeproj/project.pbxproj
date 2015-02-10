@@ -10,6 +10,7 @@
 		E65E6FC41A86BF41001B514C /* PureFutures.h in Headers */ = {isa = PBXBuildFile; fileRef = E65E6FC31A86BF41001B514C /* PureFutures.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
+		E6E79F821A8A432800F09BC6 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FCF1A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
+		E6E79F811A8A432800F09BC6 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				E65E6FC31A86BF41001B514C /* PureFutures.h */,
+				E6E79F811A8A432800F09BC6 /* Box.swift */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
 			);
 			path = PureFutures;
@@ -209,6 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6E79F821A8A432800F09BC6 /* Box.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +323,7 @@
 		E65E6FD51A86BF41001B514C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -328,12 +333,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		E65E6FD61A86BF41001B514C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -395,6 +402,7 @@
 				E65E6FD61A86BF41001B514C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E65E6FD71A86BF41001B514C /* Build configuration list for PBXNativeTarget "PureFuturesTests" */ = {
 			isa = XCConfigurationList;
@@ -403,6 +411,7 @@
 				E65E6FD91A86BF41001B514C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
