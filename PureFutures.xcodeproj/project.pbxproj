@@ -12,6 +12,8 @@
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
 		E6E79F821A8A432800F09BC6 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
 		E6E79F841A8A468500F09BC6 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
+		E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
+		E6E79F961A8ABB8200F09BC6 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* Promise.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +35,8 @@
 		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
 		E6E79F811A8A432800F09BC6 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		E6E79F831A8A468500F09BC6 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		E6E79F911A8AB80E00F09BC6 /* Deferred.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deferred.swift; sourceTree = "<group>"; };
+		E6E79F951A8ABB8200F09BC6 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,8 @@
 				E65E6FC31A86BF41001B514C /* PureFutures.h */,
 				E6E79F811A8A432800F09BC6 /* Box.swift */,
 				E6E79F831A8A468500F09BC6 /* Result.swift */,
+				E6E79F911A8AB80E00F09BC6 /* Deferred.swift */,
+				E6E79F951A8ABB8200F09BC6 /* Promise.swift */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
 			);
 			path = PureFutures;
@@ -216,7 +222,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6E79F841A8A468500F09BC6 /* Result.swift in Sources */,
+				E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */,
 				E6E79F821A8A432800F09BC6 /* Box.swift in Sources */,
+				E6E79F961A8ABB8200F09BC6 /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
