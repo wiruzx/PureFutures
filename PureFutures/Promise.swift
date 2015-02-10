@@ -10,14 +10,21 @@ import Foundation
 
 public class Promise<T> {
     
+    // MARK:- Private properties
+    
     private var _deferred = Deferred<T>()
+    
+    // MARK:- Public properties
     
     public var deferred: Deferred<T> {
         return _deferred
     }
     
-    public init() {
-    }
+    // MARK:- Initialization
+    
+    public init() { }
+    
+    // MARK:- Public methods
     
     public func complete(value: T) {
         _deferred.result = value
