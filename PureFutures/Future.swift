@@ -26,6 +26,9 @@ public final class Future<T, E> {
     
     // MARK:- Initialization
     
+    internal init() {
+    }
+    
     private init(deferred: Deferred<Result<T, E>>) {
         self.deferred = deferred
     }
