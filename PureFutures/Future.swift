@@ -20,8 +20,8 @@ public final class Future<T, E> {
     
     // MARK:- Public properties
     
-    public var value: T? {
-        return deferred.value?.value
+    public var value: Result<T, E>? {
+        return deferred.value
     }
     
     // MARK:- Initialization
