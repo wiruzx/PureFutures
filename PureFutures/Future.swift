@@ -8,7 +8,12 @@
 
 import Foundation
 
-public final class Future<T, E> {
+public final class Future<T, E>: FutureProtocol {
+    
+    typealias SuccessType = T
+    typealias FailureType = E
+    
+    // MARK:- Type declarations
     
     public typealias CompleteCallback = Result<T, E> -> Void
     public typealias SuccessCallback = T -> Void
