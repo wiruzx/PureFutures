@@ -16,12 +16,23 @@ public final class Future<T, E> {
     
     // MARK:- Private properties
     
-    internal let deferred = Deferred<Result<T, E>>()
+    private let deferred = Deferred<Result<T, E>>()
+    
+    // MARK:- Internal properties
+    
+    internal var result: Result<T, E>? {
+        set {
+            deferred.result = newValue
+        }
+        get {
+            return deferred.result
+        }
+    }
     
     // MARK:- Public properties
     
     public var value: Result<T, E>? {
-        return deferred.value
+        return result
     }
     
     // MARK:- Initialization
@@ -29,7 +40,7 @@ public final class Future<T, E> {
     internal init() {
     }
     
-    internal init(deferred: Deferred<Result<T, E>>) {
+    private init(deferred: Deferred<Result<T, E>>) {
         self.deferred = deferred
     }
     
@@ -72,18 +83,18 @@ public extension Future {
     }
     
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        let p = Promise<Result<U, E>>()
+        let p = FailablePromise<U, E>()
         
         onComplete {
             switch $0 {
             case .Success(let boxed):
-                p.completeWith(f(boxed.value).deferred)
+                p.completeWith(f(boxed.value))
             case .Error(let boxed):
-                p.complete(.Error(Box(boxed.value)))
+                p.failure(boxed.value)
             }
         }
         
-        return Future<U, E>(deferred: p.deferred)
+        return p.future
     }
     
     public func mapResult<U>(f: T -> Result<U, E>) -> Future<U, E> {

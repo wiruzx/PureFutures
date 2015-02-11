@@ -10,16 +10,15 @@ import Foundation
 
 public final class FailablePromise<T, E> {
     
-    private let promise = Promise<Result<T, E>>()
+    private var _future = Future<T, E>()
     
     public var future: Future<T, E> {
-        return Future(deferred: promise.deferred)
+        return _future
     }
     
     public func complete(value: Result<T, E>) {
-        promise.complete(value)
+        _future.result = value
     }
-    
     public func success(value: T) {
         complete(.Success(Box(value)))
     }
@@ -28,8 +27,8 @@ public final class FailablePromise<T, E> {
         complete(.Error(Box(error)))
     }
     
-    public func completeWith(value: Future<T, E>) {
-        promise.completeWith(value.deferred)
+    public func completeWith(future: Future<T, E>) {
+        _future = future
     }
     
 }
