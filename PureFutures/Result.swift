@@ -11,6 +11,16 @@ import Foundation
 public enum Result<T, E> {
     case Success(Box<T>)
     case Error(Box<E>)
+    
+    public var value: T? {
+        switch self {
+        case .Success(let boxed):
+            return boxed.value
+        default:
+            return nil
+        }
+    }
+    
 }
 
 public extension Result {
