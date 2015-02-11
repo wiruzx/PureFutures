@@ -46,6 +46,8 @@ public final class Future<T, E> {
     
     // MARK:- Public methods
     
+    // MARK: Instance methods
+    
     public func onComplete(c: CompleteCallback) -> Future {
         deferred.onComplete(c)
         return self
@@ -72,13 +74,23 @@ public final class Future<T, E> {
             }
         }
     }
+    
+    // MARK: Class methods
+    
+    public class func succeed(value: T) -> Future<T, E> {
+        return Future(deferred: Deferred.completed(.Success(Box(value))))
+    }
+    
+    public class func failed(error: E) -> Future<T, E> {
+        return Future(deferred: Deferred.completed(.Error(Box(error))))
+    }
 }
 
 public extension Future {
     
     public func map<U>(f: T -> U) -> Future<U, E> {
         return flatMap { value  in
-            return Future<U, E>(deferred: Deferred.completed(.Success(Box(f(value)))))
+            return Future<U, E>.succeed(f(value))
         }
     }
     
