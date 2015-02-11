@@ -21,17 +21,20 @@ public final class Future<T, E>: FutureProtocol {
     
     // MARK:- Private properties
     
-    private let deferred = Deferred<Result<T, E>>()
+    internal let deferred = Deferred<Result<T, E>>()
     
     // MARK:- Public properties
     
-    public var value: T? {
-        return deferred.value?.value
+    public var value: Result<T, E>? {
+        return deferred.value
     }
     
     // MARK:- Initialization
     
-    private init(deferred: Deferred<Result<T, E>>) {
+    internal init() {
+    }
+    
+    internal init(deferred: Deferred<Result<T, E>>) {
         self.deferred = deferred
     }
     
