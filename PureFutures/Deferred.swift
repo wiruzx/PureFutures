@@ -8,7 +8,9 @@
 
 import Foundation
 
-public final class Deferred<T> {
+public final class Deferred<T>: DeferredProtocol {
+    
+    typealias Element = T
     
     // MARK:- Type declarations
     
