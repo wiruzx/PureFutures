@@ -29,7 +29,7 @@ public final class Future<T, E> {
     internal init() {
     }
     
-    private init(deferred: Deferred<Result<T, E>>) {
+    internal init(deferred: Deferred<Result<T, E>>) {
         self.deferred = deferred
     }
     
