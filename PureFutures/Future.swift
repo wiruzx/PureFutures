@@ -16,7 +16,7 @@ public final class Future<T, E> {
     
     // MARK:- Private properties
     
-    private let deferred = Deferred<Result<T, E>>()
+    internal let deferred = Deferred<Result<T, E>>()
     
     // MARK:- Public properties
     
