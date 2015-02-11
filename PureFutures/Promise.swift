@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Promise<T> {
+public final class Promise<T> {
     
     // MARK:- Private properties
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Deferred<T> {
+public final class Deferred<T> {
     
     // MARK:- Type declarations
     

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Future<T, E> {
+public final class Future<T, E> {
     
     public typealias CompleteCallback = Result<T, E> -> Void
     public typealias SuccessCallback = T -> Void
