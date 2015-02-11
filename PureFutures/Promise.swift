@@ -34,3 +34,11 @@ public final class Promise<T> {
         _deferred = deferred
     }
 }
+
+extension Promise: SinkType {
+    typealias Element = T
+    
+    public func put(x: Element) {
+        complete(x)
+    }
+}
