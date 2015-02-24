@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class Future<T, E>: FutureProtocol {
+public final class Future<T, E>: FutureType {
     
     typealias SuccessType = T
     typealias FailureType = E

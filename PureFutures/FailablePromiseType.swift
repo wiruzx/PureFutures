@@ -1,5 +1,5 @@
 //
-//  FailablePromiseProtocol.swift
+//  FailablePromiseType.swift
 //  PureFutures
 //
 //  Created by Victor Shamanov on 2/24/15.
@@ -8,12 +8,12 @@
 
 import Foundation
 
-protocol FailablePromiseProtocol: PromiseProtocol {
+protocol FailablePromiseType: PromiseType {
     
-    typealias DeferredType : FutureProtocol
+    typealias Def : FutureType
     
-    typealias SuccessType = DeferredType.SuccessType
-    typealias FailureType = DeferredType.FailureType
+    typealias SuccessType = Def.SuccessType
+    typealias FailureType = Def.FailureType
 
     func success(value: SuccessType)
     func failure(error: FailureType)

@@ -1,5 +1,5 @@
 //
-//  PromiseProtocol.swift
+//  PromiseType.swift
 //  PureFutures
 //
 //  Created by Victor Shamanov on 2/24/15.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-protocol PromiseProtocol {
+protocol PromiseType {
     
-    typealias DeferredType : DeferredProtocol
-    typealias Element = DeferredType.Element
+    typealias Def: DeferredType
+    typealias Element = Def.Element
     
     func complete(value: Element)
-    func completeWith(deferred: DeferredType)
+    func completeWith(deferred: Def)
 }

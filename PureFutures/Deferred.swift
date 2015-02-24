@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class Deferred<T>: DeferredProtocol {
+public final class Deferred<T>: DeferredType {
     
     typealias Element = T
     

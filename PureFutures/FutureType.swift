@@ -1,5 +1,5 @@
 //
-//  FutureProtocol.swift
+//  FutureType.swift
 //  PureFutures
 //
 //  Created by Виктор Шаманов on 2/11/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol FutureProtocol: DeferredProtocol {
+public protocol FutureType: DeferredType {
     
     typealias SuccessType
     typealias FailureType

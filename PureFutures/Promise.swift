@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class Promise<T>: PromiseProtocol {
+public final class Promise<T>: PromiseType {
     
     typealias DeferredType = Deferred<T>
     

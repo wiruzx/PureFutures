@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class FailablePromise<T, E>: FailablePromiseProtocol {
+public final class FailablePromise<T, E>: FailablePromiseType {
     
     private let promise = Promise<Result<T, E>>()
     
