@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class FailablePromise<T, E> {
+public final class FailablePromise<T, E>: FailablePromiseType {
     
     private var _future = Future<T, E>()
     

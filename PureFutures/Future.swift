@@ -8,11 +8,16 @@
 
 import Foundation
 
-public final class Future<T, E> {
+public final class Future<T, E>: FutureType {
+    
+    typealias SuccessType = T
+    typealias ErrorType = E
+    
+    // MARK:- Type declarations
     
     public typealias CompleteCallback = Result<T, E> -> Void
     public typealias SuccessCallback = T -> Void
-    public typealias FailureCallback = E -> Void
+    public typealias ErrorCallback = E -> Void
     
     // MARK:- Private properties
     
@@ -46,6 +51,10 @@ public final class Future<T, E> {
     
     // MARK:- Public methods
     
+    public class func completed(result: Result<T, E>) -> Future {
+        return Future(deferred: Deferred.completed(result))
+    }
+    
     // MARK: Instance methods
     
     public func onComplete(c: CompleteCallback) -> Future {
@@ -64,7 +73,7 @@ public final class Future<T, E> {
         }
     }
     
-    public func onFailure(c: FailureCallback) -> Future {
+    public func onError(c: ErrorCallback) -> Future {
         return onComplete {
             switch $0 {
             case .Error(let boxed):
@@ -89,28 +98,11 @@ public final class Future<T, E> {
 public extension Future {
     
     public func map<U>(f: T -> U) -> Future<U, E> {
-        return flatMap { value  in
-            return Future<U, E>.succeed(f(value))
-        }
+        return PureFutures.map(self, f)
     }
     
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        let p = FailablePromise<U, E>()
-        
-        onComplete {
-            switch $0 {
-            case .Success(let boxed):
-                p.completeWith(f(boxed.value))
-            case .Error(let boxed):
-                p.failure(boxed.value)
-            }
-        }
-        
-        return p.future
-    }
-    
-    public func mapResult<U>(f: T -> Result<U, E>) -> Future<U, E> {
-        return Future<U, E>(deferred: deferred.map { $0.flatMap(f) })
+        return PureFutures.flatMap(self, f)
     }
     
     public func filter(p: T -> Bool) -> Future<T?, E> {

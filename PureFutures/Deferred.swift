@@ -8,7 +8,9 @@
 
 import Foundation
 
-public final class Deferred<T> {
+public final class Deferred<T>: DeferredType {
+    
+    typealias Element = T
     
     // MARK:- Type declarations
     
@@ -84,18 +86,15 @@ public final class Deferred<T> {
 public extension Deferred {
     
     public func map<U>(f: T -> U) -> Deferred<U> {
-        return flatMap { Deferred<U>.completed(f($0)) }
+        return PureFutures.map(self, f)
     }
     
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        let p = Promise<U>()
-        
-        onComplete { p.completeWith(f($0)) }
-        
-        return p.deferred
+        return PureFutures.flatMap(self, f)
     }
-    
+
     public func filter(p: T -> Bool) -> Deferred<T?> {
         return map { value in p(value) ? value : nil }
     }
+    
 }

@@ -8,7 +8,9 @@
 
 import Foundation
 
-public final class Promise<T> {
+public final class Promise<T>: PromiseType {
+    
+    typealias DeferredType = Deferred<T>
     
     // MARK:- Private properties
     
