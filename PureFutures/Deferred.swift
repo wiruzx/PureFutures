@@ -36,8 +36,8 @@ public final class Deferred<T>: DeferredType {
     
     internal var result: T? {
         didSet {
-            assert(oldValue == nil)
-            assert(result != nil)
+            assert(oldValue == nil, "Cannot complete Deferred more than once")
+            assert(result != nil, "Result can't be nil")
             
             for callback in callbacks {
                 callback(result!)
