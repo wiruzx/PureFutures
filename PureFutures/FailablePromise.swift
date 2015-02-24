@@ -19,7 +19,7 @@ public final class FailablePromise<T, E>: FailablePromiseType {
         complete(.Success(Box(value)))
     }
     
-    public func failure(error: E) {
+    public func error(error: E) {
         complete(.Error(Box(error)))
     }
     

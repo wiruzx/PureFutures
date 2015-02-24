@@ -15,6 +15,6 @@ public protocol FailablePromiseType: PromiseType {
     typealias ErrorType = Def.ErrorType
 
     func success(value: SuccessType)
-    func failure(error: ErrorType)
+    func error(error: ErrorType)
     
 }
