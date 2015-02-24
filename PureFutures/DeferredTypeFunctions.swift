@@ -8,14 +8,12 @@
 
 import Foundation
 
-@noreturn
 func map<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U.Element) -> U {
+    return flatMap(d) { U.completed(f($0)) }
 }
 
-@noreturn
 func flatMap<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U) -> U {
-}
-
-@noreturn
-func filter<T: DeferredType, U: DeferredType where U.Element == Optional<T.Element>>(d: T, p: T.Element -> Bool) -> U {
+    let p = Promise<U.Element>()
+    d.onComplete { p.completeWith(f($0) as Deferred<U.Element>) }
+    return p.deferred as U
 }

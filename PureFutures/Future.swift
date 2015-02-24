@@ -40,6 +40,10 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- Public methods
     
+    public class func completed(result: Result<T, E>) -> Future {
+        return Future(deferred: Deferred.completed(result))
+    }
+    
     public func onComplete(c: CompleteCallback) -> Future {
         deferred.onComplete(c)
         return self
@@ -71,28 +75,11 @@ public final class Future<T, E>: FutureType {
 public extension Future {
     
     public func map<U>(f: T -> U) -> Future<U, E> {
-        return flatMap { value  in
-            return Future<U, E>(deferred: Deferred.completed(.Success(Box(f(value)))))
-        }
+        return PureFutures.map(self, f)
     }
     
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        let p = Promise<Result<U, E>>()
-        
-        onComplete {
-            switch $0 {
-            case .Success(let boxed):
-                p.completeWith(f(boxed.value).deferred)
-            case .Error(let boxed):
-                p.complete(.Error(Box(boxed.value)))
-            }
-        }
-        
-        return Future<U, E>(deferred: p.deferred)
-    }
-    
-    public func mapResult<U>(f: T -> Result<U, E>) -> Future<U, E> {
-        return Future<U, E>(deferred: deferred.map { $0.flatMap(f) })
+        return PureFutures.flatMap(self, f)
     }
     
     public func filter(p: T -> Bool) -> Future<T?, E> {
