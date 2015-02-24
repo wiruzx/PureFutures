@@ -8,6 +8,16 @@
 
 import Foundation
 
+public func future<T, E>(f: @autoclosure () -> T) -> Future<T, E> {
+    return future(f as () -> T)
+}
+
+public func future<T, E>(f: () -> T) -> Future<T, E> {
+    let p = FailablePromise<T, E>()
+    p.success(f())
+    return p.future
+}
+
 public final class Future<T, E>: FutureType {
     
     typealias SuccessType = T
