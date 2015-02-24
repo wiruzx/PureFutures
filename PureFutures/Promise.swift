@@ -14,13 +14,7 @@ public final class Promise<T>: PromiseType {
     
     // MARK:- Private properties
     
-    private var _deferred = Deferred<T>()
-    
-    // MARK:- Public properties
-    
-    public var deferred: Deferred<T> {
-        return _deferred
-    }
+    public private(set) var deferred = Deferred<T>()
     
     // MARK:- Initialization
     
@@ -29,11 +23,11 @@ public final class Promise<T>: PromiseType {
     // MARK:- Public methods
     
     public func complete(value: T) {
-        _deferred.result = value
+        deferred.result = value
     }
     
     public func completeWith(deferred: Deferred<T>) {
-        _deferred = deferred
+        self.deferred = deferred
     }
 }
 

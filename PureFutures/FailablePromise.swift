@@ -10,14 +10,10 @@ import Foundation
 
 public final class FailablePromise<T, E>: FailablePromiseType {
     
-    private var _future = Future<T, E>()
-    
-    public var future: Future<T, E> {
-        return _future
-    }
+    public private(set) var future = Future<T, E>()
     
     public func complete(value: Result<T, E>) {
-        _future.result = value
+        future.result = value
     }
     public func success(value: T) {
         complete(.Success(Box(value)))
@@ -28,7 +24,7 @@ public final class FailablePromise<T, E>: FailablePromiseType {
     }
     
     public func completeWith(future: Future<T, E>) {
-        _future = future
+        self.future = future
     }
     
 }
