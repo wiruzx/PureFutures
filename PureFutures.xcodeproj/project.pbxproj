@@ -13,6 +13,8 @@
 		E60A72A31A8AE7330094A4D4 /* FailablePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* FailablePromise.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
+		E6D361FC1A9CFAB4003D5B2C /* PromiseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D361FB1A9CFAB4003D5B2C /* PromiseProtocol.swift */; };
+		E6D361FE1A9CFD34003D5B2C /* FailablePromiseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D361FD1A9CFD34003D5B2C /* FailablePromiseProtocol.swift */; };
 		E6E79F821A8A432800F09BC6 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
 		E6E79F841A8A468500F09BC6 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
@@ -39,6 +41,8 @@
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FCF1A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
+		E6D361FB1A9CFAB4003D5B2C /* PromiseProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseProtocol.swift; sourceTree = "<group>"; };
+		E6D361FD1A9CFD34003D5B2C /* FailablePromiseProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FailablePromiseProtocol.swift; sourceTree = "<group>"; };
 		E6E79F811A8A432800F09BC6 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		E6E79F831A8A468500F09BC6 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		E6E79F911A8AB80E00F09BC6 /* Deferred.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deferred.swift; sourceTree = "<group>"; };
@@ -90,7 +94,9 @@
 				E6E79F911A8AB80E00F09BC6 /* Deferred.swift */,
 				E60A729A1A8AE0C80094A4D4 /* DeferredProtocol.swift */,
 				E60A72A01A8AE53B0094A4D4 /* FutureProtocol.swift */,
+				E6D361FB1A9CFAB4003D5B2C /* PromiseProtocol.swift */,
 				E6E79F951A8ABB8200F09BC6 /* Promise.swift */,
+				E6D361FD1A9CFD34003D5B2C /* FailablePromiseProtocol.swift */,
 				E60A72A21A8AE7330094A4D4 /* FailablePromise.swift */,
 				E60A72901A8AD1750094A4D4 /* Future.swift */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
@@ -236,7 +242,9 @@
 				E6E79F821A8A432800F09BC6 /* Box.swift in Sources */,
 				E60A72911A8AD1750094A4D4 /* Future.swift in Sources */,
 				E6E79F961A8ABB8200F09BC6 /* Promise.swift in Sources */,
+				E6D361FE1A9CFD34003D5B2C /* FailablePromiseProtocol.swift in Sources */,
 				E60A72A31A8AE7330094A4D4 /* FailablePromise.swift in Sources */,
+				E6D361FC1A9CFAB4003D5B2C /* PromiseProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
