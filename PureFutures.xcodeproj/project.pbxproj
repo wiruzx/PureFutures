@@ -89,14 +89,11 @@
 		E65E6FC01A86BF41001B514C /* PureFutures */ = {
 			isa = PBXGroup;
 			children = (
+				E6D361FF1A9D0098003D5B2C /* Protocols */,
 				E6E79F811A8A432800F09BC6 /* Box.swift */,
 				E6E79F831A8A468500F09BC6 /* Result.swift */,
 				E6E79F911A8AB80E00F09BC6 /* Deferred.swift */,
-				E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */,
-				E60A72A01A8AE53B0094A4D4 /* FutureType.swift */,
-				E6D361FB1A9CFAB4003D5B2C /* PromiseType.swift */,
 				E6E79F951A8ABB8200F09BC6 /* Promise.swift */,
-				E6D361FD1A9CFD34003D5B2C /* FailablePromiseType.swift */,
 				E60A72A21A8AE7330094A4D4 /* FailablePromise.swift */,
 				E60A72901A8AD1750094A4D4 /* Future.swift */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
@@ -127,6 +124,17 @@
 				E65E6FCF1A86BF41001B514C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E6D361FF1A9D0098003D5B2C /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */,
+				E60A72A01A8AE53B0094A4D4 /* FutureType.swift */,
+				E6D361FB1A9CFAB4003D5B2C /* PromiseType.swift */,
+				E6D361FD1A9CFD34003D5B2C /* FailablePromiseType.swift */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
