@@ -8,22 +8,22 @@
 
 import Foundation
 
-func map<T: FutureType, U: FutureType where T.FailureType == U.FailureType>(x: T, f: T.SuccessType -> U.SuccessType) -> U {
+func map<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U.SuccessType) -> U {
     return flatMap(x) { (value: T.SuccessType) in
-        let result: Result<U.SuccessType, U.FailureType> = .Success(Box(f(value)))
+        let result: Result<U.SuccessType, U.ErrorType> = .Success(Box(f(value)))
         return U.completed(result as U.Element)
     }
 }
 
-func flatMap<T: FutureType, U: FutureType where T.FailureType == U.FailureType>(x: T, f: T.SuccessType -> U) -> U {
-    let p = FailablePromise<U.SuccessType, U.FailureType>()
+func flatMap<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U) -> U {
+    let p = FailablePromise<U.SuccessType, U.ErrorType>()
     
     x.onComplete {
-        switch $0 as Result<T.SuccessType, T.FailureType> {
+        switch $0 as Result<T.SuccessType, T.ErrorType> {
         case .Success(let box):
-            p.completeWith(f(box.value) as Future<U.SuccessType, U.FailureType>)
+            p.completeWith(f(box.value) as Future<U.SuccessType, U.ErrorType>)
         case .Error(let box):
-            p.complete(.Error(Box(box.value as U.FailureType)))
+            p.complete(.Error(Box(box.value as U.ErrorType)))
         }
     }
     

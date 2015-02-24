@@ -11,13 +11,13 @@ import Foundation
 public final class Future<T, E>: FutureType {
     
     typealias SuccessType = T
-    typealias FailureType = E
+    typealias ErrorType = E
     
     // MARK:- Type declarations
     
     public typealias CompleteCallback = Result<T, E> -> Void
     public typealias SuccessCallback = T -> Void
-    public typealias FailureCallback = E -> Void
+    public typealias ErrorCallback = E -> Void
     
     // MARK:- Private properties
     
@@ -60,7 +60,7 @@ public final class Future<T, E>: FutureType {
         }
     }
     
-    public func onFailure(c: FailureCallback) -> Future {
+    public func onError(c: ErrorCallback) -> Future {
         return onComplete {
             switch $0 {
             case .Error(let boxed):

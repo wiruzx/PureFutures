@@ -11,11 +11,11 @@ import Foundation
 public protocol FutureType: DeferredType {
     
     typealias SuccessType
-    typealias FailureType
+    typealias ErrorType
     
-    typealias Element = Result<SuccessType, FailureType>
+    typealias Element = Result<SuccessType, ErrorType>
     
     func onSuccess(SuccessType -> Void) -> Self
-    func onFailure(FailureType -> Void) -> Self
+    func onError(ErrorType -> Void) -> Self
     
 }

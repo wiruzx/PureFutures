@@ -13,9 +13,9 @@ protocol FailablePromiseType: PromiseType {
     typealias Def : FutureType
     
     typealias SuccessType = Def.SuccessType
-    typealias FailureType = Def.FailureType
+    typealias ErrorType = Def.ErrorType
 
     func success(value: SuccessType)
-    func failure(error: FailureType)
+    func failure(error: ErrorType)
     
 }
