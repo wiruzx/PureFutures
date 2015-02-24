@@ -16,11 +16,11 @@ public final class FailablePromise<T, E>: FailablePromiseType {
         future.result = value
     }
     public func success(value: T) {
-        complete(.Success(Box(value)))
+        complete(Result(value))
     }
     
     public func error(error: E) {
-        complete(.Error(Box(error)))
+        complete(Result(error))
     }
     
     public func completeWith(future: Future<T, E>) {

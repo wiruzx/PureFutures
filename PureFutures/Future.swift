@@ -97,11 +97,11 @@ public final class Future<T, E>: FutureType {
     // MARK: Class methods
     
     public class func succeed(value: T) -> Future<T, E> {
-        return Future(deferred: Deferred.completed(.Success(Box(value))))
+        return Future(deferred: Deferred.completed(Result(value)))
     }
     
     public class func failed(error: E) -> Future<T, E> {
-        return Future(deferred: Deferred.completed(.Error(Box(error))))
+        return Future(deferred: Deferred.completed(Result(error)))
     }
 }
 

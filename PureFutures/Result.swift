@@ -21,6 +21,13 @@ public enum Result<T, E> {
         }
     }
     
+    public init(_ value: T) {
+        self = .Success(Box(value))
+    }
+    
+    public init(_ error: E) {
+        self = .Error(Box(error))
+    }
 }
 
 public extension Result {
