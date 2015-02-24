@@ -8,18 +8,6 @@
 
 import Foundation
 
-public func deferred<T>(f: @autoclosure () -> T) -> Deferred<T> {
-    return deferred(f as () -> T)
-}
-
-public func deferred<T>(f: () -> T) -> Deferred<T> {
-    let p = Promise<T>()
-    
-    p.complete(f())
-    
-    return p.deferred
-}
-
 public final class Deferred<T>: DeferredType {
     
     typealias Element = T
@@ -66,7 +54,7 @@ public final class Deferred<T>: DeferredType {
     }
     
     public convenience init(_ f: @autoclosure () -> T) {
-        self.init(f)
+        self.init(f as () -> T)
     }
     
     // MARK:- Public methods
