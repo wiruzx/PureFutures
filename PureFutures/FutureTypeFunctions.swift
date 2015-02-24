@@ -8,14 +8,14 @@
 
 import Foundation
 
-func map<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U.SuccessType) -> U {
+public func map<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U.SuccessType) -> U {
     return flatMap(x) { (value: T.SuccessType) in
         let result: Result<U.SuccessType, U.ErrorType> = .Success(Box(f(value)))
         return U.completed(result as U.Element)
     }
 }
 
-func flatMap<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U) -> U {
+public func flatMap<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U) -> U {
     let p = FailablePromise<U.SuccessType, U.ErrorType>()
     
     x.onComplete {

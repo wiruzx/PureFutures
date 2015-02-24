@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol PromiseType {
+public protocol PromiseType {
     
     typealias Def: DeferredType
     typealias Element = Def.Element

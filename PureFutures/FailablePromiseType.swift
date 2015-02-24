@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol FailablePromiseType: PromiseType {
+public protocol FailablePromiseType: PromiseType {
     
     typealias Def : FutureType
     
