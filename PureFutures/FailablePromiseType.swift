@@ -10,8 +10,7 @@ import Foundation
 
 public protocol FailablePromiseType: PromiseType {
     
-    typealias Def : FutureType
-    
+    typealias Def: FutureType
     typealias SuccessType = Def.SuccessType
     typealias ErrorType = Def.ErrorType
 

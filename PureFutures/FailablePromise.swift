@@ -30,9 +30,7 @@ public final class FailablePromise<T, E>: FailablePromiseType {
 }
 
 extension FailablePromise: SinkType {
-    typealias Element = Result<T, E>
-    
-    public func put(x: Element) {
+    public func put(x: Result<T, E>) {
         complete(x)
     }
 }

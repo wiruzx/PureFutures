@@ -32,9 +32,7 @@ public final class Promise<T>: PromiseType {
 }
 
 extension Promise: SinkType {
-    typealias Element = T
-    
-    public func put(x: Element) {
+    public func put(x: T) {
         complete(x)
     }
 }
