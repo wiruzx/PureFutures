@@ -30,3 +30,23 @@ public func flatMap<T: FutureType, U>(x: T, f: T.SuccessType -> Future<U, T.Erro
 public func filter<T: FutureType>(x: T, p: T.SuccessType -> Bool) -> Future<T.SuccessType?, T.ErrorType> {
     return map(x) { x in p(x) ? x : nil }
 }
+
+public func zip<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(a: T, b: U) -> Future<(T.SuccessType, U.SuccessType), T.ErrorType> {
+    return flatMap(a) { a in
+        map(b) { b in
+            (a, b)
+        }
+    }
+}
+
+public func recover<T: FutureType>(x: T, r: T.ErrorType -> T.SuccessType) -> Future<T.SuccessType, T.ErrorType> {
+    let p = Promise<T.SuccessType, T.ErrorType>()
+    x.onError { p.success(r($0)) }
+    return p.future
+}
+
+public func recoverWith<T: FutureType>(x: T, r: T.ErrorType -> Future<T.SuccessType, T.ErrorType>) -> Future<T.SuccessType, T.ErrorType> {
+    let p = Promise<T.SuccessType, T.ErrorType>()
+    x.onError { p.completeWith(r($0)) }
+    return p.future
+}

@@ -21,3 +21,11 @@ public func flatMap<T: DeferredType, U>(d: T, f: T.Element -> Deferred<U>) -> De
 public func filter<T: DeferredType>(d: T, p: T.Element -> Bool) -> Deferred<T.Element?> {
     return map(d) { x in p(x) ? x : nil }
 }
+
+public func zip<T: DeferredType, U: DeferredType>(a: T, b: U) -> Deferred<(T.Element, U.Element)> {
+    return flatMap(a) { a in
+        map(b) { b in
+            (a, b)
+        }
+    }
+}

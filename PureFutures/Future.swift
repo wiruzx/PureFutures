@@ -105,4 +105,16 @@ public extension Future {
         return PureFutures.filter(self, p)
     }
     
+    public func zip<U>(x: Future<U, E>) -> Future<(T, U), E> {
+        return PureFutures.zip(self, x)
+    }
+    
+    public func recover(r: E -> T) -> Future {
+        return PureFutures.recover(self, r)
+    }
+    
+    public func recoverWith(r: E -> Future) -> Future {
+        return PureFutures.recoverWith(self, r)
+    }
+    
 }

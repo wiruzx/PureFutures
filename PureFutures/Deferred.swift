@@ -81,4 +81,8 @@ public extension Deferred {
         return PureFutures.filter(self, p)
     }
     
+    public func zip<U>(x: Deferred<U>) -> Deferred<(T, U)> {
+        return PureFutures.zip(self, x)
+    }
+    
 }
