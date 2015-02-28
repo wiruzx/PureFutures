@@ -8,11 +8,13 @@
 
 import Foundation
 
-public protocol PromiseType {
+public protocol PromiseType: PurePromiseType {
     
-    typealias Def: DeferredType
-    typealias Element = Def.Element
+    typealias Def: FutureType
+    typealias SuccessType = Def.SuccessType
+    typealias ErrorType = Def.ErrorType
+
+    func success(value: SuccessType)
+    func error(error: ErrorType)
     
-    func complete(value: Element)
-    func completeWith(deferred: Def)
 }

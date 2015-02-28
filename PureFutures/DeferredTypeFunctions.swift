@@ -13,7 +13,7 @@ public func map<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U.Elemen
 }
 
 public func flatMap<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U) -> U {
-    let p = Promise<U.Element>()
+    let p = PurePromise<U.Element>()
     d.onComplete { p.completeWith(f($0) as Deferred<U.Element>) }
     return p.deferred as U
 }

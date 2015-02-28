@@ -13,7 +13,7 @@ public func future<T, E>(f: @autoclosure () -> T) -> Future<T, E> {
 }
 
 public func future<T, E>(f: () -> T) -> Future<T, E> {
-    let p = FailablePromise<T, E>()
+    let p = Promise<T, E>()
     p.success(f())
     return p.future
 }

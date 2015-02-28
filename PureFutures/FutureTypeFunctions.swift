@@ -16,7 +16,7 @@ public func map<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x
 }
 
 public func flatMap<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U) -> U {
-    let p = FailablePromise<U.SuccessType, U.ErrorType>()
+    let p = Promise<U.SuccessType, U.ErrorType>()
     
     x.onComplete {
         switch $0 as Result<T.SuccessType, T.ErrorType> {

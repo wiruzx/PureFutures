@@ -8,31 +8,29 @@
 
 import Foundation
 
-public final class Promise<T>: PromiseType {
+public final class Promise<T, E>: PromiseType {
     
-    typealias DeferredType = Deferred<T>
+    public private(set) var future = Future<T, E>()
     
-    // MARK:- Private properties
-    
-    public private(set) var deferred = Deferred<T>()
-    
-    // MARK:- Initialization
-    
-    public init() { }
-    
-    // MARK:- Public methods
-    
-    public func complete(value: T) {
-        deferred.result = value
+    public func complete(value: Result<T, E>) {
+        future.result = value
+    }
+    public func success(value: T) {
+        complete(Result(value))
     }
     
-    public func completeWith(deferred: Deferred<T>) {
-        self.deferred = deferred
+    public func error(error: E) {
+        complete(Result(error))
     }
+    
+    public func completeWith(future: Future<T, E>) {
+        self.future = future
+    }
+    
 }
 
 extension Promise: SinkType {
-    public func put(x: T) {
+    public func put(x: Result<T, E>) {
         complete(x)
     }
 }
