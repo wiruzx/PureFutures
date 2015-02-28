@@ -30,21 +30,15 @@ public final class Future<T, E>: FutureType {
     
     private let deferred = Deferred<Result<T, E>>()
     
-    // MARK:- Internal properties
-    
-    internal var result: Result<T, E>? {
-        set {
-            deferred.result = newValue
-        }
-        get {
-            return deferred.result
-        }
-    }
-    
     // MARK:- Public properties
     
-    public var value: Result<T, E>? {
-        return result
+    public internal(set) var value: Result<T, E>? {
+        set {
+            deferred.value = newValue
+        }
+        get {
+            return deferred.value
+        }
     }
     
     // MARK:- Initialization

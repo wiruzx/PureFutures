@@ -20,25 +20,19 @@ public final class Deferred<T>: DeferredType {
     
     private var callbacks: [Callback] = []
     
-    // MARK:- Internal properties
+    // MARK:- Public properties
     
-    internal var result: T? {
+    public internal(set) var value: T? {
         didSet {
             assert(oldValue == nil, "Cannot complete Deferred more than once")
-            assert(result != nil, "Result can't be nil")
+            assert(value != nil, "Result can't be nil")
             
             for callback in callbacks {
-                callback(result!)
+                callback(value!)
             }
             
             callbacks.removeAll()
         }
-    }
-    
-    // MARK:- Public properties
-    
-    public var value: T? {
-        return result
     }
     
     // MARK:- Initialization
@@ -48,7 +42,7 @@ public final class Deferred<T>: DeferredType {
     }
     
     public init(_ f: () -> T) {
-        self.result = f()
+        self.value = f()
     }
     
     public convenience init(_ f: @autoclosure () -> T) {
@@ -58,12 +52,12 @@ public final class Deferred<T>: DeferredType {
     // MARK:- DeferredType methods
     
     public init(_ x: T) {
-        self.result = x
+        self.value = x
     }
     
     public func onComplete(c: Callback) -> Deferred {
         
-        if let result = result {
+        if let result = value {
             c(result)
         } else {
             callbacks.append(c)

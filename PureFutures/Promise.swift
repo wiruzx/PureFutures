@@ -17,7 +17,7 @@ public final class Promise<T, E>: PromiseType {
     // MARK:- PromiseType methods
     
     public func complete(value: Result<T, E>) {
-        future.result = value
+        future.value = value
     }
     public func success(value: T) {
         complete(Result(value))

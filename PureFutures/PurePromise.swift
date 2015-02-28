@@ -21,7 +21,7 @@ public final class PurePromise<T>: PurePromiseType {
     // MARK:- PurePromiseType methods
     
     public func complete(value: T) {
-        deferred.result = value
+        deferred.value = value
     }
     
     public func completeWith(deferred: Deferred<T>) {
