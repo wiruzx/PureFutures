@@ -8,61 +8,59 @@
 
 import Foundation
 
-public func map<T: FutureType, U>(x: T, f: T.SuccessType -> U) -> Future<U, T.ErrorType> {
-    return flatMap(x) { Future(Result(f($0))) }
+public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T) -> Future<T, F.ErrorType> {
+    return flatMap(fx) { Future(Result(f($0))) }
 }
 
-public func flatMap<T: FutureType, U>(x: T, f: T.SuccessType -> Future<U, T.ErrorType>) -> Future<U, T.ErrorType> {
-    let p = Promise<U, T.ErrorType>()
-    
-    x.onComplete {
-        switch $0 as Result<T.SuccessType, T.ErrorType> {
+public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.ErrorType>) -> Future<T, F.ErrorType> {
+    let p = Promise<T, F.ErrorType>()
+    fx.onComplete {
+        switch $0 as Result<F.SuccessType, F.ErrorType> {
         case .Success(let box):
             p.completeWith(f(box.value))
         case .Error(let box):
             p.complete(Result(box.value))
         }
     }
-    
     return p.future
 }
 
-public func filter<T: FutureType>(x: T, p: T.SuccessType -> Bool) -> Future<T.SuccessType?, T.ErrorType> {
-    return map(x) { x in p(x) ? x : nil }
+public func filter<F: FutureType>(fx: F, p: F.SuccessType -> Bool) -> Future<F.SuccessType?, F.ErrorType> {
+    return map(fx) { x in p(x) ? x : nil }
 }
 
-public func zip<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(a: T, b: U) -> Future<(T.SuccessType, U.SuccessType), T.ErrorType> {
-    return flatMap(a) { a in
-        map(b) { b in
+public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(fa: F, fb: T) -> Future<(F.SuccessType, T.SuccessType), F.ErrorType> {
+    return flatMap(fa) { a in
+        map(fb) { b in
             (a, b)
         }
     }
 }
 
-public func reduce<T: FutureType, U>(fs: [T], initial: U, combine: (U, T.SuccessType) -> U) -> Future<U, T.ErrorType> {
-    return reduce(fs, Future(Result(initial))) { acc, futureValue in
+public func reduce<F: FutureType, T>(fxs: [F], initial: T, combine: (T, F.SuccessType) -> T) -> Future<T, F.ErrorType> {
+    return reduce(fxs, Future(Result(initial))) { acc, futureValue in
         flatMap(futureValue) { value in
             map(acc) { combine($0, value) }
         }
     }
 }
 
-public func traverse<T, U: FutureType>(xs: [T], f: T -> U) -> Future<[U.SuccessType], U.ErrorType> {
+public func traverse<T, F: FutureType>(xs: [T], f: T -> F) -> Future<[F.SuccessType], F.ErrorType> {
     return reduce(map(xs, f), []) { $0 + [$1] }
 }
 
-public func sequence<T: FutureType>(fs: [T]) -> Future<[T.SuccessType], T.ErrorType> {
-    return traverse(fs) { $0 }
+public func sequence<F: FutureType>(fxs: [F]) -> Future<[F.SuccessType], F.ErrorType> {
+    return traverse(fxs) { $0 }
 }
 
-public func recover<T: FutureType>(x: T, r: T.ErrorType -> T.SuccessType) -> Future<T.SuccessType, T.ErrorType> {
-    let p = Promise<T.SuccessType, T.ErrorType>()
-    x.onError { p.success(r($0)) }
+public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType) -> Future<F.SuccessType, F.ErrorType> {
+    let p = Promise<F.SuccessType, F.ErrorType>()
+    fx.onError { p.success(r($0)) }
     return p.future
 }
 
-public func recoverWith<T: FutureType>(x: T, r: T.ErrorType -> Future<T.SuccessType, T.ErrorType>) -> Future<T.SuccessType, T.ErrorType> {
-    let p = Promise<T.SuccessType, T.ErrorType>()
-    x.onError { p.completeWith(r($0)) }
+public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.SuccessType, F.ErrorType>) -> Future<F.SuccessType, F.ErrorType> {
+    let p = Promise<F.SuccessType, F.ErrorType>()
+    fx.onError { p.completeWith(r($0)) }
     return p.future
 }

@@ -13,7 +13,6 @@ public protocol DeferredType {
     typealias Element
     
     init(_ x: Element)
-    
     func onComplete(c: Element -> Void) -> Self
     
 }

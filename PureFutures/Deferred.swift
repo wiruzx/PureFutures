@@ -81,20 +81,20 @@ public extension Deferred {
         return PureFutures.filter(self, p)
     }
     
-    public func zip<U>(x: Deferred<U>) -> Deferred<(T, U)> {
-        return PureFutures.zip(self, x)
+    public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
+        return PureFutures.zip(self, dx)
     }
     
-    public class func reduce<U>(ds: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {
-        return PureFutures.reduce(ds, initial, combine)
+    public class func reduce<U>(dxs: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {
+        return PureFutures.reduce(dxs, initial, combine)
     }
     
-    public class func traverse<U>(ds: [T], f: T -> Deferred<U>) -> Deferred<[U]> {
-        return PureFutures.traverse(ds, f)
+    public class func traverse<U>(xs: [T], f: T -> Deferred<U>) -> Deferred<[U]> {
+        return PureFutures.traverse(xs, f)
     }
     
-    public class func sequence(ds: [Deferred]) -> Deferred<[T]> {
-        return PureFutures.sequence(ds)
+    public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
+        return PureFutures.sequence(dxs)
     }
     
 }

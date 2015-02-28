@@ -11,6 +11,7 @@ import Foundation
 public protocol PromiseType: PurePromiseType {
     
     typealias Def: FutureType
+    
     typealias SuccessType = Def.SuccessType
     typealias ErrorType = Def.ErrorType
 

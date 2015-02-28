@@ -14,12 +14,6 @@ public final class PurePromise<T>: PurePromiseType {
     
     public private(set) var deferred = Deferred<T>()
     
-    // MARK:- Initialization
-    
-    public init() {
-        
-    }
-    
     // MARK:- PurePromiseType methods
     
     public func complete(value: T) {
@@ -29,4 +23,5 @@ public final class PurePromise<T>: PurePromiseType {
     public func completeWith(deferred: Deferred<T>) {
         self.deferred = deferred
     }
+    
 }

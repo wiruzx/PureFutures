@@ -48,11 +48,11 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- Class methods
     
-    public class func succeed(value: T) -> Future<T, E> {
+    public class func succeed(value: T) -> Future {
         return Future(Result(value))
     }
     
-    public class func failed(error: E) -> Future<T, E> {
+    public class func failed(error: E) -> Future {
         return Future(Result(error))
     }
     
@@ -105,8 +105,8 @@ public extension Future {
         return PureFutures.filter(self, p)
     }
     
-    public func zip<U>(x: Future<U, E>) -> Future<(T, U), E> {
-        return PureFutures.zip(self, x)
+    public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
+        return PureFutures.zip(self, fx)
     }
     
     public func recover(r: E -> T) -> Future {
@@ -117,16 +117,16 @@ public extension Future {
         return PureFutures.recoverWith(self, r)
     }
     
-    public class func reduce<U>(ds: [Future], initial: U, combine: (U, T) -> U) -> Future<U, E> {
-        return PureFutures.reduce(ds, initial, combine)
+    public class func reduce<U>(fxs: [Future], initial: U, combine: (U, T) -> U) -> Future<U, E> {
+        return PureFutures.reduce(fxs, initial, combine)
     }
     
-    public class func traverse<U>(ds: [T], f: T -> Future<U, E>) -> Future<[U], E> {
-        return PureFutures.traverse(ds, f)
+    public class func traverse<U>(xs: [T], f: T -> Future<U, E>) -> Future<[U], E> {
+        return PureFutures.traverse(xs, f)
     }
     
-    public class func sequence(ds: [Future]) -> Future<[T], E> {
-        return PureFutures.sequence(ds)
+    public class func sequence(fxs: [Future]) -> Future<[T], E> {
+        return PureFutures.sequence(fxs)
     }
     
 }
