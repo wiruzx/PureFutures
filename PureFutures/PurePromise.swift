@@ -10,7 +10,7 @@ import Foundation
 
 public final class PurePromise<T>: PurePromiseType {
     
-    // MARK:- Private properties
+    // MARK:- Public properties
     
     public private(set) var deferred = Deferred<T>()
     
@@ -18,7 +18,7 @@ public final class PurePromise<T>: PurePromiseType {
     
     public init() { }
     
-    // MARK:- Public methods
+    // MARK:- PurePromiseType methods
     
     public func complete(value: T) {
         deferred.result = value

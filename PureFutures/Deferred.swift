@@ -55,9 +55,7 @@ public final class Deferred<T>: DeferredType {
         self.init(f as () -> T)
     }
     
-    // MARK:- Public methods
-    
-    // MARK: Class methods
+    // MARK:- DeferredType methods
     
     public class func completed(value: T) -> Deferred {
         let d = Deferred()
@@ -66,8 +64,6 @@ public final class Deferred<T>: DeferredType {
         
         return d
     }
-    
-    // MARK: Instance methods
     
     public func onComplete(c: Callback) -> Deferred {
         

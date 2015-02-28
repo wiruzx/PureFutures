@@ -56,13 +56,21 @@ public final class Future<T, E>: FutureType {
         self.deferred = deferred
     }
     
-    // MARK:- Public methods
+    // MARK:- Class methods
+    
+    public class func succeed(value: T) -> Future<T, E> {
+        return Future(deferred: Deferred.completed(Result(value)))
+    }
+    
+    public class func failed(error: E) -> Future<T, E> {
+        return Future(deferred: Deferred.completed(Result(error)))
+    }
+    
+    // MARK:- FutureType methods
     
     public class func completed(result: Result<T, E>) -> Future {
         return Future(deferred: Deferred.completed(result))
     }
-    
-    // MARK: Instance methods
     
     public func onComplete(c: CompleteCallback) -> Future {
         deferred.onComplete(c)
@@ -91,15 +99,6 @@ public final class Future<T, E>: FutureType {
         }
     }
     
-    // MARK: Class methods
-    
-    public class func succeed(value: T) -> Future<T, E> {
-        return Future(deferred: Deferred.completed(Result(value)))
-    }
-    
-    public class func failed(error: E) -> Future<T, E> {
-        return Future(deferred: Deferred.completed(Result(error)))
-    }
 }
 
 public extension Future {

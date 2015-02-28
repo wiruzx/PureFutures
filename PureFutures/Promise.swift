@@ -10,7 +10,11 @@ import Foundation
 
 public final class Promise<T, E>: PromiseType {
     
+    // MARK:- Public properties
+    
     public private(set) var future = Future<T, E>()
+    
+    // MARK:- PromiseType methods
     
     public func complete(value: Result<T, E>) {
         future.result = value
