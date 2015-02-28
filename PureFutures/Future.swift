@@ -117,4 +117,16 @@ public extension Future {
         return PureFutures.recoverWith(self, r)
     }
     
+    public class func reduce<U>(ds: [Future], initial: U, combine: (U, T) -> U) -> Future<U, E> {
+        return PureFutures.reduce(ds, initial, combine)
+    }
+    
+    public class func traverse<U>(ds: [T], f: T -> Future<U, E>) -> Future<[U], E> {
+        return PureFutures.traverse(ds, f)
+    }
+    
+    public class func sequence(ds: [Future]) -> Future<[T], E> {
+        return PureFutures.sequence(ds)
+    }
+    
 }
