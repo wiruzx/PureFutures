@@ -41,12 +41,18 @@ public final class Deferred<T>: DeferredType {
         
     }
     
-    public init(_ f: () -> T) {
-        self.value = f()
-    }
-    
     public convenience init(_ f: @autoclosure () -> T) {
         self.init(f as () -> T)
+    }
+    
+    public convenience init(_ f: () -> T) {
+        self.init(ec: defaultContext, f)
+    }
+    
+    public init(ec: ExecutionContextType, f: () -> T) {
+        ec.execute {
+            self.value = f()
+        }
     }
     
     // MARK:- DeferredType methods
