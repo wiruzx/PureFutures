@@ -37,17 +37,19 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- Type declarations
     
-    public typealias CompleteCallback = Result<T, E> -> Void
+    public typealias ResultType = Result<T, E>
+    
+    public typealias CompleteCallback = ResultType -> Void
     public typealias SuccessCallback = T -> Void
     public typealias ErrorCallback = E -> Void
     
     // MARK:- Private properties
     
-    private let deferred = Deferred<Result<T, E>>()
+    private let deferred = Deferred<ResultType>()
     
     // MARK:- Public properties
     
-    public internal(set) var value: Result<T, E>? {
+    public internal(set) var value: ResultType? {
         set {
             deferred.value = newValue
         }
@@ -73,7 +75,7 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- FutureType methods
     
-    public init(_ x: Result<T, E>) {
+    public init(_ x: ResultType) {
         self.deferred = Deferred(x)
     }
     
@@ -124,11 +126,11 @@ public extension Future {
     
     // MARK:- Convenience methods
     
-    public func forced() -> Result<T, E> {
+    public func forced() -> ResultType {
         return PureFutures.forced(self)
     }
     
-    public func forced(interval: NSTimeInterval) -> Result<T, E>? {
+    public func forced(interval: NSTimeInterval) -> ResultType? {
         return PureFutures.forced(self, interval)
     }
     
@@ -170,11 +172,11 @@ public extension Future {
     
     // MARK:- With execution context
     
-    public func forced(ec: ExecutionContextType) -> Result<T, E> {
+    public func forced(ec: ExecutionContextType) -> ResultType {
         return PureFutures.forced(ec, self)
     }
     
-    public func forced(ec: ExecutionContextType, interval: NSTimeInterval) -> Result<T, E>? {
+    public func forced(ec: ExecutionContextType, interval: NSTimeInterval) -> ResultType? {
         return PureFutures.forced(ec, self, interval)
     }
     
