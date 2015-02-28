@@ -16,7 +16,9 @@ public final class PurePromise<T>: PurePromiseType {
     
     // MARK:- Initialization
     
-    public init() { }
+    public init() {
+        
+    }
     
     // MARK:- PurePromiseType methods
     
@@ -26,11 +28,5 @@ public final class PurePromise<T>: PurePromiseType {
     
     public func completeWith(deferred: Deferred<T>) {
         self.deferred = deferred
-    }
-}
-
-extension PurePromise: SinkType {
-    public func put(x: T) {
-        complete(x)
     }
 }

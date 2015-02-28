@@ -20,15 +20,3 @@ public struct Box<T> {
         storage = [value]
     }
 }
-
-public extension Box {
-    
-    public func map<U>(f: T -> U) -> Box<U> {
-        return Box<U>(f(value))
-    }
-    
-    public func flatMap<U>(f: T -> Box<U>) -> Box<U> {
-        return f(value)
-    }
-    
-}

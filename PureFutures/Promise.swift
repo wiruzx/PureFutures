@@ -32,9 +32,3 @@ public final class Promise<T, E>: PromiseType {
     }
     
 }
-
-extension Promise: SinkType {
-    public func put(x: Result<T, E>) {
-        complete(x)
-    }
-}
