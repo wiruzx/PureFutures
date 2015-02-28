@@ -39,6 +39,22 @@ public func zip<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(a
     }
 }
 
+public func reduce<T: FutureType, U>(fs: [T], initial: U, combine: (U, T.SuccessType) -> U) -> Future<U, T.ErrorType> {
+    return reduce(fs, Future(Result(initial))) { acc, futureValue in
+        flatMap(futureValue) { value in
+            map(acc) { combine($0, value) }
+        }
+    }
+}
+
+public func traverse<T, U: FutureType>(xs: [T], f: T -> U) -> Future<[U.SuccessType], U.ErrorType> {
+    return reduce(map(xs, f), []) { $0 + [$1] }
+}
+
+public func sequence<T: FutureType>(fs: [T]) -> Future<[T.SuccessType], T.ErrorType> {
+    return traverse(fs) { $0 }
+}
+
 public func recover<T: FutureType>(x: T, r: T.ErrorType -> T.SuccessType) -> Future<T.SuccessType, T.ErrorType> {
     let p = Promise<T.SuccessType, T.ErrorType>()
     x.onError { p.success(r($0)) }

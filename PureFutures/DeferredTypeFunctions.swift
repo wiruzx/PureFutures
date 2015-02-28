@@ -29,3 +29,20 @@ public func zip<T: DeferredType, U: DeferredType>(a: T, b: U) -> Deferred<(T.Ele
         }
     }
 }
+
+public func reduce<T: DeferredType, U>(d: [T], initial: U, combine: (U, T.Element) -> U) -> Deferred<U> {
+    return reduce(d, Deferred(initial)) { acc, defValue in
+        flatMap(defValue) { value in
+            map(acc) { combine($0, value) }
+        }
+    }
+}
+
+public func traverse<T, U: DeferredType>(xs: [T], f: T -> U) -> Deferred<[U.Element]> {
+    return reduce(map(xs, f), []) { $0 + [$1] }
+}
+
+public func sequence<T: DeferredType>(ds: [T]) -> Deferred<[T.Element]> {
+    return traverse(ds) { $0 }
+}
+
