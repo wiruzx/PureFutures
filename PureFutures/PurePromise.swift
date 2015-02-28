@@ -10,8 +10,6 @@ import Foundation
 
 public final class PurePromise<T>: PurePromiseType {
     
-    typealias DefrredType = Deferred<T>
-    
     // MARK:- Private properties
     
     public private(set) var deferred = Deferred<T>()

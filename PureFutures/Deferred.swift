@@ -10,8 +10,6 @@ import Foundation
 
 public final class Deferred<T>: DeferredType {
     
-    typealias Element = T
-    
     // MARK:- Type declarations
     
     public typealias Callback = T -> Void

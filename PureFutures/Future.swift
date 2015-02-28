@@ -20,9 +20,6 @@ public func future<T, E>(f: () -> T) -> Future<T, E> {
 
 public final class Future<T, E>: FutureType {
     
-    typealias SuccessType = T
-    typealias ErrorType = E
-    
     // MARK:- Type declarations
     
     public typealias CompleteCallback = Result<T, E> -> Void
