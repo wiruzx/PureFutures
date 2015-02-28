@@ -8,7 +8,7 @@
 
 import Foundation
 
-let defaultContext = dispatch_get_main_queue()
+let defaultContext = NSOperationQueue.mainQueue()
 
 
 public func map<D: DeferredType, T>(dx: D, f: D.Element -> T) -> Deferred<T> {
