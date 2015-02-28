@@ -8,11 +8,11 @@
 
 import Foundation
 
-public final class Promise<T, E>: PromiseType {
+public struct Promise<T, E>: PromiseType {
     
     // MARK:- Public properties
     
-    public private(set) var future = Future<T, E>()
+    public let future = Future<T, E>()
     
     // MARK:- PromiseType methods
     
@@ -29,7 +29,7 @@ public final class Promise<T, E>: PromiseType {
     }
     
     public func completeWith(future: Future<T, E>) {
-        self.future = future
+        future.onComplete { self.complete($0) }
     }
     
 }

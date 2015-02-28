@@ -8,11 +8,11 @@
 
 import Foundation
 
-public final class PurePromise<T>: PurePromiseType {
+public struct PurePromise<T>: PurePromiseType {
     
     // MARK:- Public properties
     
-    public private(set) var deferred = Deferred<T>()
+    public let deferred = Deferred<T>()
     
     // MARK:- PurePromiseType methods
     
@@ -21,7 +21,7 @@ public final class PurePromise<T>: PurePromiseType {
     }
     
     public func completeWith(deferred: Deferred<T>) {
-        self.deferred = deferred
+        deferred.onComplete { self.complete($0) }
     }
     
 }
