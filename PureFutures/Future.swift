@@ -102,7 +102,7 @@ public extension Future {
     }
     
     public func filter(p: T -> Bool) -> Future<T?, E> {
-        return map { value in p(value) ? value : nil }
+        return PureFutures.filter(self, p)
     }
     
 }

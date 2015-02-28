@@ -8,24 +8,25 @@
 
 import Foundation
 
-public func map<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U.SuccessType) -> U {
-    return flatMap(x) { (value: T.SuccessType) in
-        let result: Result<U.SuccessType, U.ErrorType> = Result(f(value))
-        return U(result as U.Element)
-    }
+public func map<T: FutureType, U>(x: T, f: T.SuccessType -> U) -> Future<U, T.ErrorType> {
+    return flatMap(x) { Future(Result(f($0))) }
 }
 
-public func flatMap<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U) -> U {
-    let p = Promise<U.SuccessType, U.ErrorType>()
+public func flatMap<T: FutureType, U>(x: T, f: T.SuccessType -> Future<U, T.ErrorType>) -> Future<U, T.ErrorType> {
+    let p = Promise<U, T.ErrorType>()
     
     x.onComplete {
         switch $0 as Result<T.SuccessType, T.ErrorType> {
         case .Success(let box):
-            p.completeWith(f(box.value) as Future<U.SuccessType, U.ErrorType>)
+            p.completeWith(f(box.value))
         case .Error(let box):
-            p.complete(Result(box.value as U.ErrorType))
+            p.complete(Result(box.value))
         }
     }
     
-    return p.future as U
+    return p.future
+}
+
+public func filter<T: FutureType>(x: T, p: T.SuccessType -> Bool) -> Future<T.SuccessType?, T.ErrorType> {
+    return map(x) { x in p(x) ? x : nil }
 }

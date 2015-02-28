@@ -78,7 +78,7 @@ public extension Deferred {
     }
 
     public func filter(p: T -> Bool) -> Deferred<T?> {
-        return map { value in p(value) ? value : nil }
+        return PureFutures.filter(self, p)
     }
     
 }

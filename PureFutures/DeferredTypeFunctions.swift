@@ -8,12 +8,16 @@
 
 import Foundation
 
-public func map<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U.Element) -> U {
-    return flatMap(d) { U(f($0)) }
+public func map<T: DeferredType, U>(d: T, f: T.Element -> U) -> Deferred<U> {
+    return flatMap(d) { Deferred(f($0)) }
 }
 
-public func flatMap<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U) -> U {
-    let p = PurePromise<U.Element>()
-    d.onComplete { p.completeWith(f($0) as Deferred<U.Element>) }
-    return p.deferred as U
+public func flatMap<T: DeferredType, U>(d: T, f: T.Element -> Deferred<U>) -> Deferred<U> {
+    let p = PurePromise<U>()
+    d.onComplete { p.completeWith(f($0)) }
+    return p.deferred
+}
+
+public func filter<T: DeferredType>(d: T, p: T.Element -> Bool) -> Deferred<T.Element?> {
+    return map(d) { x in p(x) ? x : nil }
 }
