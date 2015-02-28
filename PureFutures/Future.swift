@@ -124,6 +124,14 @@ public extension Future {
     
     // MARK:- Convenience methods
     
+    public func forced() -> Result<T, E> {
+        return PureFutures.forced(self)
+    }
+    
+    public func forced(interval: NSTimeInterval) -> Result<T, E>? {
+        return PureFutures.forced(self, interval)
+    }
+    
     public func map<U>(f: T -> U) -> Future<U, E> {
         return PureFutures.map(self, f)
     }
@@ -161,6 +169,14 @@ public extension Future {
     }
     
     // MARK:- With execution context
+    
+    public func forced(ec: ExecutionContextType) -> Result<T, E> {
+        return PureFutures.forced(ec, self)
+    }
+    
+    public func forced(ec: ExecutionContextType, interval: NSTimeInterval) -> Result<T, E>? {
+        return PureFutures.forced(ec, self, interval)
+    }
     
     public func map<U>(ec: ExecutionContextType, f: T -> U) -> Future<U, E> {
         return PureFutures.map(ec, self, f)

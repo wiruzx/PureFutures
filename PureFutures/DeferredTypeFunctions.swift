@@ -10,6 +10,28 @@ import Foundation
 
 let defaultContext = NSOperationQueue.mainQueue()
 
+public func forced<D: DeferredType>(dx: D) -> D.Element {
+    return forced(defaultContext, dx)
+}
+
+public func forced<D: DeferredType>(ec: ExecutionContextType, dx: D) -> D.Element {
+    return forced(ec, dx, NSTimeInterval.infinity)!
+}
+
+
+
+public func forced<D: DeferredType>(dx: D, interval: NSTimeInterval) -> D.Element? {
+    return forced(defaultContext, dx, interval)
+}
+
+public func forced<D: DeferredType>(ec: ExecutionContextType, dx: D, interval: NSTimeInterval) -> D.Element? {
+    return await(interval) { completion in
+        dx.onComplete(ec, c: completion)
+        return
+    }
+}
+
+
 
 public func map<D: DeferredType, T>(dx: D, f: D.Element -> T) -> Deferred<T> {
     return map(defaultContext, dx, f)

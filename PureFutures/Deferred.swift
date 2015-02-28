@@ -83,6 +83,14 @@ public extension Deferred {
     
     // MARK:- Convenience methods
     
+    public func forced() -> T {
+        return PureFutures.forced(self)
+    }
+    
+    public func forced(interval: NSTimeInterval) -> T? {
+        return PureFutures.forced(self, interval)
+    }
+    
     public func map<U>(f: T -> U) -> Deferred<U> {
         return PureFutures.map(self, f)
     }
@@ -112,6 +120,14 @@ public extension Deferred {
     }
     
     // MARK:- With execution context
+    
+    public func forced(ec: ExecutionContextType) -> T {
+        return PureFutures.forced(ec, self)
+    }
+    
+    public func forced(ec: ExecutionContextType, interval: NSTimeInterval) -> T? {
+        return PureFutures.forced(ec, self, interval)
+    }
     
     public func map<U>(ec: ExecutionContextType, f: T -> U) -> Deferred<U> {
         return PureFutures.map(ec, self, f)
