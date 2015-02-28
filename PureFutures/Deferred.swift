@@ -10,6 +10,8 @@ import Foundation
 
 public final class Deferred<T>: DeferredType {
     
+    typealias Element = T
+    
     // MARK:- Type declarations
     
     public typealias Callback = T -> Void
@@ -46,9 +48,7 @@ public final class Deferred<T>: DeferredType {
     }
     
     public init(_ f: () -> T) {
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.result = f()
-        }
+        self.result = f()
     }
     
     public convenience init(_ f: @autoclosure () -> T) {
@@ -57,12 +57,8 @@ public final class Deferred<T>: DeferredType {
     
     // MARK:- DeferredType methods
     
-    public class func completed(value: T) -> Deferred {
-        let d = Deferred()
-        
-        d.result = value
-        
-        return d
+    public init(_ x: T) {
+        self.result = x
     }
     
     public func onComplete(c: Callback) -> Deferred {

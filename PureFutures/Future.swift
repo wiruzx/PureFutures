@@ -52,24 +52,20 @@ public final class Future<T, E>: FutureType {
     internal init() {
     }
     
-    private init(deferred: Deferred<Result<T, E>>) {
-        self.deferred = deferred
-    }
-    
     // MARK:- Class methods
     
     public class func succeed(value: T) -> Future<T, E> {
-        return Future(deferred: Deferred.completed(Result(value)))
+        return Future(Result(value))
     }
     
     public class func failed(error: E) -> Future<T, E> {
-        return Future(deferred: Deferred.completed(Result(error)))
+        return Future(Result(error))
     }
     
     // MARK:- FutureType methods
     
-    public class func completed(result: Result<T, E>) -> Future {
-        return Future(deferred: Deferred.completed(result))
+    public init(_ x: Result<T, E>) {
+        self.deferred = Deferred(x)
     }
     
     public func onComplete(c: CompleteCallback) -> Future {

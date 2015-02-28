@@ -9,7 +9,7 @@
 import Foundation
 
 public func map<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U.Element) -> U {
-    return flatMap(d) { U.completed(f($0)) }
+    return flatMap(d) { U(f($0)) }
 }
 
 public func flatMap<T: DeferredType, U: DeferredType>(d: T, f: T.Element -> U) -> U {

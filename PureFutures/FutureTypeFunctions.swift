@@ -11,7 +11,7 @@ import Foundation
 public func map<T: FutureType, U: FutureType where T.ErrorType == U.ErrorType>(x: T, f: T.SuccessType -> U.SuccessType) -> U {
     return flatMap(x) { (value: T.SuccessType) in
         let result: Result<U.SuccessType, U.ErrorType> = Result(f(value))
-        return U.completed(result as U.Element)
+        return U(result as U.Element)
     }
 }
 
