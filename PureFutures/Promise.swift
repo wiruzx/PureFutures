@@ -14,6 +14,11 @@ public struct Promise<T, E>: PromiseType {
     
     public let future = Future<T, E>()
     
+    // MARK:- Initialization
+    
+    public init() {
+    }
+    
     // MARK:- PromiseType methods
     
     public func complete(value: Result<T, E>) {

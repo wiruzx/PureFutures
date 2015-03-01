@@ -14,6 +14,11 @@ public struct PurePromise<T>: PurePromiseType {
     
     public let deferred = Deferred<T>()
     
+    // MARK:- Initialization
+    
+    public init() {
+    }
+    
     // MARK:- PurePromiseType methods
     
     public func complete(value: T) {
