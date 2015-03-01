@@ -90,77 +90,77 @@ public extension Deferred {
     // MARK:- Convenience methods
     
     public func forced() -> T {
-        return PureFutures.forced(self)
+        return forced(defaultContext)
     }
     
     public func forced(interval: NSTimeInterval) -> T? {
-        return PureFutures.forced(self, interval)
+        return forced(defaultContext, interval: interval)
     }
     
     public func map<U>(f: T -> U) -> Deferred<U> {
-        return PureFutures.map(self, f)
+        return map(defaultContext, f)
     }
     
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        return PureFutures.flatMap(self, f)
+        return flatMap(defaultContext, f)
     }
 
     public func filter(p: T -> Bool) -> Deferred<T?> {
-        return PureFutures.filter(self, p)
+        return filter(defaultContext, p)
     }
     
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
-        return PureFutures.zip(self, dx)
+        return zip(defaultContext, dx: dx)
     }
     
     public class func reduce<U>(dxs: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {
-        return PureFutures.reduce(dxs, initial, combine)
+        return reduce(defaultContext, dxs: dxs, initial: initial, combine: combine)
     }
     
     public class func traverse<U>(xs: [T], f: T -> Deferred<U>) -> Deferred<[U]> {
-        return PureFutures.traverse(xs, f)
+        return traverse(defaultContext, xs: xs, f: f)
     }
     
     public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
-        return PureFutures.sequence(dxs)
+        return sequence(defaultContext, dxs: dxs)
     }
     
     // MARK:- With execution context
     
     public func forced(ec: ExecutionContextType) -> T {
-        return PureFutures.forced(ec, self)
+        return PureFutures.forced(self)(ec: ec)
     }
     
     public func forced(ec: ExecutionContextType, interval: NSTimeInterval) -> T? {
-        return PureFutures.forced(ec, self, interval)
+        return PureFutures.forced(self, interval)(ec: ec)
     }
     
     public func map<U>(ec: ExecutionContextType, f: T -> U) -> Deferred<U> {
-        return PureFutures.map(ec, self, f)
+        return PureFutures.map(self, f)(ec: ec)
     }
     
     public func flatMap<U>(ec: ExecutionContextType, f: T -> Deferred<U>) -> Deferred<U> {
-        return PureFutures.flatMap(ec, self, f)
+        return PureFutures.flatMap(self, f)(ec: ec)
     }
 
     public func filter(ec: ExecutionContextType, p: T -> Bool) -> Deferred<T?> {
-        return PureFutures.filter(ec, self, p)
+        return PureFutures.filter(self, p)(ec: ec)
     }
     
     public func zip<U>(ec: ExecutionContextType, dx: Deferred<U>) -> Deferred<(T, U)> {
-        return PureFutures.zip(ec, self, dx)
+        return PureFutures.zip(self, dx)(ec: ec)
     }
     
     public class func reduce<U>(ec: ExecutionContextType, dxs: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {
-        return PureFutures.reduce(ec, dxs, initial, combine)
+        return PureFutures.reduce(dxs, initial, combine)(ec: ec)
     }
     
     public class func traverse<U>(ec: ExecutionContextType, xs: [T], f: T -> Deferred<U>) -> Deferred<[U]> {
-        return PureFutures.traverse(ec, xs, f)
+        return PureFutures.traverse(xs, f)(ec: ec)
     }
     
     public class func sequence(ec: ExecutionContextType, dxs: [Deferred]) -> Deferred<[T]> {
-        return PureFutures.sequence(ec, dxs)
+        return PureFutures.sequence(dxs)(ec: ec)
     }
     
 }

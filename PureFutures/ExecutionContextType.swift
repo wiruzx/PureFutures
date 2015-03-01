@@ -11,3 +11,6 @@ import Foundation
 public protocol ExecutionContextType {
     func execute(task: () -> Void)
 }
+
+// TODO: Move it to appropriate place
+let defaultContext = NSOperationQueue.mainQueue()
