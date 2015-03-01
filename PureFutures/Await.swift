@@ -9,7 +9,11 @@
 import Foundation
 
 private func timeFromTimeInterval(interval: NSTimeInterval) -> dispatch_time_t {
-    return dispatch_time(DISPATCH_TIME_NOW, Int64(interval * Double(NSEC_PER_SEC)))
+    if interval.isFinite {
+        return dispatch_time(DISPATCH_TIME_NOW, Int64(interval * Double(NSEC_PER_SEC)))
+    } else {
+        return DISPATCH_TIME_FOREVER
+    }
 }
 
 internal func await<T>(interval: NSTimeInterval, block: (T -> Void) -> Void) -> T? {
