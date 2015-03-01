@@ -54,5 +54,5 @@ public func traverse<D, T: DeferredType>(xs: [D], f: D -> T) -> (ec: ExecutionCo
 }
 
 public func sequence<D: DeferredType>(dxs: [D]) -> (ec: ExecutionContextType) -> Deferred<[D.Element]> {
-    return traverse(dxs) { $0 }
+    return traverse(dxs, id)
 }

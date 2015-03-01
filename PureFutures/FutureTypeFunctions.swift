@@ -9,7 +9,7 @@
 import Foundation
 
 public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T) -> (ec: ExecutionContextType) -> Future<T, F.ErrorType> {
-    return transform(fx, f, { $0 })
+    return transform(fx, f, id)
 }
 
 public func transform<F: FutureType, T, E>(fx: F, s: F.SuccessType -> T, e: F.ErrorType -> E)(ec: ExecutionContextType) -> Future<T, E> {
@@ -63,7 +63,7 @@ public func traverse<T, F: FutureType>(xs: [T], f: T -> F) -> (ec: ExecutionCont
 }
 
 public func sequence<F: FutureType>(fxs: [F]) -> (ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
-    return traverse(fxs) { $0 }
+    return traverse(fxs, id)
 }
 
 public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
