@@ -9,7 +9,20 @@
 import Foundation
 
 public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T) -> (ec: ExecutionContextType) -> Future<T, F.ErrorType> {
-    return flatMap(fx) { Future(Result(f($0))) }
+    return transform(fx, f, { $0 })
+}
+
+public func transform<F: FutureType, T, E>(fx: F, s: F.SuccessType -> T, e: F.ErrorType -> E)(ec: ExecutionContextType) -> Future<T, E> {
+    let p = Promise<T, E>()
+    fx.onComplete(ec) {
+        switch $0 as Result<F.SuccessType, F.ErrorType> {
+        case .Success(let box):
+            p.success(s(box.value))
+        case .Error(let box):
+            p.error(e(box.value))
+        }
+    }
+    return p.future
 }
 
 public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.ErrorType>)(ec: ExecutionContextType) -> Future<T, F.ErrorType> {

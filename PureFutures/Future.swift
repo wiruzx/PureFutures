@@ -138,6 +138,10 @@ public extension Future {
         return map(defaultContext, f: f)
     }
     
+    public func transform<T1, E1>(s: T -> T1, e: E -> E1) -> Future<T1, E1> {
+        return transform(defaultContext, s: s, e: e)
+    }
+    
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
         return flatMap(defaultContext, f: f)
     }
@@ -182,6 +186,10 @@ public extension Future {
     
     public func map<U>(ec: ExecutionContextType, f: T -> U) -> Future<U, E> {
         return PureFutures.map(self, f)(ec: ec)
+    }
+    
+    public func transform<T1, E1>(ec: ExecutionContextType, s: T -> T1, e: E -> E1) -> Future<T1, E1> {
+        return PureFutures.transform(self, s, e)(ec: ec)
     }
     
     public func flatMap<U>(ec: ExecutionContextType, f: T -> Future<U, E>) -> Future<U, E> {
