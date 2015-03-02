@@ -18,13 +18,16 @@ private func timeFromTimeInterval(interval: NSTimeInterval) -> dispatch_time_t {
 
 internal func await<T>(interval: NSTimeInterval, block: (T -> Void) -> Void) -> T? {
     
-    let semaphore = dispatch_semaphore_create(1)
+    let semaphore = dispatch_semaphore_create(0)
     
-    var value: T?
+    var value: T? {
+        didSet {
+            dispatch_semaphore_signal(semaphore)
+        }
+    }
     
     block { x in
         value = x
-        dispatch_semaphore_signal(semaphore)
     }
     
     dispatch_semaphore_wait(semaphore, timeFromTimeInterval(interval))
