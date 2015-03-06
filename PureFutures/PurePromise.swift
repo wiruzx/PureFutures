@@ -22,7 +22,7 @@ public struct PurePromise<T>: PurePromiseType {
     // MARK:- PurePromiseType methods
     
     public func complete(value: T) {
-        deferred.value = value
+        deferred.setValue(value)
     }
     
     public func completeWith(deferred: Deferred<T>) {

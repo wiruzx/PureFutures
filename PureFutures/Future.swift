@@ -51,7 +51,7 @@ public final class Future<T, E>: FutureType {
     
     public internal(set) var value: ResultType? {
         set {
-            deferred.value = newValue
+            deferred.setValue(newValue)
         }
         get {
             return deferred.value

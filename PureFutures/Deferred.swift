@@ -22,18 +22,7 @@ public final class Deferred<T>: DeferredType {
     
     // MARK:- Public properties
     
-    public internal(set) var value: T? {
-        didSet {
-            assert(oldValue == nil, "Cannot complete Deferred more than once")
-            assert(value != nil, "Result can't be nil")
-            
-            for callback in callbacks {
-                callback(value!)
-            }
-            
-            callbacks.removeAll()
-        }
-    }
+    public private(set) var value: T?
     
     // MARK:- Initialization
     
@@ -83,6 +72,22 @@ public final class Deferred<T>: DeferredType {
     public func onComplete(c: Callback) -> Deferred {
         return onComplete(defaultContext, c: c)
     }
+
+    // MARK:- Internal methods
+
+    internal func setValue(value: T?) {
+        assert(self.value == nil, "Cannot complete Deferred more than once")
+        assert(value != nil, "Result can't be nil")
+
+        self.value = value
+        
+        for callback in callbacks {
+            callback(value!)
+        }
+        
+        callbacks.removeAll()
+    }
+
 }
 
 public extension Deferred {
