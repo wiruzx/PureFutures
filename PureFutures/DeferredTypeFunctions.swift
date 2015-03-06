@@ -8,13 +8,15 @@
 
 import Foundation
 
-public func forced<D: DeferredType>(dx: D)(ec: ExecutionContextType) -> D.Element {
-    return forced(dx, NSTimeInterval.infinity)(ec: ec)!
+private let forcedQueue = dispatch_queue_create("com.wiruzx.PureFuture.forced", DISPATCH_QUEUE_SERIAL)
+
+public func forced<D: DeferredType>(dx: D) -> D.Element {
+    return forced(dx, NSTimeInterval.infinity)!
 }
 
-public func forced<D: DeferredType>(dx: D, interval: NSTimeInterval)(ec: ExecutionContextType) -> D.Element? {
+public func forced<D: DeferredType>(dx: D, interval: NSTimeInterval) -> D.Element? {
     return await(interval) { completion in
-        dx.onComplete(ec, c: completion)
+        dx.onComplete(forcedQueue, c: completion)
         return
     }
 }
