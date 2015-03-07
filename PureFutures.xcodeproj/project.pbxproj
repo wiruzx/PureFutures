@@ -19,6 +19,7 @@
 		E6267DE21AA280940068A0A0 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
+		E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */; };
 		E6C0A9FA1AA36490006436AC /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
 		E6D361FC1A9CFAB4003D5B2C /* PurePromiseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D361FB1A9CFAB4003D5B2C /* PurePromiseType.swift */; };
 		E6D361FE1A9CFD34003D5B2C /* PromiseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D361FD1A9CFD34003D5B2C /* PromiseType.swift */; };
@@ -55,6 +56,7 @@
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FCF1A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
+		E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTests.swift; sourceTree = "<group>"; };
 		E6C0A9F91AA36490006436AC /* Other.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
 		E6D361FB1A9CFAB4003D5B2C /* PurePromiseType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseType.swift; sourceTree = "<group>"; };
 		E6D361FD1A9CFD34003D5B2C /* PromiseType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseType.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			children = (
 				E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */,
 				E612D1891AA526C0006ED075 /* AwaitTests.swift */,
+				E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */,
 				E65E6FCE1A86BF41001B514C /* Supporting Files */,
 			);
 			path = PureFuturesTests;
@@ -294,6 +297,7 @@
 			files = (
 				E612D18A1AA526C0006ED075 /* AwaitTests.swift in Sources */,
 				E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */,
+				E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */,
 				E612D18B1AA526C5006ED075 /* Await.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
