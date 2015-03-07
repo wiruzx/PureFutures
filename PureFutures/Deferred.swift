@@ -32,24 +32,10 @@ public final class Deferred<T>: DeferredType {
         
     }
     
-    public convenience init(_ f: @autoclosure () -> T) {
-        self.init(f as () -> T)
-    }
-    
-    public convenience init(_ f: () -> T) {
-        self.init(ec: defaultContext, f)
-    }
-    
-    public init(ec: ExecutionContextType, f: () -> T) {
-        ec.execute {
-            self.value = f()
-        }
-    }
-    
     // MARK:- DeferredType methods
     
     public init(_ x: T) {
-        self.value = x
+        setValue(x)
     }
     
     public func onComplete(ec: ExecutionContextType, c: Callback) -> Deferred {
