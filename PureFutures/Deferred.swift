@@ -19,6 +19,7 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Private properties
     
     private var callbacks: [Callback] = []
+    private let callbacksManagingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksManaging", DISPATCH_QUEUE_SERIAL)
     
     // MARK:- Public properties
     
@@ -58,10 +59,12 @@ public final class Deferred<T>: DeferredType {
             }
         }
         
-        if let result = value {
-            callbackInContext(result)
-        } else {
-            callbacks.append(callbackInContext)
+        dispatch_sync(callbacksManagingQueue) {
+            if let result = self.value {
+                callbackInContext(result)
+            } else {
+                self.callbacks.append(callbackInContext)
+            }
         }
         
         return self
@@ -78,14 +81,18 @@ public final class Deferred<T>: DeferredType {
     internal func setValue(value: T?) {
         assert(self.value == nil, "Cannot complete Deferred more than once")
         assert(value != nil, "Result can't be nil")
-
-        self.value = value
         
-        for callback in callbacks {
-            callback(value!)
+        dispatch_sync(callbacksManagingQueue) {
+            
+            self.value = value
+            
+            for callback in self.callbacks {
+                callback(value!)
+            }
+            
+            self.callbacks.removeAll()
         }
-        
-        callbacks.removeAll()
+
     }
 
 }
