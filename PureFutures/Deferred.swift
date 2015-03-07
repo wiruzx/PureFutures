@@ -56,11 +56,8 @@ public final class Deferred<T>: DeferredType {
         
         let callbackInContext: T -> Void = { result in
             dispatch_sync(self.callbacksExecutingQueue) {
-                await(NSTimeInterval.infinity) { (completion: () -> Void) in
-                    ec.execute {
-                        c(result)
-                        completion()
-                    }
+                ec.execute {
+                    c(result)
                 }
                 return
             }
