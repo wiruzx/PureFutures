@@ -19,21 +19,12 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Private properties
     
     private var callbacks: [Callback] = []
+    private let callbacksManagingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksManaging", DISPATCH_QUEUE_SERIAL)
+    private let callbacksExecutingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksExecuting", DISPATCH_QUEUE_SERIAL)
     
     // MARK:- Public properties
     
-    public internal(set) var value: T? {
-        didSet {
-            assert(oldValue == nil, "Cannot complete Deferred more than once")
-            assert(value != nil, "Result can't be nil")
-            
-            for callback in callbacks {
-                callback(value!)
-            }
-            
-            callbacks.removeAll()
-        }
-    }
+    public private(set) var value: T?
     
     // MARK:- Initialization
     
@@ -63,16 +54,24 @@ public final class Deferred<T>: DeferredType {
     
     public func onComplete(ec: ExecutionContextType, c: Callback) -> Deferred {
         
-        let callbackInContext = { result in
-            ec.execute {
-                c(result)
+        let callbackInContext: T -> Void = { result in
+            dispatch_sync(self.callbacksExecutingQueue) {
+                await(NSTimeInterval.infinity) { (completion: () -> Void) in
+                    ec.execute {
+                        c(result)
+                        completion()
+                    }
+                }
+                return
             }
         }
         
-        if let result = value {
-            callbackInContext(result)
-        } else {
-            callbacks.append(callbackInContext)
+        dispatch_sync(callbacksManagingQueue) {
+            if let result = self.value {
+                callbackInContext(result)
+            } else {
+                self.callbacks.append(callbackInContext)
+            }
         }
         
         return self
@@ -83,6 +82,26 @@ public final class Deferred<T>: DeferredType {
     public func onComplete(c: Callback) -> Deferred {
         return onComplete(defaultContext, c: c)
     }
+
+    // MARK:- Internal methods
+
+    internal func setValue(value: T?) {
+        assert(self.value == nil, "Cannot complete Deferred more than once")
+        assert(value != nil, "Result can't be nil")
+        
+        dispatch_sync(callbacksManagingQueue) {
+            
+            self.value = value
+            
+            for callback in self.callbacks {
+                callback(value!)
+            }
+            
+            self.callbacks.removeAll()
+        }
+
+    }
+
 }
 
 public extension Deferred {
