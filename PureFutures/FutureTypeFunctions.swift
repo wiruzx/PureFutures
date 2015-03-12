@@ -8,12 +8,12 @@
 
 import Foundation
 
-public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T) -> (ec: ExecutionContextType) -> Future<T, F.ErrorType> {
-    return transform(fx, f, id)
+public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T)(ec: ExecutionContextType) -> Future<T, F.ErrorType> {
+    return transform(fx, f, id)(ec: ec)
 }
 
-public func transform<F: FutureType, T, E>(fx: F, s: F.SuccessType -> T, e: F.ErrorType -> E)(ec: ExecutionContextType) -> Future<T, E> {
-    let p = Promise<T, E>()
+public func transform<F: FutureType, S, E>(fx: F, s: F.SuccessType -> S, e: F.ErrorType -> E)(ec: ExecutionContextType) -> Future<S, E> {
+    let p = Promise<S, E>()
     fx.onComplete(ec) {
         switch $0 as Result<F.SuccessType, F.ErrorType> {
         case .Success(let box):
@@ -38,8 +38,8 @@ public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.Err
     return p.future
 }
 
-public func filter<F: FutureType>(fx: F, p: F.SuccessType -> Bool) -> (ec: ExecutionContextType) -> Future<F.SuccessType?, F.ErrorType> {
-    return map(fx) { x in p(x) ? x : nil }
+public func filter<F: FutureType>(fx: F, p: F.SuccessType -> Bool)(ec: ExecutionContextType) -> Future<F.SuccessType?, F.ErrorType> {
+    return map(fx) { x in p(x) ? x : nil }(ec: ec)
 }
 
 public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(fa: F, fb: T)(ec: ExecutionContextType) -> Future<(F.SuccessType, T.SuccessType), F.ErrorType> {
@@ -58,12 +58,12 @@ public func reduce<F: FutureType, T>(fxs: [F], initial: T, combine: (T, F.Succes
     }
 }
 
-public func traverse<T, F: FutureType>(xs: [T], f: T -> F) -> (ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
-    return reduce(map(xs, f), []) { $0 + [$1] }
+public func traverse<T, F: FutureType>(xs: [T], f: T -> F)(ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
+    return reduce(map(xs, f), []) { $0 + [$1] }(ec: ec)
 }
 
-public func sequence<F: FutureType>(fxs: [F]) -> (ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
-    return traverse(fxs, id)
+public func sequence<F: FutureType>(fxs: [F])(ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
+    return traverse(fxs, id)(ec: ec)
 }
 
 public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {

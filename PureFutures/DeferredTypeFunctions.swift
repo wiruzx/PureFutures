@@ -19,8 +19,8 @@ public func forced<D: DeferredType>(dx: D, interval: NSTimeInterval) -> D.Elemen
     }
 }
 
-public func map<D: DeferredType, T>(dx: D, f: D.Element -> T) -> (ec: ExecutionContextType) -> Deferred<T> {
-    return flatMap(dx) { Deferred(f($0)) }
+public func map<D: DeferredType, T>(dx: D, f: D.Element -> T)(ec: ExecutionContextType) -> Deferred<T> {
+    return flatMap(dx) { Deferred(f($0)) }(ec: ec)
 }
 
 public func flatMap<D: DeferredType, T>(dx: D, f: D.Element -> Deferred<T>)(ec: ExecutionContextType) -> Deferred<T> {
@@ -29,11 +29,11 @@ public func flatMap<D: DeferredType, T>(dx: D, f: D.Element -> Deferred<T>)(ec: 
     return p.deferred
 }
 
-public func filter<D: DeferredType>(dx: D, p: D.Element -> Bool) -> (ec: ExecutionContextType) -> Deferred<D.Element?> {
-    return map(dx) { x in p(x) ? x : nil }
+public func filter<D: DeferredType>(dx: D, p: D.Element -> Bool)(ec: ExecutionContextType) -> Deferred<D.Element?> {
+    return map(dx) { x in p(x) ? x : nil }(ec: ec)
 }
 
-public func zip<D: DeferredType, T: DeferredType>(da: D, db: T)(ec: ExecutionContextType) -> Deferred<(D.Element, T.Element)> {
+public func zip<DA: DeferredType, DB: DeferredType>(da: DA, db: DB)(ec: ExecutionContextType) -> Deferred<(DA.Element, DB.Element)> {
     return flatMap(da) { a in
         map(db) { b in
             (a, b)
@@ -49,10 +49,10 @@ public func reduce<D: DeferredType, T>(dx: [D], initial: T, combine: (T, D.Eleme
     }
 }
 
-public func traverse<D, T: DeferredType>(xs: [D], f: D -> T) -> (ec: ExecutionContextType) -> Deferred<[T.Element]> {
-    return reduce(map(xs, f), []) { $0 + [$1] }
+public func traverse<T, D: DeferredType>(xs: [T], f: T -> D)(ec: ExecutionContextType) -> Deferred<[D.Element]> {
+    return reduce(map(xs, f), []) { $0 + [$1] }(ec: ec)
 }
 
-public func sequence<D: DeferredType>(dxs: [D]) -> (ec: ExecutionContextType) -> Deferred<[D.Element]> {
-    return traverse(dxs, id)
+public func sequence<D: DeferredType>(dxs: [D])(ec: ExecutionContextType) -> Deferred<[D.Element]> {
+    return traverse(dxs, id)(ec: ec)
 }
