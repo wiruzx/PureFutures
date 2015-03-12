@@ -12,6 +12,14 @@ The main changes from Scala's implementation:
 - For `Deferred` there is `PurePromise`
 - `Future<T, E>` and `Promise<T, E>` are also parametrize for Error type
 
+##Instalation
+
+* Add PureFutures submodule into your project `git submodule add https://github.com/wiruzx/PureFutures.git`
+* Drag `PureFutures.xcodeproj` file into your project
+* Add PureFutures as target dependency in **Build Phases** section
+* Add `PureFutures.framework` to **Link Binary With Libraries** section
+* Import it `import PureFutures` when you're going to use it
+
 ##Basic concepts
 
 ###Deferred
@@ -130,10 +138,6 @@ APIManager.login(username: username, password: password).flatMap { briefUserInfo
     handleError(error) // Handle errors in one place
 }
 ```
-
-##Instalation
-
-// TODO
 
 ##Execution Context
 
