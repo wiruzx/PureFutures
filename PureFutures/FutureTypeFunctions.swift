@@ -50,19 +50,19 @@ public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(f
     }(ec: ec)
 }
 
-public func reduce<F: FutureType, T>(fxs: [F], initial: T, combine: (T, F.SuccessType) -> T)(ec: ExecutionContextType) -> Future<T, F.ErrorType> {
+public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(fxs: S, initial: T, combine: (T, S.Generator.Element.SuccessType) -> T)(ec: ExecutionContextType) -> Future<T, S.Generator.Element.ErrorType> {
     return reduce(fxs, Future(Result(initial))) { acc, futureValue in
         flatMap(futureValue) { value in
-            map(acc) { combine($0, value) }(ec: ec)
+            map(acc) { combine($0, value)}(ec: ec)
         }(ec: ec)
     }
 }
 
-public func traverse<T, F: FutureType>(xs: [T], f: T -> F)(ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
+public func traverse<S: SequenceType, F: FutureType>(xs: S, f: S.Generator.Element -> F)(ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
     return reduce(map(xs, f), []) { $0 + [$1] }(ec: ec)
 }
 
-public func sequence<F: FutureType>(fxs: [F])(ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
+public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs: S)(ec: ExecutionContextType) -> Future<[S.Generator.Element.SuccessType], S.Generator.Element.ErrorType> {
     return traverse(fxs, id)(ec: ec)
 }
 

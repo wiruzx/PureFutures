@@ -41,18 +41,18 @@ public func zip<DA: DeferredType, DB: DeferredType>(da: DA, db: DB)(ec: Executio
     }(ec: ec)
 }
 
-public func reduce<D: DeferredType, T>(dx: [D], initial: T, combine: (T, D.Element) -> T)(ec: ExecutionContextType) -> Deferred<T> {
-    return reduce(dx, Deferred(initial)) { acc, defValue in
+public func reduce<S: SequenceType, T where S.Generator.Element: DeferredType>(dxs: S, initial: T, combine: (T, S.Generator.Element.Element) -> T)(ec: ExecutionContextType) -> Deferred<T> {
+    return reduce(dxs, Deferred(initial)) { acc, defValue in
         flatMap(defValue) { value in
             map(acc) { combine($0, value) }(ec: ec)
         }(ec: ec)
     }
 }
 
-public func traverse<T, D: DeferredType>(xs: [T], f: T -> D)(ec: ExecutionContextType) -> Deferred<[D.Element]> {
+public func traverse<S: SequenceType, D: DeferredType>(xs: S, f: S.Generator.Element -> D)(ec: ExecutionContextType) -> Deferred<[D.Element]> {
     return reduce(map(xs, f), []) { $0 + [$1] }(ec: ec)
 }
 
-public func sequence<D: DeferredType>(dxs: [D])(ec: ExecutionContextType) -> Deferred<[D.Element]> {
+public func sequence<S: SequenceType where S.Generator.Element: DeferredType>(dxs: S)(ec: ExecutionContextType) -> Deferred<[S.Generator.Element.Element]> {
     return traverse(dxs, id)(ec: ec)
 }
