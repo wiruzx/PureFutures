@@ -8,6 +8,26 @@
 
 import Foundation
 
+public func deferred<T>(block: @autoclosure () -> T) -> Deferred<T> {
+    return deferred {
+        block()
+    }
+}
+
+public func deferred<T>(block: () -> T) -> Deferred<T> {
+    return deferred(dispatch_get_global_queue(0, 0), block)
+}
+
+public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T> {
+    let p = PurePromise<T>()
+    
+    ec.execute {
+        p.complete(block())
+    }
+    
+    return p.deferred
+}
+
 public final class Deferred<T>: DeferredType {
     
     // MARK:- Type declarations
