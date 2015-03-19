@@ -15,7 +15,7 @@ public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T)(ec: ExecutionCon
 public func transform<F: FutureType, S, E>(fx: F, s: F.SuccessType -> S, e: F.ErrorType -> E)(ec: ExecutionContextType) -> Future<S, E> {
     let p = Promise<S, E>()
     fx.onComplete(ec) {
-        switch $0 as Result<F.SuccessType, F.ErrorType> {
+        switch $0 as! Result<F.SuccessType, F.ErrorType> {
         case .Success(let box):
             p.success(s(box.value))
         case .Error(let box):
@@ -28,7 +28,7 @@ public func transform<F: FutureType, S, E>(fx: F, s: F.SuccessType -> S, e: F.Er
 public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.ErrorType>)(ec: ExecutionContextType) -> Future<T, F.ErrorType> {
     let p = Promise<T, F.ErrorType>()
     fx.onComplete(ec) {
-        switch $0 as Result<F.SuccessType, F.ErrorType> {
+        switch $0 as! Result<F.SuccessType, F.ErrorType> {
         case .Success(let box):
             p.completeWith(f(box.value))
         case .Error(let box):

@@ -10,14 +10,9 @@ import Foundation
 
 // MARK:- future creation function
 
-public func future<T, E>(f: @autoclosure () -> T) -> Future<T, E> {
-    return future(defaultContext, f)
+public func future<T, E>(@autoclosure f:  () -> T) -> Future<T, E> {
+    return future(f)
 }
-
-public func future<T, E>(ec: ExecutionContextType, f: @autoclosure () -> T) -> Future<T, E> {
-    return future(f as () -> T)
-}
-
 
 public func future<T, E>(f: () -> T) -> Future<T, E> {
     return future(defaultContext, f)
@@ -45,7 +40,7 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- Private properties
     
-    private let deferred = Deferred<ResultType>()
+    private let deferred: Deferred<ResultType>
     
     // MARK:- Public properties
     
@@ -61,6 +56,7 @@ public final class Future<T, E>: FutureType {
     // MARK:- Initialization
     
     internal init() {
+        deferred = Deferred<ResultType>()
     }
     
     // MARK:- Class methods
@@ -80,7 +76,7 @@ public final class Future<T, E>: FutureType {
     }
     
     public func onComplete(ec: ExecutionContextType, c: CompleteCallback) -> Future {
-        deferred.onComplete(ec, c)
+        deferred.onComplete(ec, c: c)
         return self
     }
     

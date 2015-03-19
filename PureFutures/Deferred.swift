@@ -8,10 +8,8 @@
 
 import Foundation
 
-public func deferred<T>(block: @autoclosure () -> T) -> Deferred<T> {
-    return deferred {
-        block()
-    }
+public func deferred<T>(@autoclosure block:  () -> T) -> Deferred<T> {
+    return deferred(block)
 }
 
 public func deferred<T>(block: () -> T) -> Deferred<T> {
@@ -112,15 +110,15 @@ public extension Deferred {
     // MARK:- Convenience methods
     
     public func map<U>(f: T -> U) -> Deferred<U> {
-        return map(defaultContext, f)
+        return map(defaultContext, f: f)
     }
     
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        return flatMap(defaultContext, f)
+        return flatMap(defaultContext, f: f)
     }
 
     public func filter(p: T -> Bool) -> Deferred<T?> {
-        return filter(defaultContext, p)
+        return filter(defaultContext, p: p)
     }
     
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
