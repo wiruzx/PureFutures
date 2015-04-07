@@ -20,7 +20,9 @@ public func forced<D: DeferredType>(dx: D, interval: NSTimeInterval) -> D.Elemen
 }
 
 public func map<D: DeferredType, T>(dx: D, f: D.Element -> T)(ec: ExecutionContextType) -> Deferred<T> {
-    return flatMap(dx) { Deferred(f($0)) }(ec: ec)
+    let p = PurePromise<T>()
+    dx.onComplete(ec) { p.complete(f($0)) }
+    return p.deferred
 }
 
 public func flatMap<D: DeferredType, T>(dx: D, f: D.Element -> Deferred<T>)(ec: ExecutionContextType) -> Deferred<T> {
