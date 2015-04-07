@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import Foundation
 import XCTest
 
 func someAsyncWork(time: UInt32, compeltion: () -> Void) {

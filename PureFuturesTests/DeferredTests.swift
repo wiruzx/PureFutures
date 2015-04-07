@@ -6,8 +6,10 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import PureFutures
 import XCTest
+
+import class PureFutures.Deferred
+import struct PureFutures.PurePromise
 
 class DeferredTests: XCTestCase {
     
