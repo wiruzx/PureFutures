@@ -7,14 +7,6 @@ Provides convenient way to manage asynchronous code.
 Highly inspired by [Scala's implementation](http://docs.scala-lang.org/overviews/core/futures.html).
 [Main changes](https://github.com/wiruzx/PureFutures/wiki) from Scala's implementation
 
-##Instalation
-
-* Add PureFutures submodule into your project `git submodule add https://github.com/wiruzx/PureFutures.git`
-* Drag `PureFutures.xcodeproj` file into your project
-* Add PureFutures as target dependency in **Build Phases** section
-* Add `PureFutures.framework` to **Link Binary With Libraries** section
-* Import it `import PureFutures` when you're going to use it
-
 ##Basic concepts
 
 ###Deferred
@@ -112,10 +104,23 @@ future.onSuccess(executionContext) { value in
     
 ```
 
+##Instalation
+
+* Add PureFutures submodule into your project `git submodule add https://github.com/wiruzx/PureFutures.git`
+* Drag `PureFutures.xcodeproj` file into your project
+* Add PureFutures as target dependency in **Build Phases** section
+* Add `PureFutures.framework` to **Link Binary With Libraries** section
+* Import it `import PureFutures` when you're going to use it
+
+
 ##Alternatives:
 
 1. [BrightFutures](https://github.com/Thomvis/BrightFutures) ❤️
 2. [PromiseKit](https://github.com/mxcl/PromiseKit) 👍
 3. [Bolts](https://github.com/BoltsFramework/Bolts-iOS) 😏
 4. [SwiftTask](https://github.com/ReactKit/SwiftTask) 😐
+
+##License
+
+PureFutures is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
