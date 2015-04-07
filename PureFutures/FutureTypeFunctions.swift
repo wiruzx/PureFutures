@@ -77,3 +77,16 @@ public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.Success
     fx.onError(ec) { p.completeWith(r($0)) }
     return p.future
 }
+
+public func toDeferred<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(ec: ExecutionContextType) -> Deferred<F.SuccessType> {
+    let p = PurePromise<F.SuccessType>()
+    fx.onComplete(ec) {
+        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        case .Success(let box):
+            p.complete(box.value)
+        case .Error(let box):
+            p.complete(r(box.value))
+        }
+    }
+    return p.deferred
+}
