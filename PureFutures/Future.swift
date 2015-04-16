@@ -10,19 +10,21 @@ import Foundation
 
 // MARK:- future creation function
 
-public func future<T, E>(@autoclosure f:  () -> T) -> Future<T, E> {
+public func future<T, E>(@autoclosure f: () -> Result<T, E>) -> Future<T, E> {
     return future(f)
 }
 
-public func future<T, E>(f: () -> T) -> Future<T, E> {
+public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
     return future(defaultContext, f)
 }
 
-public func future<T, E>(ec: ExecutionContextType, f: () -> T) -> Future<T, E> {
+public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Future<T, E> {
     let p = Promise<T, E>()
+    
     ec.execute {
-        p.success(f())
+        p.complete(f())
     }
+    
     return p.future
 }
 
