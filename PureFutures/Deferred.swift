@@ -9,7 +9,8 @@
 import Foundation
 
 public func deferred<T>(@autoclosure block:  () -> T) -> Deferred<T> {
-    return deferred(block)
+    let x = block()
+    return deferred { x }
 }
 
 public func deferred<T>(block: () -> T) -> Deferred<T> {

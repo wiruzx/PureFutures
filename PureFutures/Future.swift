@@ -13,7 +13,8 @@ import Foundation
 // MARK: With Result<T, E>
 
 public func future<T, E>(@autoclosure f: () -> Result<T, E>) -> Future<T, E> {
-    return future(f)
+    let x = f()
+    return future { x }
 }
 
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
@@ -33,7 +34,8 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Fut
 // MARK: With T
 
 public func future<T, E>(@autoclosure f: () -> T) -> Future<T, E> {
-    return future(f)
+    let x = f()
+    return future { x }
 }
 
 public func future<T, E>(f: () -> T) -> Future<T, E> {
@@ -47,7 +49,8 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> T) -> Future<T, E> {
 // MARK: With E
 
 public func future<T, E>(@autoclosure f: () -> E) -> Future<T, E> {
-    return future(f)
+    let x = f()
+    return future { x }
 }
 
 public func future<T, E>(f: () -> E) -> Future<T, E> {
