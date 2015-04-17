@@ -21,13 +21,17 @@ class DeferredTests: XCTestCase {
         promise = PurePromise()
     }
     
+    private func deferredIsCompleteExpectation() -> XCTestExpectation {
+        return expectationWithDescription("Deferred is completed")
+    }
+    
     // MARK:- onComplete
     
     func testOnCompleteImmediate() {
         
         self.promise.complete(42)
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         self.promise.deferred.onComplete { value in
             XCTAssertEqual(value, 42)
@@ -39,7 +43,7 @@ class DeferredTests: XCTestCase {
     
     func testOnCompleteAfterSomeTime() {
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         self.promise.deferred.onComplete { value in
             XCTAssertEqual(value, 42)
@@ -60,7 +64,7 @@ class DeferredTests: XCTestCase {
             self.promise.complete(42)
         }
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         self.promise.deferred.onComplete(dispatch_get_main_queue()) { value in
             XCTAssertTrue(NSThread.isMainThread())
@@ -77,7 +81,7 @@ class DeferredTests: XCTestCase {
             self.promise.complete(42)
         }
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         self.promise.deferred.onComplete(dispatch_get_global_queue(0, 0)) { value in
             XCTAssertFalse(NSThread.isMainThread())
@@ -112,7 +116,7 @@ class DeferredTests: XCTestCase {
             self.promise.complete(42)
         }
         
-        let expectation = expectationWithDescription("Deferred is completed")
+        let expectation = deferredIsCompleteExpectation()
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
             if let result = self.promise.deferred.forced(2) {
@@ -148,7 +152,7 @@ class DeferredTests: XCTestCase {
         
         let result = deferred.map { $0 * 2 }
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete { value in
             
@@ -169,7 +173,7 @@ class DeferredTests: XCTestCase {
         
         let result = deferred.flatMap { Deferred($0 * 2) }
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete { value in
             
@@ -189,7 +193,7 @@ class DeferredTests: XCTestCase {
         
         let result = deferred.filter { $0 % 2 == 0}
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete {
             
@@ -211,7 +215,7 @@ class DeferredTests: XCTestCase {
         
         let result = deferred.filter { $0 % 2 != 0}
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete { value in
             
@@ -232,7 +236,7 @@ class DeferredTests: XCTestCase {
         
         let result = first.zip(second)
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete { first, second in
             
@@ -253,7 +257,7 @@ class DeferredTests: XCTestCase {
         
         let result = Deferred.reduce(defs, initial: 0, combine: +)
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete { value in
             
@@ -273,7 +277,7 @@ class DeferredTests: XCTestCase {
         
         let result = Deferred.traverse(xs) { Deferred($0 + 1) }
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete { value in
             
@@ -293,7 +297,7 @@ class DeferredTests: XCTestCase {
         
         let result = Deferred.sequence(defs)
         
-        let expectation = expectationWithDescription("Deferred is complete")
+        let expectation = deferredIsCompleteExpectation()
         
         result.onComplete { value in
             

@@ -11,7 +11,6 @@ import XCTest
 import class PureFutures.Future
 import struct PureFutures.Promise
 import enum PureFutures.Result
-import func PureFutures.future
 
 class FutureTests: XCTestCase {
     
@@ -23,6 +22,10 @@ class FutureTests: XCTestCase {
         
         promise = Promise()
     }
+
+    private func futureIsCompleteExpectation() -> XCTestExpectation {
+        return expectationWithDescription("Future is completed")
+    }
     
     // MARK:- onComplete
     
@@ -30,7 +33,7 @@ class FutureTests: XCTestCase {
         
         promise.complete(Result(42))
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         promise.future.onComplete { result in
             XCTAssertNotNil(result.value)
@@ -43,7 +46,7 @@ class FutureTests: XCTestCase {
     
     func testOnCompleteAfterSomeTime() {
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         promise.future.onComplete { result in
             XCTAssertNotNil(result.value)
@@ -65,7 +68,7 @@ class FutureTests: XCTestCase {
             self.promise.complete(Result(42))
         }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         promise.future.onComplete(dispatch_get_main_queue()) { result in
             XCTAssertTrue(NSThread.isMainThread())
@@ -83,7 +86,7 @@ class FutureTests: XCTestCase {
             self.promise.complete(Result(42))
         }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         promise.future.onComplete(dispatch_get_global_queue(0, 0)) { result in
             XCTAssertFalse(NSThread.isMainThread())
@@ -101,7 +104,7 @@ class FutureTests: XCTestCase {
         
         promise.success(42)
         
-        let expectation = expectationWithDescription("Future is succeed")
+        let expectation = futureIsCompleteExpectation()
         
         let future = promise.future
         
@@ -124,7 +127,7 @@ class FutureTests: XCTestCase {
         
         promise.error(error)
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         let future = promise.future
         
@@ -163,7 +166,7 @@ class FutureTests: XCTestCase {
             self.promise.success(42)
         }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
             if let value = self.promise.future.forced(2)?.value {
@@ -202,7 +205,7 @@ class FutureTests: XCTestCase {
             XCTFail("This should not be called")
         })
         
-        let expectation = expectationWithDescription("Future is succeed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { value in
             XCTAssertEqual(value, 42 / 2)
@@ -222,7 +225,7 @@ class FutureTests: XCTestCase {
             return NSError(domain: "FutureTests", code: 1, userInfo: nil)
         })
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         result.onError { error in
             XCTAssertEqual(error.code, 1)
@@ -240,7 +243,7 @@ class FutureTests: XCTestCase {
         
         let result = future.map { $0 / 2 }
         
-        let expectation = expectationWithDescription("Future is succeed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { value in
             XCTAssertEqual(value, 42 / 2)
@@ -261,10 +264,11 @@ class FutureTests: XCTestCase {
         
         let result = future.map { _ in XCTFail("This should not be called") }
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { _ in
             XCTFail("This should not be called")
+            expectation.fulfill()
         }
         
         result.onError { error in
@@ -283,7 +287,7 @@ class FutureTests: XCTestCase {
         
         let result = future.filter { $0 % 2 == 0 }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { value in
             if let value = value {
@@ -303,7 +307,7 @@ class FutureTests: XCTestCase {
         
         let result = future.filter { $0 % 2 != 0 }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { value in
             XCTAssertNil(value)
@@ -319,7 +323,7 @@ class FutureTests: XCTestCase {
         
         let result = future.filter { _ in true }
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         result.onError { error in
             XCTAssertEqual(error, self.error)
@@ -338,7 +342,7 @@ class FutureTests: XCTestCase {
         
         let result = first.zip(second)
         
-        let expectation = expectationWithDescription("Futures are completed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { first, second in
             XCTAssertEqual(first, 0)
@@ -356,7 +360,7 @@ class FutureTests: XCTestCase {
         
         let result = succeed.zip(failed)
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         result.onError { error in
             XCTAssertEqual(error, self.error)
@@ -374,7 +378,7 @@ class FutureTests: XCTestCase {
         
         let result = Future.reduce(futures, initial: 0, combine: +)
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { value in
             XCTAssertEqual(value, 45)
@@ -391,7 +395,7 @@ class FutureTests: XCTestCase {
         
         let result = Future.reduce(futures, initial: 0, combine: +)
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         result.onError { error in
             XCTAssertEqual(error, self.error)
@@ -409,7 +413,7 @@ class FutureTests: XCTestCase {
         
         let result = Future<Int, NSError>.traverse(xs) { Future.succeed($0 + 1) }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { value in
             XCTAssertEqual(value, Array(2...10))
@@ -427,7 +431,7 @@ class FutureTests: XCTestCase {
             return value == 9 ? Future.failed(self.error) : Future.succeed(value + 1)
         }
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         result.onError { error in
             XCTAssertEqual(error, self.error)
@@ -445,7 +449,7 @@ class FutureTests: XCTestCase {
         
         let result = Future.sequence(futures)
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         result.onSuccess { value in
             XCTAssertEqual(value, Array(1...9))
@@ -463,7 +467,7 @@ class FutureTests: XCTestCase {
         
         let result = Future.sequence(futures)
         
-        let expectation = expectationWithDescription("Future is completed with error")
+        let expectation = futureIsCompleteExpectation()
         
         result.onError { error in
             XCTAssertEqual(error, self.error)
@@ -484,7 +488,7 @@ class FutureTests: XCTestCase {
             return 42
         }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         recovered.onSuccess { value in
             XCTAssertEqual(value, 42)
@@ -500,7 +504,7 @@ class FutureTests: XCTestCase {
         
         let recovered = future.recover { _ in 0 }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         recovered.onSuccess { value in
             XCTAssertEqual(value, 42)
@@ -526,7 +530,7 @@ class FutureTests: XCTestCase {
             return Future.succeed(42)
         }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         recovered.onSuccess { value in
             XCTAssertEqual(value, 42)
@@ -542,7 +546,7 @@ class FutureTests: XCTestCase {
         
         let recovered = future.recoverWith { _ in Future.succeed(0) }
         
-        let expectation = expectationWithDescription("Future is completed")
+        let expectation = futureIsCompleteExpectation()
         
         recovered.onSuccess { value in
             XCTAssertEqual(value, 42)
