@@ -68,13 +68,27 @@ public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs:
 
 public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
-    fx.onError(ec) { p.success(r($0)) }
+    fx.onComplete(ec) {
+        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        case .Success(let box):
+            p.success(box.value)
+        case .Error(let box):
+            p.success(r(box.value))
+        }
+    }
     return p.future
 }
 
 public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.SuccessType, F.ErrorType>)(ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
-    fx.onError(ec) { p.completeWith(r($0)) }
+    fx.onComplete(ec) {
+        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        case .Success(let box):
+            p.success(box.value)
+        case .Error(let box):
+            p.completeWith(r(box.value))
+        }
+    }
     return p.future
 }
 
