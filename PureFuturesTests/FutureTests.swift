@@ -512,17 +512,15 @@ class FutureTests: XCTestCase {
         
         let future = Future<Int, NSError>.succeed(42)
         
-        let recovered = future.recover { _ in 0 }
+        let recovered = future.recover { _ in
+            XCTFail("This should not be called")
+            return 0
+        }
         
         let expectation = futureIsCompleteExpectation()
         
         recovered.onSuccess { value in
             XCTAssertEqual(value, 42)
-            expectation.fulfill()
-        }
-        
-        recovered.onError { _ in
-            XCTFail("This should not be called")
             expectation.fulfill()
         }
         
@@ -554,17 +552,15 @@ class FutureTests: XCTestCase {
         
         let future = Future<Int, NSError>.succeed(42)
         
-        let recovered = future.recoverWith { _ in Future.succeed(0) }
+        let recovered = future.recoverWith { _ in
+            XCTFail("This should not be called")
+            return Future.succeed(0)
+        }
         
         let expectation = futureIsCompleteExpectation()
         
         recovered.onSuccess { value in
             XCTAssertEqual(value, 42)
-            expectation.fulfill()
-        }
-        
-        recovered.onError { _ in
-            XCTFail("This should not be called")
             expectation.fulfill()
         }
         
