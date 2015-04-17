@@ -113,18 +113,11 @@
 			isa = PBXGroup;
 			children = (
 				E6D361FF1A9D0098003D5B2C /* Protocols */,
-				E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */,
-				E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */,
-				E6E79F811A8A432800F09BC6 /* Box.swift */,
-				E6E79F831A8A468500F09BC6 /* Result.swift */,
-				E6E79F911A8AB80E00F09BC6 /* Deferred.swift */,
-				E60A72901A8AD1750094A4D4 /* Future.swift */,
-				E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */,
-				E60A72A21A8AE7330094A4D4 /* Promise.swift */,
-				E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */,
-				E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */,
-				E6267DE11AA280940068A0A0 /* Await.swift */,
-				E6C0A9F91AA36490006436AC /* Other.swift */,
+				E6C9001E1AE15D5100117FBE /* Deferred */,
+				E6C9001D1AE15D4800117FBE /* Future */,
+				E6C9001F1AE15DB000117FBE /* Implementation */,
+				E6C9001B1AE15D1D00117FBE /* ExecutionContextImpl */,
+				E6C9001C1AE15D3600117FBE /* Other */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
 			);
 			path = PureFutures;
@@ -157,6 +150,53 @@
 				E65E6FCF1A86BF41001B514C /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E6C9001B1AE15D1D00117FBE /* ExecutionContextImpl */ = {
+			isa = PBXGroup;
+			children = (
+				E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */,
+				E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */,
+			);
+			name = ExecutionContextImpl;
+			sourceTree = "<group>";
+		};
+		E6C9001C1AE15D3600117FBE /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				E6E79F811A8A432800F09BC6 /* Box.swift */,
+				E6E79F831A8A468500F09BC6 /* Result.swift */,
+				E6267DE11AA280940068A0A0 /* Await.swift */,
+				E6C0A9F91AA36490006436AC /* Other.swift */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		E6C9001D1AE15D4800117FBE /* Future */ = {
+			isa = PBXGroup;
+			children = (
+				E60A72901A8AD1750094A4D4 /* Future.swift */,
+				E60A72A21A8AE7330094A4D4 /* Promise.swift */,
+			);
+			name = Future;
+			sourceTree = "<group>";
+		};
+		E6C9001E1AE15D5100117FBE /* Deferred */ = {
+			isa = PBXGroup;
+			children = (
+				E6E79F911A8AB80E00F09BC6 /* Deferred.swift */,
+				E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */,
+			);
+			name = Deferred;
+			sourceTree = "<group>";
+		};
+		E6C9001F1AE15DB000117FBE /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */,
+				E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */,
+			);
+			name = Implementation;
 			sourceTree = "<group>";
 		};
 		E6D361FF1A9D0098003D5B2C /* Protocols */ = {
