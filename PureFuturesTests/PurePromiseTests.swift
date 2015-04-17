@@ -10,6 +10,7 @@ import XCTest
 
 import struct PureFutures.PurePromise
 import class PureFutures.Deferred
+import enum PureFutures.ExecutionContext
 
 class PurePromiseTests: XCTestCase {
     
@@ -40,7 +41,7 @@ class PurePromiseTests: XCTestCase {
     func testCompleteOnBackgroundThread() {
         let expectation = expectationWithDescription("Deferred is completed")
         
-        promise.deferred.onComplete(dispatch_get_global_queue(0, 0)) { result in
+        promise.deferred.onComplete(ExecutionContext.Global(.Async)) { result in
             XCTAssertEqual(result, 42)
             XCTAssertFalse(NSThread.isMainThread())
             expectation.fulfill()
@@ -76,7 +77,7 @@ class PurePromiseTests: XCTestCase {
         
         let deferred = Deferred(42)
         
-        promise.deferred.onComplete(dispatch_get_global_queue(0, 0)) { result in
+        promise.deferred.onComplete(ExecutionContext.Global(.Async)) { result in
             XCTAssertEqual(result, 42)
             XCTAssertFalse(NSThread.isMainThread())
             expectation.fulfill()

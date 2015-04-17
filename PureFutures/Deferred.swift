@@ -8,13 +8,20 @@
 
 import Foundation
 
+// MARK:- Constants
+
+private let globalContext = ExecutionContext.Global(.Async)
+private let mainContext = ExecutionContext.Main(.Async)
+
+// MARK:- deferred creation functions
+
 public func deferred<T>(@autoclosure block:  () -> T) -> Deferred<T> {
     let x = block()
     return deferred { x }
 }
 
 public func deferred<T>(block: () -> T) -> Deferred<T> {
-    return deferred(dispatch_get_global_queue(0, 0), block)
+    return deferred(ExecutionContext.Global(.Async), block)
 }
 
 public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T> {
@@ -82,7 +89,7 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Convenience methods
     
     public func onComplete(c: Callback) -> Deferred {
-        return onComplete(defaultContext, c)
+        return onComplete(mainContext, c)
     }
 
     // MARK:- Internal methods
@@ -111,19 +118,19 @@ public extension Deferred {
     // MARK:- Convenience methods
     
     public func andThen(f: T -> Void) -> Deferred {
-        return andThen(defaultContext, f)
+        return andThen(mainContext, f)
     }
     
     public func map<U>(f: T -> U) -> Deferred<U> {
-        return map(defaultContext, f)
+        return map(globalContext, f)
     }
     
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        return flatMap(defaultContext, f)
+        return flatMap(globalContext, f)
     }
 
     public func filter(p: T -> Bool) -> Deferred<T?> {
-        return filter(defaultContext, p)
+        return filter(globalContext, p)
     }
     
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
@@ -135,11 +142,11 @@ public extension Deferred {
     }
     
     public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
-        return reduce(defaultContext, dxs, initial, combine)
+        return reduce(globalContext, dxs, initial, combine)
     }
     
     public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
-        return traverse(defaultContext, xs, f)
+        return traverse(globalContext, xs, f)
     }
     
     public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {

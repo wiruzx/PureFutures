@@ -8,6 +8,11 @@
 
 import Foundation
 
+// MARK:- Constants
+
+private let globalContext = ExecutionContext.Global(.Async)
+private let mainContext = ExecutionContext.Main(.Async)
+
 // MARK:- future creation function
 
 // MARK: With Result<T, E>
@@ -18,7 +23,7 @@ public func future<T, E>(@autoclosure f: () -> Result<T, E>) -> Future<T, E> {
 }
 
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
-    return future(defaultContext, f)
+    return future(globalContext, f)
 }
 
 public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Future<T, E> {
@@ -110,15 +115,15 @@ public final class Future<T, E>: FutureType {
     // MARK:- Convenience methods
     
     public func onComplete(c: CompleteCallback) -> Future {
-        return onComplete(defaultContext, c)
+        return onComplete(mainContext, c)
     }
     
     public func onSuccess(c: SuccessCallback) -> Future {
-        return onSuccess(defaultContext, c)
+        return onSuccess(mainContext, c)
     }
     
     public func onError(c: ErrorCallback) -> Future {
-        return onError(defaultContext, c)
+        return onError(mainContext, c)
     }
     
 }
@@ -128,23 +133,23 @@ public extension Future {
     // MARK:- Convenience methods
     
     public func andThen(f: T -> Void) -> Future {
-        return andThen(defaultContext, f: f)
+        return andThen(mainContext, f: f)
     }
     
     public func map<U>(f: T -> U) -> Future<U, E> {
-        return map(defaultContext, f)
+        return map(globalContext, f)
     }
     
     public func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
-        return transform(defaultContext, s, e)
+        return transform(globalContext, s, e)
     }
     
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        return flatMap(defaultContext, f)
+        return flatMap(globalContext, f)
     }
     
     public func filter(p: T -> Bool) -> Future<T?, E> {
-        return filter(defaultContext, p)
+        return filter(globalContext, p)
     }
     
     public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
@@ -152,15 +157,15 @@ public extension Future {
     }
     
     public func recover(r: E -> T) -> Future {
-        return recover(defaultContext, r)
+        return recover(globalContext, r)
     }
     
     public func recoverWith(r: E -> Future) -> Future {
-        return recoverWith(defaultContext, r)
+        return recoverWith(globalContext, r)
     }
     
     public func toDeferred(r: E -> T) -> Deferred<T> {
-        return toDeferred(defaultContext, r)
+        return toDeferred(globalContext, r)
     }
     
     public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
@@ -168,11 +173,11 @@ public extension Future {
     }
     
     public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
-        return reduce(defaultContext, fxs, initial, combine)
+        return reduce(globalContext, fxs, initial, combine)
     }
     
     public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
-        return traverse(defaultContext, xs, f)
+        return traverse(globalContext, xs, f)
     }
     
     public class func sequence(fxs: [Future]) -> Future<[T], E> {

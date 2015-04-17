@@ -23,7 +23,7 @@ public func forced<D: DeferredType>(dx: D) -> D.Element {
 
 public func forced<D: DeferredType>(dx: D, interval: NSTimeInterval) -> D.Element? {
     return await(interval) { completion in
-        dx.onComplete(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), completion)
+        dx.onComplete(ExecutionContext.Global(.Async), completion)
         return
     }
 }
@@ -81,7 +81,7 @@ public func sequence<S: SequenceType where S.Generator.Element: DeferredType>(dx
 public func toFuture<D: DeferredType, T, E where D.Element == Result<T, E>>(dx: D) -> Future<T, E> {
     let p = Promise<T, E>()
     
-    dx.onComplete(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+    dx.onComplete(ExecutionContext.Global(.Async)) {
         p.complete($0)
     }
     

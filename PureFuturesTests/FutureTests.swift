@@ -12,6 +12,7 @@ import class PureFutures.Future
 import struct PureFutures.Promise
 import enum PureFutures.Result
 import func PureFutures.future
+import enum PureFutures.ExecutionContext
 
 class FutureTests: XCTestCase {
     
@@ -62,12 +63,12 @@ class FutureTests: XCTestCase {
     
     func testFutureWithExecutionContext() {
         
-        let f1: Future<Int, Void> = future(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        let f1: Future<Int, Void> = future(ExecutionContext.Global(.Async)) {
             XCTAssertFalse(NSThread.isMainThread())
             return Result(42)
         }
         
-        let f2: Future<Int, Void> = future(dispatch_get_main_queue()) {
+        let f2: Future<Int, Void> = future(ExecutionContext.Main(.Async)) {
             XCTAssertTrue(NSThread.isMainThread())
             return Result(42)
         }
@@ -131,7 +132,7 @@ class FutureTests: XCTestCase {
         
         let expectation = futureIsCompleteExpectation()
         
-        promise.future.onComplete(dispatch_get_main_queue()) { result in
+        promise.future.onComplete(ExecutionContext.Main(.Async)) { result in
             XCTAssertTrue(NSThread.isMainThread())
             XCTAssertNotNil(result.value)
             XCTAssertEqual(result.value!, 42)
@@ -149,7 +150,7 @@ class FutureTests: XCTestCase {
         
         let expectation = futureIsCompleteExpectation()
         
-        promise.future.onComplete(dispatch_get_global_queue(0, 0)) { result in
+        promise.future.onComplete(ExecutionContext.Global(.Async)) { result in
             XCTAssertFalse(NSThread.isMainThread())
             XCTAssertNotNil(result.value)
             XCTAssertEqual(result.value!, 42)

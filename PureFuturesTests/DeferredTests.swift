@@ -12,6 +12,7 @@ import class PureFutures.Deferred
 import struct PureFutures.PurePromise
 import enum PureFutures.Result
 import func PureFutures.deferred
+import enum PureFutures.ExecutionContext
 
 class DeferredTests: XCTestCase {
     
@@ -59,12 +60,12 @@ class DeferredTests: XCTestCase {
     
     func testDeferredWithMainThreadExecutionContext() {
         
-        let d1: Deferred<Int> = deferred(dispatch_get_main_queue()) {
+        let d1: Deferred<Int> = deferred(ExecutionContext.Main(.Async)) {
             XCTAssertTrue(NSThread.isMainThread())
             return 42
         }
         
-        let d2: Deferred<Int> = deferred(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        let d2: Deferred<Int> = deferred(ExecutionContext.Global(.Async)) {
             XCTAssertFalse(NSThread.isMainThread())
             return 42
         }
@@ -126,7 +127,7 @@ class DeferredTests: XCTestCase {
         
         let expectation = deferredIsCompleteExpectation()
         
-        self.promise.deferred.onComplete(dispatch_get_main_queue()) { value in
+        self.promise.deferred.onComplete(ExecutionContext.Main(.Async)) { value in
             XCTAssertTrue(NSThread.isMainThread())
             XCTAssertEqual(value, 42)
             expectation.fulfill()
@@ -143,7 +144,7 @@ class DeferredTests: XCTestCase {
         
         let expectation = deferredIsCompleteExpectation()
         
-        self.promise.deferred.onComplete(dispatch_get_global_queue(0, 0)) { value in
+        self.promise.deferred.onComplete(ExecutionContext.Global(.Async)) { value in
             XCTAssertFalse(NSThread.isMainThread())
             XCTAssertEqual(value, 42)
             expectation.fulfill()

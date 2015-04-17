@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E608A34F1AE171B8009EAEF5 /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
 		E60A72911A8AD1750094A4D4 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72901A8AD1750094A4D4 /* Future.swift */; };
 		E60A729B1A8AE0C80094A4D4 /* DeferredType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */; };
 		E60A72A11A8AE53B0094A4D4 /* FutureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A01A8AE53B0094A4D4 /* FutureType.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionContext.swift; sourceTree = "<group>"; };
 		E60A72901A8AD1750094A4D4 /* Future.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Future.swift; sourceTree = "<group>"; };
 		E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredType.swift; sourceTree = "<group>"; };
 		E60A72A01A8AE53B0094A4D4 /* FutureType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureType.swift; sourceTree = "<group>"; };
@@ -116,7 +118,7 @@
 				E6C9001E1AE15D5100117FBE /* Deferred */,
 				E6C9001D1AE15D4800117FBE /* Future */,
 				E6C9001F1AE15DB000117FBE /* Implementation */,
-				E6C9001B1AE15D1D00117FBE /* ExecutionContextImpl */,
+				E6C9001B1AE15D1D00117FBE /* ExecutionContext */,
 				E6C9001C1AE15D3600117FBE /* Other */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
 			);
@@ -152,13 +154,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E6C9001B1AE15D1D00117FBE /* ExecutionContextImpl */ = {
+		E6C9001B1AE15D1D00117FBE /* ExecutionContext */ = {
 			isa = PBXGroup;
 			children = (
+				E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */,
 				E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */,
 				E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */,
 			);
-			name = ExecutionContextImpl;
+			name = ExecutionContext;
 			sourceTree = "<group>";
 		};
 		E6C9001C1AE15D3600117FBE /* Other */ = {
@@ -333,6 +336,7 @@
 				E6267DE21AA280940068A0A0 /* Await.swift in Sources */,
 				E6D361FC1A9CFAB4003D5B2C /* PurePromiseType.swift in Sources */,
 				E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */,
+				E608A34F1AE171B8009EAEF5 /* ExecutionContext.swift in Sources */,
 				E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
