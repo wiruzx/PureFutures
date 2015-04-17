@@ -8,6 +8,15 @@
 
 import Foundation
 
+public func andThen<D: DeferredType>(dx: D, f: D.Element -> Void)(ec: ExecutionContextType) -> Deferred<D.Element> {
+    let p = PurePromise<D.Element>()
+    dx.onComplete(ec) { value in
+        f(value)
+        p.complete(value)
+    }
+    return p.deferred
+}
+
 public func forced<D: DeferredType>(dx: D) -> D.Element {
     return forced(dx, NSTimeInterval.infinity)!
 }

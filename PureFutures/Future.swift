@@ -124,6 +124,10 @@ public extension Future {
     
     // MARK:- Convenience methods
     
+    public func andThen(f: T -> Void) -> Future {
+        return andThen(defaultContext, f: f)
+    }
+    
     public func map<U>(f: T -> U) -> Future<U, E> {
         return map(defaultContext, f: f)
     }
@@ -173,6 +177,10 @@ public extension Future {
     }
     
     // MARK:- Original methods
+    
+    public func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
+        return PureFutures.andThen(self, f)(ec: ec)
+    }
     
     public func forced() -> ResultType {
         return PureFutures.forced(self)

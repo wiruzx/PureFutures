@@ -8,6 +8,20 @@
 
 import Foundation
 
+public func andThen<F: FutureType>(fx: F, f: F.SuccessType -> Void)(ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
+    let p = Promise<F.SuccessType, F.ErrorType>()
+    fx.onComplete(ec) {
+        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        case .Success(let box):
+            f(box.value)
+            p.success(box.value)
+        case .Error(let box):
+            p.error(box.value)
+        }
+    }
+    return p.future
+}
+
 public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T)(ec: ExecutionContextType) -> Future<T, F.ErrorType> {
     return transform(fx, f, id)(ec: ec)
 }

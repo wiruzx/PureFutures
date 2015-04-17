@@ -155,6 +155,22 @@ class DeferredTests: XCTestCase {
         
     }
     
+    // MARK:- andThen
+    
+    func testAndThen() {
+        
+        let deferred = Deferred(42)
+        
+        let expectation = deferredIsCompleteExpectation()
+        
+        deferred.andThen { value in
+            XCTAssertEqual(value, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
     // MARK:- map
     
     func testMap() {

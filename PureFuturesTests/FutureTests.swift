@@ -203,6 +203,41 @@ class FutureTests: XCTestCase {
         XCTAssertEqual(result.value!, 42)
     }
     
+    // MARK:- andThen
+    
+    func testAndThen() {
+        
+        let future = Future<Int, Void>.succeed(42)
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        future.andThen { value in
+            XCTAssertEqual(value, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testAndThenWithError() {
+        
+        let future = Future<Int, NSError>.failed(error)
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        future.andThen { _ in
+            XCTFail("This should not be called")
+            expectation.fulfill()
+        }
+        
+        future.onError { error in
+            XCTAssertEqual(error, self.error)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
     // MARK:- transform
     
     func testTransformingSucceed() {

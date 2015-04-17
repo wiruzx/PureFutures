@@ -109,6 +109,10 @@ public extension Deferred {
     
     // MARK:- Convenience methods
     
+    public func andThen(f: T -> Void) -> Deferred {
+        return andThen(defaultContext, f: f)
+    }
+    
     public func map<U>(f: T -> U) -> Deferred<U> {
         return map(defaultContext, f: f)
     }
@@ -138,6 +142,10 @@ public extension Deferred {
     }
     
     // MARK:- Original methods
+    
+    public func andThen(ec: ExecutionContextType, f: T -> Void) -> Deferred {
+        return PureFutures.andThen(self, f)(ec: ec)
+    }
     
     public func forced() -> T {
         return PureFutures.forced(self)
