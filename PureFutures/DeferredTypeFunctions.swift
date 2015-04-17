@@ -40,6 +40,16 @@ public func flatMap<D: DeferredType, T>(dx: D, f: D.Element -> Deferred<T>)(ec: 
     return p.deferred
 }
 
+public func flatten<D: DeferredType, ID: DeferredType where D.Element == ID>(dx: D)(ec: ExecutionContextType) -> Deferred<ID.Element> {
+    let p = PurePromise<ID.Element>()
+    
+    dx.onComplete(ec) { def in
+        def.onComplete(ec) { p.complete($0) }
+    }
+    
+    return p.deferred
+}
+
 public func filter<D: DeferredType>(dx: D, p: D.Element -> Bool)(ec: ExecutionContextType) -> Deferred<D.Element?> {
     return map(dx) { x in p(x) ? x : nil }(ec: ec)
 }

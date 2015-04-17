@@ -212,6 +212,24 @@ class DeferredTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
+    // MARK:- flatten
+    
+    func testFlatten() {
+        
+        let deferred = Deferred(Deferred(42))
+        
+        let flat = Deferred.flatten(deferred)
+        
+        let expectation = deferredIsCompleteExpectation()
+        
+        flat.onComplete {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
     // MARK:- filter
     
     func testFilterPass() {

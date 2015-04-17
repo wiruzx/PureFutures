@@ -129,6 +129,10 @@ public extension Deferred {
         return zip(defaultContext, dx: dx)
     }
     
+    public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
+        return flatten(defaultContext, dx: dx)
+    }
+    
     public class func reduce<U>(dxs: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {
         return reduce(defaultContext, dxs: dxs, initial: initial, combine: combine)
     }
@@ -169,6 +173,10 @@ public extension Deferred {
     
     public func zip<U>(ec: ExecutionContextType, dx: Deferred<U>) -> Deferred<(T, U)> {
         return PureFutures.zip(self, dx)(ec: ec)
+    }
+    
+    public class func flatten(ec: ExecutionContextType, dx: Deferred<Deferred<T>>) -> Deferred<T> {
+        return PureFutures.flatten(dx)(ec: ec)
     }
     
     public class func reduce<U>(ec: ExecutionContextType, dxs: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {

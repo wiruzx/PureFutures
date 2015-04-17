@@ -164,6 +164,10 @@ public extension Future {
         return toDeferred(defaultContext, r: r)
     }
     
+    public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
+        return flatten(defaultContext, fx: fx)
+    }
+    
     public class func reduce<U>(fxs: [Future], initial: U, combine: (U, T) -> U) -> Future<U, E> {
         return reduce(defaultContext, fxs: fxs, initial: initial, combine: combine)
     }
@@ -224,6 +228,10 @@ public extension Future {
     
     public func toDeferred(ec: ExecutionContextType, r: E -> T) -> Deferred<T> {
         return PureFutures.toDeferred(self, r)(ec: ec)
+    }
+    
+    public class func flatten(ec: ExecutionContextType, fx: Future<Future<T, E>, E>) -> Future {
+        return PureFutures.flatten(fx)(ec: ec)
     }
     
     public class func reduce<U>(ec: ExecutionContextType, fxs: [Future], initial: U, combine: (U, T) -> U) -> Future<U, E> {

@@ -324,6 +324,63 @@ class FutureTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
+    // MARK:- flatten
+    
+    func testFlatten() {
+        
+        typealias NestedFuture = Future<Future<Int, Void>, Void>
+        
+        let future = NestedFuture.succeed(Future.succeed(42))
+        
+        let flat = Future.flatten(future)
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        flat.onSuccess {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testFlattenFailed() {
+        
+        typealias NestedFuture = Future<Future<Int, NSError>, NSError>
+        
+        let future = NestedFuture.failed(error)
+        
+        let flat = Future.flatten(future)
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        flat.onError {
+            XCTAssertEqual($0, self.error)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    
+    func testFlattenWithInnerFailed() {
+        
+        typealias NestedFuture = Future<Future<Int, NSError>, NSError>
+        
+        let future = NestedFuture.succeed(Future.failed(error))
+        
+        let flat = Future.flatten(future)
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        flat.onError {
+            XCTAssertEqual($0, self.error)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
     // MARK:- filter
     
     func testFilterPass() {

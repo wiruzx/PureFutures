@@ -52,6 +52,23 @@ public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.Err
     return p.future
 }
 
+public func flatten<F: FutureType, IF: FutureType where F.SuccessType == IF, F.ErrorType == IF.ErrorType>(fx: F)(ec: ExecutionContextType) -> Future<IF.SuccessType, IF.ErrorType> {
+    let p = Promise<IF.SuccessType, IF.ErrorType>()
+    
+    fx.onComplete(ec) { result in
+        switch result as! Result<IF, F.ErrorType> {
+        case .Success(let box):
+            box.value.onComplete(ec) {
+                p.complete($0 as! Result<IF.SuccessType, IF.ErrorType>)
+            }
+        case .Error(let box):
+            p.error(box.value)
+        }
+    }
+    
+    return p.future
+}
+
 public func filter<F: FutureType>(fx: F, p: F.SuccessType -> Bool)(ec: ExecutionContextType) -> Future<F.SuccessType?, F.ErrorType> {
     return map(fx) { x in p(x) ? x : nil }(ec: ec)
 }
