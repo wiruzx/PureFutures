@@ -10,6 +10,7 @@ import XCTest
 
 import class PureFutures.Deferred
 import struct PureFutures.PurePromise
+import func PureFutures.deferred
 
 class DeferredTests: XCTestCase {
     
@@ -23,6 +24,64 @@ class DeferredTests: XCTestCase {
     
     private func deferredIsCompleteExpectation() -> XCTestExpectation {
         return expectationWithDescription("Deferred is completed")
+    }
+    
+    // MARK:- deferred
+    
+    func testDeferredAutoclosure() {
+        
+        let def = deferred(42)
+        
+        let expectation = deferredIsCompleteExpectation()
+        
+        def.onComplete {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testDeferredWithDefaultExecutionContext() {
+        
+        let def = deferred { 42 }
+        
+        let expectation = deferredIsCompleteExpectation()
+        
+        def.onComplete {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testDeferredWithMainThreadExecutionContext() {
+        
+        let d1: Deferred<Int> = deferred(dispatch_get_main_queue()) {
+            XCTAssertTrue(NSThread.isMainThread())
+            return 42
+        }
+        
+        let d2: Deferred<Int> = deferred(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            XCTAssertFalse(NSThread.isMainThread())
+            return 42
+        }
+        
+        let firstDeferredExpectation = deferredIsCompleteExpectation()
+        let secondDeferredExpectation = deferredIsCompleteExpectation()
+        
+        d1.onComplete {
+            XCTAssertEqual($0, 42)
+            firstDeferredExpectation.fulfill()
+        }
+        
+        d2.onComplete {
+            XCTAssertEqual($0, 42)
+            secondDeferredExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
     }
     
     // MARK:- onComplete

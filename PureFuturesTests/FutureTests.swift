@@ -11,6 +11,7 @@ import XCTest
 import class PureFutures.Future
 import struct PureFutures.Promise
 import enum PureFutures.Result
+import func PureFutures.future
 
 class FutureTests: XCTestCase {
     
@@ -25,6 +26,66 @@ class FutureTests: XCTestCase {
 
     private func futureIsCompleteExpectation() -> XCTestExpectation {
         return expectationWithDescription("Future is completed")
+    }
+    
+    // MARK:- future
+    
+    // MARK: Result<T, E>
+    
+    func testFutureWithAutoclosure() {
+        
+        let f = future(Result<Int, Void>(42))
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        f.onSuccess {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testFutureWithDefaultExecutionContext() {
+        
+        let f = future { Result<Int, Void>(42) }
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        f.onSuccess {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testFutureWithExecutionContext() {
+        
+        let f1: Future<Int, Void> = future(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+            XCTAssertFalse(NSThread.isMainThread())
+            return Result(42)
+        }
+        
+        let f2: Future<Int, Void> = future(dispatch_get_main_queue()) {
+            XCTAssertTrue(NSThread.isMainThread())
+            return Result(42)
+        }
+        
+        let firstExpectation = futureIsCompleteExpectation()
+        let secondExpectation = futureIsCompleteExpectation()
+        
+        f1.onSuccess {
+            XCTAssertEqual($0, 42)
+            firstExpectation.fulfill()
+        }
+        
+        f2.onSuccess {
+            XCTAssertEqual($0, 42)
+            secondExpectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
     }
     
     // MARK:- onComplete

@@ -31,36 +31,6 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Fut
     return p.future
 }
 
-// MARK: With T
-
-public func future<T, E>(@autoclosure f: () -> T) -> Future<T, E> {
-    let x = f()
-    return future { x }
-}
-
-public func future<T, E>(f: () -> T) -> Future<T, E> {
-    return future(defaultContext, f)
-}
-
-public func future<T, E>(ec: ExecutionContextType, f: () -> T) -> Future<T, E> {
-    return future(ec) { Result(f()) }
-}
-
-// MARK: With E
-
-public func future<T, E>(@autoclosure f: () -> E) -> Future<T, E> {
-    let x = f()
-    return future { x }
-}
-
-public func future<T, E>(f: () -> E) -> Future<T, E> {
-    return future(defaultContext, f)
-}
-
-public func future<T, E>(ec: ExecutionContextType, f: () -> E) -> Future<T, E> {
-    return future(ec) { Result(f()) }
-}
-
 // MARK:- Future
 
 public final class Future<T, E>: FutureType {
