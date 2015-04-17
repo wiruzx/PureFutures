@@ -146,6 +146,16 @@ class FutureTests: XCTestCase {
     
     // MARK:- forced
     
+    func testForcedCompleted() {
+        let future = Future<Int, Void>.succeed(42)
+        
+        if let value = future.forced(1)?.value {
+            XCTAssertEqual(value, 42)
+        } else {
+            XCTFail("result is nil")
+        }
+    }
+    
     func testForcedWithInterval() {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {

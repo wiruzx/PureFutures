@@ -95,6 +95,17 @@ class DeferredTests: XCTestCase {
     
     // MARK:- forced
     
+    func testForcedCompleted() {
+        
+        let deferred = Deferred(42)
+        
+        if let result = deferred.forced(1) {
+            XCTAssertEqual(result, 42)
+        } else {
+            XCTFail("Result is nil")
+        }
+    }
+    
     func testForcedWithInterval() {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
