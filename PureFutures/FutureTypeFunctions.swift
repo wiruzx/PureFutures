@@ -123,9 +123,11 @@ public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.Success
     return p.future
 }
 
-public func toDeferred<F: FutureType>(fx: F)(_ ec: ExecutionContextType) -> Deferred<Result<F.SuccessType, F.ErrorType>> {
+public func toDeferred<F: FutureType>(fx: F) -> Deferred<Result<F.SuccessType, F.ErrorType>> {
     let p = PurePromise<Result<F.SuccessType, F.ErrorType>>()
-    fx.onComplete(ec) { p.complete($0 as! Result<F.SuccessType, F.ErrorType>) }
+    fx.onComplete(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        p.complete($0 as! Result<F.SuccessType, F.ErrorType>)
+    }
     return p.deferred
 }
 

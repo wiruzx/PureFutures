@@ -186,10 +186,6 @@ public extension Future {
         return recoverWith(defaultContext, r)
     }
     
-    public func toDeferred() -> Deferred<Result<T, E>> {
-        return toDeferred(defaultContext)
-    }
-    
     public func toDeferred(r: E -> T) -> Deferred<T> {
         return toDeferred(defaultContext, r)
     }
@@ -252,8 +248,8 @@ public extension Future {
         return PureFutures.recoverWith(self, r)(ec)
     }
     
-    public func toDeferred(ec: ExecutionContextType) -> Deferred<Result<T, E>> {
-        return PureFutures.toDeferred(self)(ec)
+    public func toDeferred() -> Deferred<Result<T, E>> {
+        return PureFutures.toDeferred(self)
     }
     
     public func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
