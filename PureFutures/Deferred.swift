@@ -56,7 +56,7 @@ public final class Deferred<T>: DeferredType {
         setValue(x)
     }
     
-    public func onComplete(ec: ExecutionContextType, c: Callback) -> Deferred {
+    public func onComplete(ec: ExecutionContextType, _ c: Callback) -> Deferred {
         
         let callbackInContext: T -> Void = { result in
             dispatch_sync(self.callbacksExecutingQueue) {
@@ -81,7 +81,7 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Convenience methods
     
     public func onComplete(c: Callback) -> Deferred {
-        return onComplete(defaultContext, c: c)
+        return onComplete(defaultContext, c)
     }
 
     // MARK:- Internal methods
@@ -110,45 +110,45 @@ public extension Deferred {
     // MARK:- Convenience methods
     
     public func andThen(f: T -> Void) -> Deferred {
-        return andThen(defaultContext, f: f)
+        return andThen(defaultContext, f)
     }
     
     public func map<U>(f: T -> U) -> Deferred<U> {
-        return map(defaultContext, f: f)
+        return map(defaultContext, f)
     }
     
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        return flatMap(defaultContext, f: f)
+        return flatMap(defaultContext, f)
     }
 
     public func filter(p: T -> Bool) -> Deferred<T?> {
-        return filter(defaultContext, p: p)
+        return filter(defaultContext, p)
     }
     
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
-        return zip(defaultContext, dx: dx)
+        return zip(defaultContext, dx)
     }
     
     public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
-        return flatten(defaultContext, dx: dx)
+        return flatten(defaultContext, dx)
     }
     
-    public class func reduce<U>(dxs: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {
-        return reduce(defaultContext, dxs: dxs, initial: initial, combine: combine)
+    public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+        return reduce(defaultContext, dxs, initial, combine)
     }
     
-    public class func traverse<U>(xs: [T], f: T -> Deferred<U>) -> Deferred<[U]> {
-        return traverse(defaultContext, xs: xs, f: f)
+    public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+        return traverse(defaultContext, xs, f)
     }
     
     public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
-        return sequence(defaultContext, dxs: dxs)
+        return sequence(defaultContext, dxs)
     }
     
     // MARK:- Original methods
     
-    public func andThen(ec: ExecutionContextType, f: T -> Void) -> Deferred {
-        return PureFutures.andThen(self, f)(ec: ec)
+    public func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
+        return PureFutures.andThen(self, f)(ec)
     }
     
     public func forced() -> T {
@@ -159,36 +159,36 @@ public extension Deferred {
         return PureFutures.forced(self, interval)
     }
     
-    public func map<U>(ec: ExecutionContextType, f: T -> U) -> Deferred<U> {
-        return PureFutures.map(self, f)(ec: ec)
+    public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
+        return PureFutures.map(self, f)(ec)
     }
     
-    public func flatMap<U>(ec: ExecutionContextType, f: T -> Deferred<U>) -> Deferred<U> {
-        return PureFutures.flatMap(self, f)(ec: ec)
+    public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
+        return PureFutures.flatMap(self, f)(ec)
     }
 
-    public func filter(ec: ExecutionContextType, p: T -> Bool) -> Deferred<T?> {
-        return PureFutures.filter(self, p)(ec: ec)
+    public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
+        return PureFutures.filter(self, p)(ec)
     }
     
-    public func zip<U>(ec: ExecutionContextType, dx: Deferred<U>) -> Deferred<(T, U)> {
-        return PureFutures.zip(self, dx)(ec: ec)
+    public func zip<U>(ec: ExecutionContextType, _ dx: Deferred<U>) -> Deferred<(T, U)> {
+        return PureFutures.zip(self, dx)(ec)
     }
     
-    public class func flatten(ec: ExecutionContextType, dx: Deferred<Deferred<T>>) -> Deferred<T> {
-        return PureFutures.flatten(dx)(ec: ec)
+    public class func flatten(ec: ExecutionContextType, _ dx: Deferred<Deferred<T>>) -> Deferred<T> {
+        return PureFutures.flatten(dx)(ec)
     }
     
-    public class func reduce<U>(ec: ExecutionContextType, dxs: [Deferred], initial: U, combine: (U, T) -> U) -> Deferred<U> {
-        return PureFutures.reduce(dxs, initial, combine)(ec: ec)
+    public class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+        return PureFutures.reduce(dxs, initial, combine)(ec)
     }
     
-    public class func traverse<U>(ec: ExecutionContextType, xs: [T], f: T -> Deferred<U>) -> Deferred<[U]> {
-        return PureFutures.traverse(xs, f)(ec: ec)
+    public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+        return PureFutures.traverse(xs, f)(ec)
     }
     
-    public class func sequence(ec: ExecutionContextType, dxs: [Deferred]) -> Deferred<[T]> {
-        return PureFutures.sequence(dxs)(ec: ec)
+    public class func sequence(ec: ExecutionContextType, _ dxs: [Deferred]) -> Deferred<[T]> {
+        return PureFutures.sequence(dxs)(ec)
     }
     
 }

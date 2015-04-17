@@ -15,7 +15,7 @@ public protocol FutureType: DeferredType {
     
     typealias Element = Result<SuccessType, ErrorType>
     
-    func onSuccess(ec: ExecutionContextType, c: SuccessType -> Void) -> Self
-    func onError(ec: ExecutionContextType, c: ErrorType -> Void) -> Self
+    func onSuccess(ec: ExecutionContextType, _ c: SuccessType -> Void) -> Self
+    func onError(ec: ExecutionContextType, _ c: ErrorType -> Void) -> Self
     
 }

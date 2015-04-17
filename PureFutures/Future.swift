@@ -77,12 +77,12 @@ public final class Future<T, E>: FutureType {
         self.deferred = Deferred(x)
     }
     
-    public func onComplete(ec: ExecutionContextType, c: CompleteCallback) -> Future {
-        deferred.onComplete(ec, c: c)
+    public func onComplete(ec: ExecutionContextType, _ c: CompleteCallback) -> Future {
+        deferred.onComplete(ec, c)
         return self
     }
     
-    public func onSuccess(ec: ExecutionContextType, c: SuccessCallback) -> Future {
+    public func onSuccess(ec: ExecutionContextType, _ c: SuccessCallback) -> Future {
         return onComplete(ec) {
             switch $0 {
             case .Success(let boxed):
@@ -93,7 +93,7 @@ public final class Future<T, E>: FutureType {
         }
     }
     
-    public func onError(ec: ExecutionContextType, c: ErrorCallback) -> Future {
+    public func onError(ec: ExecutionContextType, _ c: ErrorCallback) -> Future {
         return onComplete(ec) {
             switch $0 {
             case .Error(let boxed):
@@ -107,15 +107,15 @@ public final class Future<T, E>: FutureType {
     // MARK:- Convenience methods
     
     public func onComplete(c: CompleteCallback) -> Future {
-        return onComplete(defaultContext, c: c)
+        return onComplete(defaultContext, c)
     }
     
     public func onSuccess(c: SuccessCallback) -> Future {
-        return onSuccess(defaultContext, c: c)
+        return onSuccess(defaultContext, c)
     }
     
     public func onError(c: ErrorCallback) -> Future {
-        return onError(defaultContext, c: c)
+        return onError(defaultContext, c)
     }
     
 }
@@ -129,31 +129,31 @@ public extension Future {
     }
     
     public func map<U>(f: T -> U) -> Future<U, E> {
-        return map(defaultContext, f: f)
+        return map(defaultContext, f)
     }
     
-    public func transform<T1, E1>(s: T -> T1, e: E -> E1) -> Future<T1, E1> {
-        return transform(defaultContext, s: s, e: e)
+    public func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
+        return transform(defaultContext, s, e)
     }
     
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        return flatMap(defaultContext, f: f)
+        return flatMap(defaultContext, f)
     }
     
     public func filter(p: T -> Bool) -> Future<T?, E> {
-        return filter(defaultContext, p: p)
+        return filter(defaultContext, p)
     }
     
     public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
-        return zip(defaultContext, fx: fx)
+        return zip(defaultContext, fx)
     }
     
     public func recover(r: E -> T) -> Future {
-        return recover(defaultContext, r: r)
+        return recover(defaultContext, r)
     }
     
     public func recoverWith(r: E -> Future) -> Future {
-        return recoverWith(defaultContext, r: r)
+        return recoverWith(defaultContext, r)
     }
     
     public func toDeferred() -> Deferred<Result<T, E>> {
@@ -161,29 +161,29 @@ public extension Future {
     }
     
     public func toDeferred(r: E -> T) -> Deferred<T> {
-        return toDeferred(defaultContext, r: r)
+        return toDeferred(defaultContext, r)
     }
     
     public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
-        return flatten(defaultContext, fx: fx)
+        return flatten(defaultContext, fx)
     }
     
-    public class func reduce<U>(fxs: [Future], initial: U, combine: (U, T) -> U) -> Future<U, E> {
-        return reduce(defaultContext, fxs: fxs, initial: initial, combine: combine)
+    public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
+        return reduce(defaultContext, fxs, initial, combine)
     }
     
-    public class func traverse<U>(xs: [T], f: T -> Future<U, E>) -> Future<[U], E> {
-        return traverse(defaultContext, xs: xs, f: f)
+    public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
+        return traverse(defaultContext, xs, f)
     }
     
     public class func sequence(fxs: [Future]) -> Future<[T], E> {
-        return sequence(defaultContext, fxs: fxs)
+        return sequence(defaultContext, fxs)
     }
     
     // MARK:- Original methods
     
     public func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
-        return PureFutures.andThen(self, f)(ec: ec)
+        return PureFutures.andThen(self, f)(ec)
     }
     
     public func forced() -> ResultType {
@@ -194,56 +194,56 @@ public extension Future {
         return PureFutures.forced(self, interval)
     }
     
-    public func map<U>(ec: ExecutionContextType, f: T -> U) -> Future<U, E> {
-        return PureFutures.map(self, f)(ec: ec)
+    public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Future<U, E> {
+        return PureFutures.map(self, f)(ec)
     }
     
-    public func transform<T1, E1>(ec: ExecutionContextType, s: T -> T1, e: E -> E1) -> Future<T1, E1> {
-        return PureFutures.transform(self, s, e)(ec: ec)
+    public func transform<T1, E1>(ec: ExecutionContextType, _ s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
+        return PureFutures.transform(self, s, e)(ec)
     }
     
-    public func flatMap<U>(ec: ExecutionContextType, f: T -> Future<U, E>) -> Future<U, E> {
-        return PureFutures.flatMap(self, f)(ec: ec)
+    public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Future<U, E>) -> Future<U, E> {
+        return PureFutures.flatMap(self, f)(ec)
     }
     
-    public func filter(ec: ExecutionContextType, p: T -> Bool) -> Future<T?, E> {
-        return PureFutures.filter(self, p)(ec: ec)
+    public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Future<T?, E> {
+        return PureFutures.filter(self, p)(ec)
     }
     
-    public func zip<U>(ec: ExecutionContextType, fx: Future<U, E>) -> Future<(T, U), E> {
-        return PureFutures.zip(self, fx)(ec: ec)
+    public func zip<U>(ec: ExecutionContextType, _ fx: Future<U, E>) -> Future<(T, U), E> {
+        return PureFutures.zip(self, fx)(ec)
     }
     
-    public func recover(ec: ExecutionContextType, r: E -> T) -> Future {
-        return PureFutures.recover(self, r)(ec: ec)
+    public func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
+        return PureFutures.recover(self, r)(ec)
     }
     
-    public func recoverWith(ec: ExecutionContextType, r: E -> Future) -> Future {
-        return PureFutures.recoverWith(self, r)(ec: ec)
+    public func recoverWith(ec: ExecutionContextType, _ r: E -> Future) -> Future {
+        return PureFutures.recoverWith(self, r)(ec)
     }
     
     public func toDeferred(ec: ExecutionContextType) -> Deferred<Result<T, E>> {
-        return PureFutures.toDeferred(self)(ec: ec)
+        return PureFutures.toDeferred(self)(ec)
     }
     
-    public func toDeferred(ec: ExecutionContextType, r: E -> T) -> Deferred<T> {
-        return PureFutures.toDeferred(self, r)(ec: ec)
+    public func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
+        return PureFutures.toDeferred(self, r)(ec)
     }
     
-    public class func flatten(ec: ExecutionContextType, fx: Future<Future<T, E>, E>) -> Future {
-        return PureFutures.flatten(fx)(ec: ec)
+    public class func flatten(ec: ExecutionContextType, _ fx: Future<Future<T, E>, E>) -> Future {
+        return PureFutures.flatten(fx)(ec)
     }
     
-    public class func reduce<U>(ec: ExecutionContextType, fxs: [Future], initial: U, combine: (U, T) -> U) -> Future<U, E> {
-        return PureFutures.reduce(fxs, initial, combine)(ec: ec)
+    public class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
+        return PureFutures.reduce(fxs, initial, combine)(ec)
     }
     
-    public class func traverse<U>(ec: ExecutionContextType, xs: [T], f: T -> Future<U, E>) -> Future<[U], E> {
-        return PureFutures.traverse(xs, f)(ec: ec)
+    public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
+        return PureFutures.traverse(xs, f)(ec)
     }
     
-    public class func sequence(ec: ExecutionContextType, fxs: [Future]) -> Future<[T], E> {
-        return PureFutures.sequence(fxs)(ec: ec)
+    public class func sequence(ec: ExecutionContextType, _ fxs: [Future]) -> Future<[T], E> {
+        return PureFutures.sequence(fxs)(ec)
     }
     
 }

@@ -246,7 +246,7 @@ class FutureTests: XCTestCase {
         
         let result = future.transform({
             $0 / 2
-        }, e: { _ in
+        }, { _ in
             XCTFail("This should not be called")
         })
         
@@ -266,7 +266,7 @@ class FutureTests: XCTestCase {
         
         let result = future.transform({ _ in
             XCTFail("This should not be called")
-        }, e: { error in
+        }, { error in
             return NSError(domain: "FutureTests", code: 1, userInfo: nil)
         })
         
@@ -478,7 +478,7 @@ class FutureTests: XCTestCase {
         
         let futures = Array(1...9).map { Future<Int, NSError>.succeed($0) }
         
-        let result = Future.reduce(futures, initial: 0, combine: +)
+        let result = Future.reduce(futures, 0, +)
         
         let expectation = futureIsCompleteExpectation()
         
@@ -495,7 +495,7 @@ class FutureTests: XCTestCase {
         var futures = Array(1...9).map { Future<Int, NSError>.succeed($0) }
         futures.append(Future(Result(error)))
         
-        let result = Future.reduce(futures, initial: 0, combine: +)
+        let result = Future.reduce(futures, 0, +)
         
         let expectation = futureIsCompleteExpectation()
         
