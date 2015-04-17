@@ -152,10 +152,6 @@ public extension Future {
         return filter(globalContext, p)
     }
     
-    public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
-        return zip(defaultContext, fx)
-    }
-    
     public func recover(r: E -> T) -> Future {
         return recover(globalContext, r)
     }
@@ -168,20 +164,12 @@ public extension Future {
         return toDeferred(globalContext, r)
     }
     
-    public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
-        return flatten(defaultContext, fx)
-    }
-    
     public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
         return reduce(globalContext, fxs, initial, combine)
     }
     
     public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
         return traverse(globalContext, xs, f)
-    }
-    
-    public class func sequence(fxs: [Future]) -> Future<[T], E> {
-        return sequence(defaultContext, fxs)
     }
     
     // MARK:- Original methods
@@ -214,8 +202,8 @@ public extension Future {
         return PureFutures.filter(self, p)(ec)
     }
     
-    public func zip<U>(ec: ExecutionContextType, _ fx: Future<U, E>) -> Future<(T, U), E> {
-        return PureFutures.zip(self, fx)(ec)
+    public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
+        return PureFutures.zip(self, fx)
     }
     
     public func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
@@ -234,8 +222,8 @@ public extension Future {
         return PureFutures.toDeferred(self, r)(ec)
     }
     
-    public class func flatten(ec: ExecutionContextType, _ fx: Future<Future<T, E>, E>) -> Future {
-        return PureFutures.flatten(fx)(ec)
+    public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
+        return PureFutures.flatten(fx)
     }
     
     public class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
@@ -246,8 +234,8 @@ public extension Future {
         return PureFutures.traverse(xs, f)(ec)
     }
     
-    public class func sequence(ec: ExecutionContextType, _ fxs: [Future]) -> Future<[T], E> {
-        return PureFutures.sequence(fxs)(ec)
+    public class func sequence(fxs: [Future]) -> Future<[T], E> {
+        return PureFutures.sequence(fxs)
     }
     
 }

@@ -52,8 +52,10 @@ public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.Err
     return p.future
 }
 
-public func flatten<F: FutureType, IF: FutureType where F.SuccessType == IF, F.ErrorType == IF.ErrorType>(fx: F)(_ ec: ExecutionContextType) -> Future<IF.SuccessType, IF.ErrorType> {
+public func flatten<F: FutureType, IF: FutureType where F.SuccessType == IF, F.ErrorType == IF.ErrorType>(fx: F) -> Future<IF.SuccessType, IF.ErrorType> {
     let p = Promise<IF.SuccessType, IF.ErrorType>()
+    
+    let ec = ExecutionContext.Global(.Async)
     
     fx.onComplete(ec) { result in
         switch result as! Result<IF, F.ErrorType> {
@@ -73,7 +75,10 @@ public func filter<F: FutureType>(fx: F, p: F.SuccessType -> Bool)(_ ec: Executi
     return map(fx) { x in p(x) ? x : nil }(ec)
 }
 
-public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(fa: F, fb: T)(_ ec: ExecutionContextType) -> Future<(F.SuccessType, T.SuccessType), F.ErrorType> {
+public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(fa: F, fb: T) -> Future<(F.SuccessType, T.SuccessType), F.ErrorType> {
+    
+    let ec = ExecutionContext.Global(.Async)
+    
     return flatMap(fa) { a in
         map(fb) { b in
             (a, b)
@@ -93,8 +98,8 @@ public func traverse<S: SequenceType, F: FutureType>(xs: S, f: S.Generator.Eleme
     return reduce(map(xs, f), []) { $0 + [$1] }(ec)
 }
 
-public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs: S)(_ ec: ExecutionContextType) -> Future<[S.Generator.Element.SuccessType], S.Generator.Element.ErrorType> {
-    return traverse(fxs, id)(ec)
+public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs: S) -> Future<[S.Generator.Element.SuccessType], S.Generator.Element.ErrorType> {
+    return traverse(fxs, id)(ExecutionContext.Global(.Async))
 }
 
 public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {

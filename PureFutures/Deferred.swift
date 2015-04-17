@@ -133,24 +133,12 @@ public extension Deferred {
         return filter(globalContext, p)
     }
     
-    public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
-        return zip(defaultContext, dx)
-    }
-    
-    public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
-        return flatten(defaultContext, dx)
-    }
-    
     public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         return reduce(globalContext, dxs, initial, combine)
     }
     
     public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
         return traverse(globalContext, xs, f)
-    }
-    
-    public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
-        return sequence(defaultContext, dxs)
     }
     
     // MARK:- Original methods
@@ -179,12 +167,12 @@ public extension Deferred {
         return PureFutures.filter(self, p)(ec)
     }
     
-    public func zip<U>(ec: ExecutionContextType, _ dx: Deferred<U>) -> Deferred<(T, U)> {
-        return PureFutures.zip(self, dx)(ec)
+    public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
+        return PureFutures.zip(self, dx)
     }
     
-    public class func flatten(ec: ExecutionContextType, _ dx: Deferred<Deferred<T>>) -> Deferred<T> {
-        return PureFutures.flatten(dx)(ec)
+    public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
+        return PureFutures.flatten(dx)
     }
     
     public class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
@@ -195,8 +183,8 @@ public extension Deferred {
         return PureFutures.traverse(xs, f)(ec)
     }
     
-    public class func sequence(ec: ExecutionContextType, _ dxs: [Deferred]) -> Deferred<[T]> {
-        return PureFutures.sequence(dxs)(ec)
+    public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
+        return PureFutures.sequence(dxs)
     }
     
     public class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {

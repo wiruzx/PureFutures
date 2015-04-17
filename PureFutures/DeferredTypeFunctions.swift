@@ -40,8 +40,10 @@ public func flatMap<D: DeferredType, T>(dx: D, f: D.Element -> Deferred<T>)(_ ec
     return p.deferred
 }
 
-public func flatten<D: DeferredType, ID: DeferredType where D.Element == ID>(dx: D)(_ ec: ExecutionContextType) -> Deferred<ID.Element> {
+public func flatten<D: DeferredType, ID: DeferredType where D.Element == ID>(dx: D) -> Deferred<ID.Element> {
     let p = PurePromise<ID.Element>()
+    
+    let ec = ExecutionContext.Global(.Async)
     
     dx.onComplete(ec) { def in
         def.onComplete(ec) { p.complete($0) }
@@ -54,7 +56,10 @@ public func filter<D: DeferredType>(dx: D, p: D.Element -> Bool)(_ ec: Execution
     return map(dx) { x in p(x) ? x : nil }(ec)
 }
 
-public func zip<DA: DeferredType, DB: DeferredType>(da: DA, db: DB)(_ ec: ExecutionContextType) -> Deferred<(DA.Element, DB.Element)> {
+public func zip<DA: DeferredType, DB: DeferredType>(da: DA, db: DB) -> Deferred<(DA.Element, DB.Element)> {
+    
+    let ec = ExecutionContext.Global(.Async)
+    
     return flatMap(da) { a in
         map(db) { b in
             (a, b)
@@ -74,8 +79,8 @@ public func traverse<S: SequenceType, D: DeferredType>(xs: S, f: S.Generator.Ele
     return reduce(map(xs, f), []) { $0 + [$1] }(ec)
 }
 
-public func sequence<S: SequenceType where S.Generator.Element: DeferredType>(dxs: S)(_ ec: ExecutionContextType) -> Deferred<[S.Generator.Element.Element]> {
-    return traverse(dxs, id)(ec)
+public func sequence<S: SequenceType where S.Generator.Element: DeferredType>(dxs: S) -> Deferred<[S.Generator.Element.Element]> {
+    return traverse(dxs, id)(ExecutionContext.Global(.Async))
 }
 
 public func toFuture<D: DeferredType, T, E where D.Element == Result<T, E>>(dx: D) -> Future<T, E> {
