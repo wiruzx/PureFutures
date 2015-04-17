@@ -46,7 +46,6 @@ public final class Deferred<T>: DeferredType {
     
     private var callbacks: [Callback] = []
     private let callbacksManagingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksManaging", DISPATCH_QUEUE_SERIAL)
-    private let callbacksExecutingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksExecuting", DISPATCH_QUEUE_SERIAL)
     
     // MARK:- Public properties
     
@@ -67,11 +66,8 @@ public final class Deferred<T>: DeferredType {
     public func onComplete(ec: ExecutionContextType, _ c: Callback) -> Deferred {
         
         let callbackInContext: T -> Void = { result in
-            dispatch_async(self.callbacksExecutingQueue) {
-                ec.execute {
-                    c(result)
-                }
-                return
+            ec.execute {
+                c(result)
             }
         }
         
