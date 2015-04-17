@@ -77,3 +77,13 @@ public func traverse<S: SequenceType, D: DeferredType>(xs: S, f: S.Generator.Ele
 public func sequence<S: SequenceType where S.Generator.Element: DeferredType>(dxs: S)(_ ec: ExecutionContextType) -> Deferred<[S.Generator.Element.Element]> {
     return traverse(dxs, id)(ec)
 }
+
+public func toFuture<D: DeferredType, T, E where D.Element == Result<T, E>>(dx: D) -> Future<T, E> {
+    let p = Promise<T, E>()
+    
+    dx.onComplete(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+        p.complete($0)
+    }
+    
+    return p.future
+}

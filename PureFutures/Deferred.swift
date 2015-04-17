@@ -192,4 +192,8 @@ public extension Deferred {
         return PureFutures.sequence(dxs)(ec)
     }
     
+    public class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {
+        return PureFutures.toFuture(dx)
+    }
+    
 }

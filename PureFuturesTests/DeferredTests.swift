@@ -10,6 +10,7 @@ import XCTest
 
 import class PureFutures.Deferred
 import struct PureFutures.PurePromise
+import enum PureFutures.Result
 import func PureFutures.deferred
 
 class DeferredTests: XCTestCase {
@@ -407,6 +408,40 @@ class DeferredTests: XCTestCase {
             
             XCTAssertEqual(value, Array(1...5))
             
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    // MARK:- toFuture
+    
+    func testToFutureWithSuccess() {
+        
+        let def = Deferred(Result<Int, Void>(42))
+        
+        let future = Deferred.toFuture(def)
+        
+        let expectation = deferredIsCompleteExpectation()
+        
+        future.onSuccess {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testToFutureWithError() {
+        
+        let def = Deferred(Result<Int, String>("Error"))
+
+        let future = Deferred.toFuture(def)
+        
+        let expectation = deferredIsCompleteExpectation()
+        
+        future.onError {
+            XCTAssertEqual($0, "Error")
             expectation.fulfill()
         }
         
