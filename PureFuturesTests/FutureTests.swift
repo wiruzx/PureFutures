@@ -386,6 +386,54 @@ class FutureTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
+    // MARK:- flatMap
+    
+    func testFlatMap() {
+        
+        let future = Future<Int, Void>.succeed(42)
+        
+        let result = future.flatMap { Future.succeed($0 / 2) }
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        result.onSuccess { value in
+            XCTAssertEqual(value, 42 / 2)
+            expectation.fulfill()
+        }
+        
+        result.onError { _ in
+            XCTFail("This should not be called")
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testFlatMapWithError() {
+        
+        let future = Future<Int, NSError>.failed(error)
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        let result = future.flatMap { value -> Future<Int, NSError> in
+            XCTFail("this should not be called")
+            expectation.fulfill()
+            return Future.succeed(value / 2)
+        }
+        
+        result.onSuccess { _ in
+            XCTFail("This should not be called")
+            expectation.fulfill()
+        }
+        
+        result.onError { error in
+            XCTAssertEqual(error, self.error)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
     // MARK:- flatten
     
     func testFlatten() {
