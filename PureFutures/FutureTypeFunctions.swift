@@ -115,7 +115,7 @@ public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec:
     return p.future
 }
 
-public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.SuccessType, F.ErrorType>)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
+public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> F)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
