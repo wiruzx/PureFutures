@@ -8,11 +8,7 @@
 
 import XCTest
 
-import class PureFutures.Future
-import struct PureFutures.Promise
-import enum PureFutures.Result
-import func PureFutures.future
-import enum PureFutures.ExecutionContext
+import PureFutures
 
 class FutureTests: XCTestCase {
     
@@ -821,5 +817,90 @@ class FutureTests: XCTestCase {
         
         waitForExpectationsWithTimeout(1, handler: nil)
     }
+    
+    // MARK:- ?? operator
+    
+    func testCoalescingToDeferredWithSucceed() {
+        
+        let future = Future<Int, Void>.succeed(42)
+        
+        let deferred = future ?? 10
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        deferred.onComplete {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
 
+    func testCoalescingToDeferredWithFailed() {
+        
+        let future = Future<Int, NSError>.failed(error)
+        
+        let deferred = future ?? 42
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        deferred.onComplete {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+        
+    }
+    
+    func testCoalescingToFutureWithFirstSucceed() {
+        
+        let first = Future<Int, NSError>.succeed(42)
+        let second = Future<Int, NSError>.failed(error)
+        
+        let result = first ?? second
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        result.onSuccess {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testCoalescingToFutureWithFirstFailed() {
+        
+        let first = Future<Int, NSError>.failed(error)
+        let second = Future<Int, NSError>.succeed(42)
+        
+        let result = first ?? second
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        result.onSuccess {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testCoalescingToFutureWithBothFailed() {
+     
+        let first = Future<Int, NSError>.failed(NSError())
+        let second = Future<Int, NSError>.failed(error)
+        
+        let result = first ?? second
+        
+        let expectation = futureIsCompleteExpectation()
+        
+        result.onError { error in
+            XCTAssertEqual(error, self.error)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)   
+    }
 }
