@@ -8,11 +8,6 @@
 
 import Foundation
 
-// MARK:- Constants
-
-private let globalContext = ExecutionContext.Global(.Async)
-private let mainContext = ExecutionContext.Main(.Async)
-
 // MARK:- deferred creation functions
 
 public func deferred<T>(@autoclosure block:  () -> T) -> Deferred<T> {
@@ -21,7 +16,7 @@ public func deferred<T>(@autoclosure block:  () -> T) -> Deferred<T> {
 }
 
 public func deferred<T>(block: () -> T) -> Deferred<T> {
-    return deferred(ExecutionContext.Global(.Async), block)
+    return deferred(ExecutionContext.DefaultPureOperationContext, block)
 }
 
 public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T> {
@@ -85,7 +80,7 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Convenience methods
     
     public func onComplete(c: Callback) -> Deferred {
-        return onComplete(mainContext, c)
+        return onComplete(ExecutionContext.DefaultSideEffectsContext, c)
     }
 
     // MARK:- Internal methods
@@ -114,27 +109,27 @@ public extension Deferred {
     // MARK:- Convenience methods
     
     public func andThen(f: T -> Void) -> Deferred {
-        return andThen(mainContext, f)
+        return andThen(ExecutionContext.DefaultSideEffectsContext, f)
     }
     
     public func map<U>(f: T -> U) -> Deferred<U> {
-        return map(globalContext, f)
+        return map(ExecutionContext.DefaultPureOperationContext, f)
     }
     
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        return flatMap(globalContext, f)
+        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
     }
 
     public func filter(p: T -> Bool) -> Deferred<T?> {
-        return filter(globalContext, p)
+        return filter(ExecutionContext.DefaultPureOperationContext, p)
     }
     
     public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
-        return reduce(globalContext, dxs, initial, combine)
+        return reduce(ExecutionContext.DefaultPureOperationContext, dxs, initial, combine)
     }
     
     public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
-        return traverse(globalContext, xs, f)
+        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
     }
     
     // MARK:- Original methods

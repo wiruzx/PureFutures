@@ -8,11 +8,6 @@
 
 import Foundation
 
-// MARK:- Constants
-
-private let globalContext = ExecutionContext.Global(.Async)
-private let mainContext = ExecutionContext.Main(.Async)
-
 // MARK:- future creation function
 
 // MARK: With Result<T, E>
@@ -23,7 +18,7 @@ public func future<T, E>(@autoclosure f: () -> Result<T, E>) -> Future<T, E> {
 }
 
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
-    return future(globalContext, f)
+    return future(ExecutionContext.DefaultPureOperationContext, f)
 }
 
 public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Future<T, E> {
@@ -115,15 +110,15 @@ public final class Future<T, E>: FutureType {
     // MARK:- Convenience methods
     
     public func onComplete(c: CompleteCallback) -> Future {
-        return onComplete(mainContext, c)
+        return onComplete(ExecutionContext.DefaultSideEffectsContext, c)
     }
     
     public func onSuccess(c: SuccessCallback) -> Future {
-        return onSuccess(mainContext, c)
+        return onSuccess(ExecutionContext.DefaultSideEffectsContext, c)
     }
     
     public func onError(c: ErrorCallback) -> Future {
-        return onError(mainContext, c)
+        return onError(ExecutionContext.DefaultSideEffectsContext, c)
     }
     
 }
@@ -133,43 +128,43 @@ public extension Future {
     // MARK:- Convenience methods
     
     public func andThen(f: T -> Void) -> Future {
-        return andThen(mainContext, f: f)
+        return andThen(ExecutionContext.DefaultSideEffectsContext, f: f)
     }
     
     public func map<U>(f: T -> U) -> Future<U, E> {
-        return map(globalContext, f)
+        return map(ExecutionContext.DefaultPureOperationContext, f)
     }
     
     public func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
-        return transform(globalContext, s, e)
+        return transform(ExecutionContext.DefaultPureOperationContext, s, e)
     }
     
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        return flatMap(globalContext, f)
+        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
     }
     
     public func filter(p: T -> Bool) -> Future<T?, E> {
-        return filter(globalContext, p)
+        return filter(ExecutionContext.DefaultPureOperationContext, p)
     }
     
     public func recover(r: E -> T) -> Future {
-        return recover(globalContext, r)
+        return recover(ExecutionContext.DefaultPureOperationContext, r)
     }
     
     public func recoverWith(r: E -> Future) -> Future {
-        return recoverWith(globalContext, r)
+        return recoverWith(ExecutionContext.DefaultPureOperationContext, r)
     }
     
     public func toDeferred(r: E -> T) -> Deferred<T> {
-        return toDeferred(globalContext, r)
+        return toDeferred(ExecutionContext.DefaultPureOperationContext, r)
     }
     
     public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
-        return reduce(globalContext, fxs, initial, combine)
+        return reduce(ExecutionContext.DefaultPureOperationContext, fxs, initial, combine)
     }
     
     public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
-        return traverse(globalContext, xs, f)
+        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
     }
     
     // MARK:- Original methods

@@ -55,7 +55,7 @@ public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.Err
 public func flatten<F: FutureType, IF: FutureType where F.SuccessType == IF, F.ErrorType == IF.ErrorType>(fx: F) -> Future<IF.SuccessType, IF.ErrorType> {
     let p = Promise<IF.SuccessType, IF.ErrorType>()
     
-    let ec = ExecutionContext.Global(.Async)
+    let ec = ExecutionContext.DefaultPureOperationContext
     
     fx.onComplete(ec) { result in
         switch result as! Result<IF, F.ErrorType> {
@@ -77,7 +77,7 @@ public func filter<F: FutureType>(fx: F, p: F.SuccessType -> Bool)(_ ec: Executi
 
 public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(fa: F, fb: T) -> Future<(F.SuccessType, T.SuccessType), F.ErrorType> {
     
-    let ec = ExecutionContext.Global(.Async)
+    let ec = ExecutionContext.DefaultPureOperationContext
     
     return flatMap(fa) { a in
         map(fb) { b in
@@ -99,7 +99,7 @@ public func traverse<S: SequenceType, F: FutureType>(xs: S, f: S.Generator.Eleme
 }
 
 public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs: S) -> Future<[S.Generator.Element.SuccessType], S.Generator.Element.ErrorType> {
-    return traverse(fxs, id)(ExecutionContext.Global(.Async))
+    return traverse(fxs, id)(ExecutionContext.DefaultPureOperationContext)
 }
 
 public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
@@ -130,7 +130,7 @@ public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.Success
 
 public func toDeferred<F: FutureType>(fx: F) -> Deferred<Result<F.SuccessType, F.ErrorType>> {
     let p = PurePromise<Result<F.SuccessType, F.ErrorType>>()
-    fx.onComplete(ExecutionContext.Global(.Async)) {
+    fx.onComplete(ExecutionContext.DefaultPureOperationContext) {
         p.complete($0 as! Result<F.SuccessType, F.ErrorType>)
     }
     return p.deferred
