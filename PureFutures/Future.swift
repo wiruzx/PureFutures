@@ -210,7 +210,7 @@ public extension Future {
     }
     
     public func toDeferred() -> Deferred<Result<T, E>> {
-        return PureFutures.toDeferred(self)
+        return deferred
     }
     
     public func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
