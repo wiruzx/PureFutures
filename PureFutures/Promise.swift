@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Promise<T, E>: PromiseType {
+public struct Promise<T, E> {
     
     typealias Element = Result<T, E>
     
@@ -27,8 +27,8 @@ public struct Promise<T, E>: PromiseType {
         future.value = value
     }
     
-    public func completeWith<D: DeferredType where D.Element == Element>(deferred: D) {
-        deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
+    public func completeWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {
+        future.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
     }
     
     public func success(value: T) {

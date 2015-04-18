@@ -11,7 +11,7 @@ import Foundation
 public func andThen<F: FutureType>(fx: F, f: F.SuccessType -> Void)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
-        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        switch $0 {
         case .Success(let box):
             f(box.value)
             p.success(box.value)
@@ -29,7 +29,7 @@ public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T)(_ ec: ExecutionC
 public func transform<F: FutureType, S, E>(fx: F, s: F.SuccessType -> S, e: F.ErrorType -> E)(_ ec: ExecutionContextType) -> Future<S, E> {
     let p = Promise<S, E>()
     fx.onComplete(ec) {
-        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        switch $0 {
         case .Success(let box):
             p.success(s(box.value))
         case .Error(let box):
@@ -42,7 +42,7 @@ public func transform<F: FutureType, S, E>(fx: F, s: F.SuccessType -> S, e: F.Er
 public func flatMap<F: FutureType, T>(fx: F, f: F.SuccessType -> Future<T, F.ErrorType>)(_ ec: ExecutionContextType) -> Future<T, F.ErrorType> {
     let p = Promise<T, F.ErrorType>()
     fx.onComplete(ec) {
-        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        switch $0 {
         case .Success(let box):
             p.completeWith(f(box.value))
         case .Error(let box):
@@ -58,10 +58,10 @@ public func flatten<F: FutureType, IF: FutureType where F.SuccessType == IF, F.E
     let ec = ExecutionContext.DefaultPureOperationContext
     
     fx.onComplete(ec) { result in
-        switch result as! Result<IF, F.ErrorType> {
+        switch result {
         case .Success(let box):
             box.value.onComplete(ec) {
-                p.complete($0 as! Result<IF.SuccessType, IF.ErrorType>)
+                p.complete($0)
             }
         case .Error(let box):
             p.error(box.value)
@@ -105,7 +105,7 @@ public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs:
 public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
-        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        switch $0 {
         case .Success(let box):
             p.success(box.value)
         case .Error(let box):
@@ -118,7 +118,7 @@ public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec:
 public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.SuccessType, F.ErrorType>)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
-        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        switch $0 {
         case .Success(let box):
             p.success(box.value)
         case .Error(let box):
@@ -131,7 +131,7 @@ public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> Future<F.Success
 public func toDeferred<F: FutureType>(fx: F) -> Deferred<Result<F.SuccessType, F.ErrorType>> {
     let p = PurePromise<Result<F.SuccessType, F.ErrorType>>()
     fx.onComplete(ExecutionContext.DefaultPureOperationContext) {
-        p.complete($0 as! Result<F.SuccessType, F.ErrorType>)
+        p.complete($0)
     }
     return p.deferred
 }
@@ -139,7 +139,7 @@ public func toDeferred<F: FutureType>(fx: F) -> Deferred<Result<F.SuccessType, F
 public func toDeferred<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec: ExecutionContextType) -> Deferred<F.SuccessType> {
     let p = PurePromise<F.SuccessType>()
     fx.onComplete(ec) {
-        switch $0 as! Result<F.SuccessType, F.ErrorType> {
+        switch $0 {
         case .Success(let box):
             p.complete(box.value)
         case .Error(let box):

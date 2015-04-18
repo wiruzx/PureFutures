@@ -8,9 +8,7 @@
 
 import Foundation
 
-public struct PurePromise<T>: PurePromiseType {
-    
-    typealias Element = T
+public struct PurePromise<T> {
     
     // MARK:- Public properties
     
@@ -23,11 +21,11 @@ public struct PurePromise<T>: PurePromiseType {
     
     // MARK:- PurePromiseType methods
     
-    public func complete(value: Element) {
+    public func complete(value: T) {
         deferred.setValue(value)
     }
     
-    public func completeWith<D: DeferredType where D.Element == Element>(deferred: D) {
+    public func completeWith<D: DeferredType where D.Element == T>(deferred: D) {
         deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
     }
     

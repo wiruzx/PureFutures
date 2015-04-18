@@ -24,8 +24,6 @@
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
 		E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */; };
 		E6C0A9FA1AA36490006436AC /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
-		E6D361FC1A9CFAB4003D5B2C /* PurePromiseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D361FB1A9CFAB4003D5B2C /* PurePromiseType.swift */; };
-		E6D361FE1A9CFD34003D5B2C /* PromiseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D361FD1A9CFD34003D5B2C /* PromiseType.swift */; };
 		E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
 		E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
 		E6E79F821A8A432800F09BC6 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
@@ -64,8 +62,6 @@
 		E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseTests.swift; sourceTree = "<group>"; };
 		E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTests.swift; sourceTree = "<group>"; };
 		E6C0A9F91AA36490006436AC /* Other.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
-		E6D361FB1A9CFAB4003D5B2C /* PurePromiseType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseType.swift; sourceTree = "<group>"; };
-		E6D361FD1A9CFD34003D5B2C /* PromiseType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseType.swift; sourceTree = "<group>"; };
 		E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTypeFunctions.swift; sourceTree = "<group>"; };
 		E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTypeFunctions.swift; sourceTree = "<group>"; };
 		E6E79F811A8A432800F09BC6 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
@@ -207,8 +203,6 @@
 			children = (
 				E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */,
 				E60A72A01A8AE53B0094A4D4 /* FutureType.swift */,
-				E6D361FB1A9CFAB4003D5B2C /* PurePromiseType.swift */,
-				E6D361FD1A9CFD34003D5B2C /* PromiseType.swift */,
 				E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */,
 			);
 			name = Protocols;
@@ -331,10 +325,8 @@
 				E6267DDE1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift in Sources */,
 				E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */,
 				E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */,
-				E6D361FE1A9CFD34003D5B2C /* PromiseType.swift in Sources */,
 				E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */,
 				E6267DE21AA280940068A0A0 /* Await.swift in Sources */,
-				E6D361FC1A9CFAB4003D5B2C /* PurePromiseType.swift in Sources */,
 				E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */,
 				E608A34F1AE171B8009EAEF5 /* ExecutionContext.swift in Sources */,
 				E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */,
