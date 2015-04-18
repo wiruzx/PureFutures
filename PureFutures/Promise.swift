@@ -10,6 +10,8 @@ import Foundation
 
 public struct Promise<T, E> {
     
+    // MARK:- Type declarations
+    
     typealias Element = Result<T, E>
     
     // MARK:- Public properties

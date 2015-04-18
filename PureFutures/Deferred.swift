@@ -29,6 +29,8 @@ public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T>
     return p.deferred
 }
 
+// MARK:- Deferred
+
 public final class Deferred<T>: DeferredType {
     
     // MARK:- Type declarations
@@ -47,7 +49,6 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Initialization
     
     internal init() {
-        
     }
     
     // MARK:- DeferredType methods

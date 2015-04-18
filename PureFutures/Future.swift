@@ -10,8 +10,6 @@ import Foundation
 
 // MARK:- future creation function
 
-// MARK: With Result<T, E>
-
 public func future<T, E>(@autoclosure f: () -> Result<T, E>) -> Future<T, E> {
     let x = f()
     return future { x }

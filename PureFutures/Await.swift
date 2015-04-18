@@ -26,9 +26,7 @@ internal func await<T>(interval: NSTimeInterval, block: (T -> Void) -> Void) -> 
         }
     }
     
-    block { x in
-        value = x
-    }
+    block { value = $0 }
     
     dispatch_semaphore_wait(semaphore, timeFromTimeInterval(interval))
     
