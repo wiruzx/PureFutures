@@ -10,11 +10,9 @@ import Foundation
 
 public protocol PurePromiseType {
     
-    typealias Def: DeferredType
-    
-    typealias Element = Def.Element
+    typealias Element
     
     func complete(value: Element)
-    func completeWith(deferred: Def)
+    func completeWith<D: DeferredType where D.Element == Element>(deferred: D)
     
 }

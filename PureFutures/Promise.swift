@@ -10,6 +10,8 @@ import Foundation
 
 public struct Promise<T, E>: PromiseType {
     
+    typealias Element = Result<T, E>
+    
     // MARK:- Public properties
     
     public let future = Future<T, E>()
@@ -25,6 +27,10 @@ public struct Promise<T, E>: PromiseType {
         future.value = value
     }
     
+    public func completeWith<D: DeferredType where D.Element == Element>(deferred: D) {
+        deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
+    }
+    
     public func success(value: T) {
         complete(Result(value))
     }
@@ -32,9 +38,4 @@ public struct Promise<T, E>: PromiseType {
     public func error(error: E) {
         complete(Result(error))
     }
-    
-    public func completeWith(future: Future<T, E>) {
-        future.onComplete { self.complete($0) }
-    }
-    
 }

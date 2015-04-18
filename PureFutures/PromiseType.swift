@@ -10,11 +10,11 @@ import Foundation
 
 public protocol PromiseType: PurePromiseType {
     
-    typealias Def: FutureType
+    typealias SuccessType
+    typealias ErrorType
     
-    typealias SuccessType = Def.SuccessType
-    typealias ErrorType = Def.ErrorType
-
+    typealias Element = Result<SuccessType, ErrorType>
+    
     func success(value: SuccessType)
     func error(error: ErrorType)
     

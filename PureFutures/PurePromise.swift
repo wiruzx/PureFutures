@@ -10,6 +10,8 @@ import Foundation
 
 public struct PurePromise<T>: PurePromiseType {
     
+    typealias Element = T
+    
     // MARK:- Public properties
     
     public let deferred = Deferred<T>()
@@ -21,12 +23,12 @@ public struct PurePromise<T>: PurePromiseType {
     
     // MARK:- PurePromiseType methods
     
-    public func complete(value: T) {
+    public func complete(value: Element) {
         deferred.setValue(value)
     }
     
-    public func completeWith(deferred: Deferred<T>) {
-        deferred.onComplete { self.complete($0) }
+    public func completeWith<D: DeferredType where D.Element == Element>(deferred: D) {
+        deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
     }
     
 }
