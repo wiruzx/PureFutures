@@ -34,8 +34,8 @@ public func map<D: DeferredType, T>(dx: D, f: D.Element -> T)(_ ec: ExecutionCon
     return p.deferred
 }
 
-public func flatMap<D: DeferredType, T>(dx: D, f: D.Element -> Deferred<T>)(_ ec: ExecutionContextType) -> Deferred<T> {
-    let p = PurePromise<T>()
+public func flatMap<D: DeferredType, D2: DeferredType>(dx: D, f: D.Element -> D2)(_ ec: ExecutionContextType) -> Deferred<D2.Element> {
+    let p = PurePromise<D2.Element>()
     dx.onComplete(ec) { p.completeWith(f($0)) }
     return p.deferred
 }
