@@ -33,8 +33,6 @@ public final class Deferred<T>: DeferredType {
     
     // MARK:- Type declarations
     
-    typealias Element = T
-    
     public typealias Callback = T -> Void
     
     // MARK:- Private properties
@@ -106,37 +104,17 @@ public final class Deferred<T>: DeferredType {
 
 public extension Deferred {
     
-    // MARK:- Convenience methods
+    // MARK:- andThen
     
     public func andThen(f: T -> Void) -> Deferred {
         return andThen(ExecutionContext.DefaultSideEffectsContext, f)
     }
     
-    public func map<U>(f: T -> U) -> Deferred<U> {
-        return map(ExecutionContext.DefaultPureOperationContext, f)
-    }
-    
-    public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
-    }
-
-    public func filter(p: T -> Bool) -> Deferred<T?> {
-        return filter(ExecutionContext.DefaultPureOperationContext, p)
-    }
-    
-    public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
-        return reduce(ExecutionContext.DefaultPureOperationContext, dxs, initial, combine)
-    }
-    
-    public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
-        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
-    }
-    
-    // MARK:- Original methods
-    
     public func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
         return PureFutures.andThen(self, f)(ec)
     }
+    
+    // MARK:- forced
     
     public func forced() -> T {
         return PureFutures.forced(self)
@@ -146,37 +124,75 @@ public extension Deferred {
         return PureFutures.forced(self, interval)
     }
     
+    // MARK:- map
+    
+    public func map<U>(f: T -> U) -> Deferred<U> {
+        return map(ExecutionContext.DefaultPureOperationContext, f)
+    }
+    
     public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
         return PureFutures.map(self, f)(ec)
     }
     
+    // MARK:- flatMap
+    
+    public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
+        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
+    }
+
     public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
         return PureFutures.flatMap(self, f)(ec)
     }
+    
+    // MARK:- flatten
+    
+    public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
+        return PureFutures.flatten(dx)
+    }
+    
+    // MARK:- filter
 
+    public func filter(p: T -> Bool) -> Deferred<T?> {
+        return filter(ExecutionContext.DefaultPureOperationContext, p)
+    }
+    
     public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
         return PureFutures.filter(self, p)(ec)
     }
+    
+    // MARK:- zip
     
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
         return PureFutures.zip(self, dx)
     }
     
-    public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
-        return PureFutures.flatten(dx)
+    // MARK:- reduce
+    
+    public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+        return reduce(ExecutionContext.DefaultPureOperationContext, dxs, initial, combine)
     }
     
     public class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         return PureFutures.reduce(dxs, initial, combine)(ec)
     }
     
+    // MARK:- traverse
+    
+    public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
+    }
+    
     public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
         return PureFutures.traverse(xs, f)(ec)
     }
     
+    // MARK:- sequence
+    
     public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
         return PureFutures.sequence(dxs)
     }
+    
+    // MARK:- toFuture
     
     public class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {
         return PureFutures.toFuture(dx)

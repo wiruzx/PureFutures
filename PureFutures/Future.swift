@@ -125,53 +125,17 @@ public final class Future<T, E>: FutureType {
 
 public extension Future {
     
-    // MARK:- Convenience methods
+    // MARK:- andThen
     
     public func andThen(f: T -> Void) -> Future {
         return andThen(ExecutionContext.DefaultSideEffectsContext, f: f)
     }
     
-    public func map<U>(f: T -> U) -> Future<U, E> {
-        return map(ExecutionContext.DefaultPureOperationContext, f)
-    }
-    
-    public func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
-        return transform(ExecutionContext.DefaultPureOperationContext, s, e)
-    }
-    
-    public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
-    }
-    
-    public func filter(p: T -> Bool) -> Future<T?, E> {
-        return filter(ExecutionContext.DefaultPureOperationContext, p)
-    }
-    
-    public func recover(r: E -> T) -> Future {
-        return recover(ExecutionContext.DefaultPureOperationContext, r)
-    }
-    
-    public func recoverWith(r: E -> Future) -> Future {
-        return recoverWith(ExecutionContext.DefaultPureOperationContext, r)
-    }
-    
-    public func toDeferred(r: E -> T) -> Deferred<T> {
-        return toDeferred(ExecutionContext.DefaultPureOperationContext, r)
-    }
-    
-    public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
-        return reduce(ExecutionContext.DefaultPureOperationContext, fxs, initial, combine)
-    }
-    
-    public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
-        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
-    }
-    
-    // MARK:- Original methods
-    
     public func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
         return PureFutures.andThen(self, f)(ec)
     }
+    
+    // MARK:- forced
     
     public func forced() -> ResultType {
         return PureFutures.forced(self)
@@ -181,53 +145,113 @@ public extension Future {
         return PureFutures.forced(self, interval)
     }
     
+    // MARK:- map
+    
+    public func map<U>(f: T -> U) -> Future<U, E> {
+        return map(ExecutionContext.DefaultPureOperationContext, f)
+    }
+    
     public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Future<U, E> {
         return PureFutures.map(self, f)(ec)
+    }
+    
+    // MARK:- transform
+    
+    public func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
+        return transform(ExecutionContext.DefaultPureOperationContext, s, e)
     }
     
     public func transform<T1, E1>(ec: ExecutionContextType, _ s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
         return PureFutures.transform(self, s, e)(ec)
     }
     
+    // MARK:- flatMap
+    
+    public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
+        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
+    }
+    
     public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Future<U, E>) -> Future<U, E> {
         return PureFutures.flatMap(self, f)(ec)
+    }
+    
+    // MARK:- flatten
+    
+    public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
+        return PureFutures.flatten(fx)
+    }
+    
+    // MARK:- filter
+    
+    public func filter(p: T -> Bool) -> Future<T?, E> {
+        return filter(ExecutionContext.DefaultPureOperationContext, p)
     }
     
     public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Future<T?, E> {
         return PureFutures.filter(self, p)(ec)
     }
     
+    // MARK:- zip
+    
     public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
         return PureFutures.zip(self, fx)
+    }
+    
+    // MARK:- recover
+    
+    public func recover(r: E -> T) -> Future {
+        return recover(ExecutionContext.DefaultPureOperationContext, r)
     }
     
     public func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
         return PureFutures.recover(self, r)(ec)
     }
     
+    // MARK:- recoverWith
+    
+    public func recoverWith(r: E -> Future) -> Future {
+        return recoverWith(ExecutionContext.DefaultPureOperationContext, r)
+    }
+    
     public func recoverWith(ec: ExecutionContextType, _ r: E -> Future) -> Future {
         return PureFutures.recoverWith(self, r)(ec)
     }
     
+    // MARK:- toDeferred
+    
     public func toDeferred() -> Deferred<Result<T, E>> {
         return deferred
+    }
+    
+    public func toDeferred(r: E -> T) -> Deferred<T> {
+        return toDeferred(ExecutionContext.DefaultPureOperationContext, r)
     }
     
     public func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
         return PureFutures.toDeferred(self, r)(ec)
     }
     
-    public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
-        return PureFutures.flatten(fx)
+    // MARK:- reduce
+    
+    public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
+        return reduce(ExecutionContext.DefaultPureOperationContext, fxs, initial, combine)
     }
     
     public class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
         return PureFutures.reduce(fxs, initial, combine)(ec)
     }
     
+    // MARK:- traverse
+    
+    public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
+        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
+    }
+    
     public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
         return PureFutures.traverse(xs, f)(ec)
     }
+    
+    // MARK:- sequence
     
     public class func sequence(fxs: [Future]) -> Future<[T], E> {
         return PureFutures.sequence(fxs)
