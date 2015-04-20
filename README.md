@@ -9,6 +9,20 @@ Highly inspired by [Scala's implementation](http://docs.scala-lang.org/overviews
 
 ##Instalation
 
+###Carthage
+
+Add the following in your Cartfile:
+
+```
+github "wiruzx/PureFutures"
+```
+
+And run `carthage update`
+
+Up to date instructions in [Carthage's README](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
+
+###Git submodules
+
 * Add PureFutures submodule into your project `git submodule add https://github.com/wiruzx/PureFutures.git`
 * Drag `PureFutures.xcodeproj` file into your project
 * Add PureFutures as target dependency in **Build Phases** section
