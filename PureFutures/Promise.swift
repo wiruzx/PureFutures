@@ -26,7 +26,7 @@ public struct Promise<T, E> {
     // MARK:- PromiseType methods
     
     public func complete(value: Result<T, E>) {
-        future.value = value
+        future.setValue(value)
     }
     
     public func completeWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {

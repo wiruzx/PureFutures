@@ -46,9 +46,9 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- Public properties
     
-    public internal(set) var value: ResultType? {
+    public private(set) var value: ResultType? {
         set {
-            deferred.setValue(newValue)
+            deferred.setValue(newValue!)
         }
         get {
             return deferred.value
@@ -116,6 +116,13 @@ public final class Future<T, E>: FutureType {
     
     public func onError(c: ErrorCallback) -> Future {
         return onError(ExecutionContext.DefaultSideEffectsContext, c)
+    }
+    
+    
+    // MARK:- Internal methods
+    
+    internal func setValue(value: ResultType) {
+        self.value = value
     }
     
 }

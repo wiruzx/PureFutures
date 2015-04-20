@@ -58,7 +58,7 @@ public final class Deferred<T>: DeferredType {
     
     public func onComplete(ec: ExecutionContextType, _ c: Callback) -> Deferred {
         
-        let callbackInContext: T -> Void = { result in
+        let callbackInContext = { result in
             ec.execute {
                 c(result)
             }
@@ -83,16 +83,15 @@ public final class Deferred<T>: DeferredType {
 
     // MARK:- Internal methods
 
-    internal func setValue(value: T?) {
-        assert(self.value == nil, "Cannot complete Deferred more than once")
-        assert(value != nil, "Result can't be nil")
+    internal func setValue(value: T) {
+        assert(self.value == nil, "Value can be set only once")
         
         dispatch_async(callbacksManagingQueue) {
             
             self.value = value
             
             for callback in self.callbacks {
-                callback(value!)
+                callback(value)
             }
             
             self.callbacks.removeAll()
