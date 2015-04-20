@@ -1,5 +1,7 @@
 #PureFutures
 
+[![Build status](https://travis-ci.org/wiruzx/PureFutures.svg?branch=develop)](https://travis-ci.org/wiruzx/PureFutures)
+
 A simple Futures and Promises library.
 
 Highly inspired by [Scala's implementation]
