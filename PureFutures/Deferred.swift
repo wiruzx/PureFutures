@@ -11,8 +11,7 @@ import Foundation
 // MARK:- deferred creation functions
 
 public func deferred<T>(@autoclosure block:  () -> T) -> Deferred<T> {
-    let x = block()
-    return deferred { x }
+    return Deferred(block())
 }
 
 public func deferred<T>(block: () -> T) -> Deferred<T> {

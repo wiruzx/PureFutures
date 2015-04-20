@@ -11,8 +11,7 @@ import Foundation
 // MARK:- future creation function
 
 public func future<T, E>(@autoclosure f: () -> Result<T, E>) -> Future<T, E> {
-    let x = f()
-    return future { x }
+    return Future(f())
 }
 
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
