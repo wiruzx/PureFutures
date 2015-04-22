@@ -14,6 +14,7 @@
 		E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
 		E612D18A1AA526C0006ED075 /* AwaitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E612D1891AA526C0006ED075 /* AwaitTests.swift */; };
 		E612D18B1AA526C5006ED075 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
+		E61611431AE79D7F00D426C5 /* PromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61611421AE79D7F00D426C5 /* PromiseTests.swift */; };
 		E6267DDC1AA21F300068A0A0 /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
 		E6267DDE1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */; };
 		E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
@@ -49,6 +50,7 @@
 		E60A72A01A8AE53B0094A4D4 /* FutureType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureType.swift; sourceTree = "<group>"; };
 		E60A72A21A8AE7330094A4D4 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		E612D1891AA526C0006ED075 /* AwaitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwaitTests.swift; sourceTree = "<group>"; };
+		E61611421AE79D7F00D426C5 /* PromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseTests.swift; sourceTree = "<group>"; };
 		E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionContextType.swift; sourceTree = "<group>"; };
 		E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "dispatch_queue_t+ExecutionContext.swift"; sourceTree = "<group>"; };
 		E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+ExecutionContext.swift"; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */,
 				E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */,
 				E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */,
+				E61611421AE79D7F00D426C5 /* PromiseTests.swift */,
 				E65E6FCE1A86BF41001B514C /* Supporting Files */,
 			);
 			path = PureFuturesTests;
@@ -337,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E61611431AE79D7F00D426C5 /* PromiseTests.swift in Sources */,
 				E612D18A1AA526C0006ED075 /* AwaitTests.swift in Sources */,
 				E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */,
 				E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */,
