@@ -86,6 +86,17 @@ class DeferredTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
+    // MARK:- isCompleted
+    
+    func testIsCompleted() {
+        promise.complete(42)
+        XCTAssertTrue(promise.deferred.isCompleted)
+    }
+    
+    func testIsCompletedFalse() {
+        XCTAssertFalse(promise.deferred.isCompleted)
+    }
+    
     // MARK:- onComplete
     
     func testOnCompleteImmediate() {

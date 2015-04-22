@@ -14,6 +14,10 @@ public struct PurePromise<T> {
     
     public let deferred = Deferred<T>()
     
+    public var isCompleted: Bool {
+        return deferred.isCompleted
+    }
+    
     // MARK:- Initialization
     
     public init() {

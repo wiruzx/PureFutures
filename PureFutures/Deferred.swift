@@ -45,6 +45,10 @@ public final class Deferred<T>: DeferredType {
     
     public private(set) var value: T?
     
+    public var isCompleted: Bool {
+        return value != nil
+    }
+    
     // MARK:- Initialization
     
     internal init() {

@@ -18,6 +18,10 @@ public struct Promise<T, E> {
     
     public let future = Future<T, E>()
     
+    public var isCompleted: Bool {
+        return future.isCompleted
+    }
+    
     // MARK:- Initialization
     
     public init() {

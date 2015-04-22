@@ -85,6 +85,17 @@ class FutureTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
+    // MARK:- isCompleted
+    
+    func testIsCompleted() {
+        promise.success(42)
+        XCTAssertTrue(promise.future.isCompleted)
+    }
+    
+    func testIsCompletedFalse() {
+        XCTAssertFalse(promise.future.isCompleted)
+    }
+    
     // MARK:- onComplete
     
     func testOnCompleteImmediate() {

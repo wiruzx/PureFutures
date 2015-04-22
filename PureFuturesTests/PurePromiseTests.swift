@@ -22,6 +22,17 @@ class PurePromiseTests: XCTestCase {
         promise = PurePromise()
     }
     
+    // MARK:- isCompleted
+    
+    func testIsCompleted() {
+        promise.complete(42)
+        XCTAssertTrue(promise.isCompleted)
+    }
+    
+    func testIsCompletedFalse() {
+        XCTAssertFalse(promise.isCompleted)
+    }
+    
     // MARK:- complete
     
     func testComplete() {

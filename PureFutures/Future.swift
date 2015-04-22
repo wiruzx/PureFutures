@@ -55,6 +55,10 @@ public final class Future<T, E>: FutureType {
         }
     }
     
+    public var isCompleted: Bool {
+        return deferred.isCompleted
+    }
+    
     // MARK:- Initialization
     
     internal init() {
