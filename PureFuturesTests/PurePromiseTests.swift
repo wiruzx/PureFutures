@@ -11,6 +11,7 @@ import XCTest
 import struct PureFutures.PurePromise
 import class PureFutures.Deferred
 import enum PureFutures.ExecutionContext
+import func PureFutures.deferred
 
 class PurePromiseTests: XCTestCase {
     
@@ -100,4 +101,47 @@ class PurePromiseTests: XCTestCase {
         
         waitForExpectationsWithTimeout(1, handler: nil)
     }
+    
+    // MARK:- tryComplete
+    
+    func testTryComplete() {
+        
+        XCTAssertTrue(promise.tryComplete(42))
+        XCTAssertFalse(promise.tryComplete(10))
+        
+        let expectation = expectationWithDescription("Deferred is completed")
+        
+        promise.deferred.onComplete {
+            XCTAssertEqual($0, 42)
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    // MARK:- tryCompleteWith
+    
+    func testTryCompleteWith() {
+        
+        let exp1 = expectationWithDescription("First deferred is completed")
+        
+        promise.tryCompleteWith(deferred {
+            sleep(1)
+            return 10
+        }.andThen { _ in
+            exp1.fulfill()
+        })
+        
+        promise.tryCompleteWith(Deferred(42))
+        
+        let resultExp = expectationWithDescription("Result deferred is completed")
+        
+        promise.deferred.onComplete {
+            XCTAssertEqual($0, 42)
+            resultExp.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
 }

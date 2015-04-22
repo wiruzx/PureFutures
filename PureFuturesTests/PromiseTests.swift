@@ -12,6 +12,7 @@ import struct PureFutures.Promise
 import enum PureFutures.Result
 import enum PureFutures.ExecutionContext
 import class PureFutures.Future
+import func PureFutures.future
 
 class PromiseTests: XCTestCase {
     
@@ -163,6 +164,103 @@ class PromiseTests: XCTestCase {
         promise.error("An error message")
         
         waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    // MARK:- tryComlete
+    
+    func testTryComplete() {
+        
+        XCTAssertTrue(promise.tryComplete(Result(42)))
+        XCTAssertFalse(promise.tryComplete(Result(10)))
+        
+        let expectation = expectationWithDescription("Future is copleted")
+        
+        promise.future.onComplete {
+            switch $0 {
+            case .Success(let box):
+                XCTAssertEqual(box.value, 42)
+            case .Error(_):
+                XCTFail("Result should not be error")
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    // MARK:- trySuccess 
+    
+    func testTrySuccess() {
+        
+        XCTAssertTrue(promise.trySuccess(42))
+        XCTAssertFalse(promise.trySuccess(10))
+        
+        let expectation = expectationWithDescription("Future is copleted")
+        
+        promise.future.onComplete {
+            switch $0 {
+            case .Success(let box):
+                XCTAssertEqual(box.value, 42)
+            case .Error(_):
+                XCTFail("Result should not be error")
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+        
+    }
+    
+    // MARK:- tryError
+    
+    func testTryError() {
+        
+        XCTAssertTrue(promise.tryError("FirstError"))
+        XCTAssertFalse(promise.tryError("SecondError"))
+        
+        let expectation = expectationWithDescription("Future is copleted")
+        
+        promise.future.onComplete {
+            switch $0 {
+            case .Success(_):
+                XCTFail("Result should not be a value")
+            case .Error(let box):
+                XCTAssertEqual(box.value, "FirstError")
+            }
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    // MARK:- tryCompleteWith
+    
+    func testTryCompleteWith() {
+        
+        let firstExp = expectationWithDescription("First Future is completed")
+        
+        promise.tryCompleteWith(future {
+            sleep(1)
+            return Result(10)
+        }.andThen { _ in
+            firstExp.fulfill()
+        })
+        
+        promise.tryCompleteWith(future(Result(42)))
+        
+        let resultExp = expectationWithDescription("Result Future is copleted")
+        
+        promise.future.onComplete {
+            switch $0 {
+            case .Success(let box):
+                XCTAssertEqual(box.value, 42)
+            case .Error(_):
+                XCTFail("Result should not be error")
+            }
+            resultExp.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(2, handler: nil)
     }
     
 }

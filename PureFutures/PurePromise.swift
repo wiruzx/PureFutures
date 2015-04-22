@@ -33,4 +33,19 @@ public struct PurePromise<T> {
         deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
     }
     
+    // MARK:- Other methods
+    
+    public func tryComplete(value: T) -> Bool {
+        if isCompleted {
+            return false
+        } else {
+            complete(value)
+            return true
+        }
+    }
+    
+    public func tryCompleteWith<D: DeferredType where D.Element == T>(deferred: D) {
+        deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.tryComplete($0) }
+    }
+    
 }

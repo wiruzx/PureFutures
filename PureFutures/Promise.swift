@@ -44,4 +44,28 @@ public struct Promise<T, E> {
     public func error(error: E) {
         complete(Result(error))
     }
+    
+    // MARK:- Other methods
+    
+    public func tryComplete(value: Result<T, E>) -> Bool {
+        if isCompleted {
+            return false
+        } else {
+            complete(value)
+            return true
+        }
+    }
+    
+    public func trySuccess(value: T) -> Bool {
+        return tryComplete(Result(value))
+    }
+    
+    public func tryError(error: E) -> Bool {
+        return tryComplete(Result(error))
+    }
+    
+    public func tryCompleteWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {
+        future.onComplete(ExecutionContext.DefaultPureOperationContext) { self.tryComplete($0) }
+    }
+    
 }
