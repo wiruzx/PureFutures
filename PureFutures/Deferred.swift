@@ -86,7 +86,7 @@ public final class Deferred<T>: DeferredType {
     internal func setValue(value: T) {
         assert(self.value == nil, "Value can be set only once")
         
-        dispatch_async(callbacksManagingQueue) {
+        dispatch_sync(callbacksManagingQueue) {
             
             self.value = value
             
