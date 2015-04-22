@@ -52,13 +52,14 @@ class PurePromiseTests: XCTestCase {
     func testCompleteOnBackgroundThread() {
         let expectation = expectationWithDescription("Deferred is completed")
         
-        promise.deferred.onComplete(ExecutionContext.Global(.Async)) { result in
+        promise.deferred.onComplete { result in
             XCTAssertEqual(result, 42)
-            XCTAssertFalse(NSThread.isMainThread())
             expectation.fulfill()
         }
         
-        promise.complete(42)
+        dispatch_async(dispatch_get_global_queue(0, 0)) {
+            self.promise.complete(42)
+        }
         
         waitForExpectationsWithTimeout(1, handler: nil)
         
@@ -88,13 +89,14 @@ class PurePromiseTests: XCTestCase {
         
         let deferred = Deferred(42)
         
-        promise.deferred.onComplete(ExecutionContext.Global(.Async)) { result in
+        promise.deferred.onComplete { result in
             XCTAssertEqual(result, 42)
-            XCTAssertFalse(NSThread.isMainThread())
             expectation.fulfill()
         }
         
-        promise.completeWith(deferred)
+        dispatch_async(dispatch_get_global_queue(0, 0)) {
+            self.promise.completeWith(deferred)
+        }
         
         waitForExpectationsWithTimeout(1, handler: nil)
     }
