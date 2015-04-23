@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import Foundation
-
 internal func id<T>(value: T) -> T {
     return value
 }

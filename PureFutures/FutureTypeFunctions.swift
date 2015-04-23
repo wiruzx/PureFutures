@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import Foundation
+import typealias Foundation.NSTimeInterval
 
 public func ??<F: FutureType>(fx: F, @autoclosure x: () -> F.SuccessType) -> Deferred<F.SuccessType> {
     let value = x()

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import Foundation
+import typealias Foundation.NSTimeInterval
 
 public func andThen<D: DeferredType>(dx: D, f: D.Element -> Void)(_ ec: ExecutionContextType) -> Deferred<D.Element> {
     let p = PurePromise<D.Element>()

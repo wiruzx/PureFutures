@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import Foundation
-
 public struct PurePromise<T> {
     
     // MARK:- Public properties
