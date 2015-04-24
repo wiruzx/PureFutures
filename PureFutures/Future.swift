@@ -10,10 +10,6 @@ import typealias Foundation.NSTimeInterval
 
 // MARK:- future creation function
 
-public func future<T, E>(@autoclosure f: () -> Result<T, E>) -> Future<T, E> {
-    return Future(f())
-}
-
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
     return future(ExecutionContext.DefaultPureOperationContext, f)
 }

@@ -10,10 +10,6 @@ import Foundation
 
 // MARK:- deferred creation functions
 
-public func deferred<T>(@autoclosure block:  () -> T) -> Deferred<T> {
-    return Deferred(block())
-}
-
 public func deferred<T>(block: () -> T) -> Deferred<T> {
     return deferred(ExecutionContext.DefaultPureOperationContext, block)
 }

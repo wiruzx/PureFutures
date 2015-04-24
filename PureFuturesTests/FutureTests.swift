@@ -27,22 +27,6 @@ class FutureTests: XCTestCase {
     
     // MARK:- future
     
-    // MARK: Result<T, E>
-    
-    func testFutureWithAutoclosure() {
-        
-        let f = future(Result<Int, Void>(42))
-        
-        let expectation = futureIsCompleteExpectation()
-        
-        f.onSuccess {
-            XCTAssertEqual($0, 42)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
     func testFutureWithDefaultExecutionContext() {
         
         let f = future { Result<Int, Void>(42) }

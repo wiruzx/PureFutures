@@ -30,20 +30,6 @@ class DeferredTests: XCTestCase {
     
     // MARK:- deferred
     
-    func testDeferredAutoclosure() {
-        
-        let def = deferred(42)
-        
-        let expectation = deferredIsCompleteExpectation()
-        
-        def.onComplete {
-            XCTAssertEqual($0, 42)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
     func testDeferredWithDefaultExecutionContext() {
         
         let def = deferred { 42 }
