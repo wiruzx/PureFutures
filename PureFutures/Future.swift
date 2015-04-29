@@ -10,10 +10,31 @@ import typealias Foundation.NSTimeInterval
 
 // MARK:- future creation function
 
+/**
+
+    Creates a new `Future<T, E>` whose value will be
+    result of execution `f` on background thread
+
+    :param: f function, which result will become value of returned Future
+
+    :returns: a new Future<T, E>
+    
+*/
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
     return future(ExecutionContext.DefaultPureOperationContext, f)
 }
 
+/**
+
+    Creates a new `Future<T, E>` whose value will be
+    result of execution `f` on `ec` execution context
+
+    :param: ec execution context of given function
+    :param: f function, which result will become value of returned Future
+
+    :returns: a new Future<T, E>
+    
+*/
 public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Future<T, E> {
     let p = Promise<T, E>()
     
@@ -25,6 +46,20 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Fut
 }
 
 // MARK:- Future
+
+/**
+
+    Represents a value that will be available in the future
+
+    This value is usually result of some computation or network request.
+
+    May completes with either `Success` and `Error` cases
+
+    This is convenient way to use `Deferred<Result<T, E>>`
+
+    See also: `Deferred`
+
+*/
 
 public final class Future<T, E>: FutureType {
     
@@ -41,7 +76,8 @@ public final class Future<T, E>: FutureType {
     private let deferred: Deferred<ResultType>
     
     // MARK:- Public properties
-    
+
+    /// Value of Future
     public private(set) var value: ResultType? {
         set {
             deferred.setValue(newValue!)
@@ -50,7 +86,8 @@ public final class Future<T, E>: FutureType {
             return deferred.value
         }
     }
-    
+
+    /// Shows if Future is completed
     public var isCompleted: Bool {
         return deferred.isCompleted
     }
@@ -62,26 +99,68 @@ public final class Future<T, E>: FutureType {
     }
     
     // MARK:- Class methods
+
+    /**
     
+        Returns a new immediately completed `Future<T, E>` with given `value`
+
+        :param: value value which Future will have
+
+        :returns: a new Future
+
+    */
     public class func succeed(value: T) -> Future {
         return Future(Result(value))
     }
-    
+
+
+    /**
+
+        Returns a new immediately completed `Future<T, E>` with given `error`
+
+        :param: error error which Future will have
+
+        :returns: a new Future
+        
+    */
     public class func failed(error: E) -> Future {
         return Future(Result(error))
     }
     
     // MARK:- FutureType methods
-    
+
+    /// Creates a new Future with given Result<T, E>
     public init(_ x: ResultType) {
         self.deferred = Deferred(x)
     }
-    
+
+
+    /**
+
+        Register a callback which will be called when Future is completed
+
+        :param: ec execution context of callback
+        :param: c callback
+
+        :returns: Returns itself for chaining operations
+        
+    */
     public func onComplete(ec: ExecutionContextType, _ c: CompleteCallback) -> Future {
         deferred.onComplete(ec, c)
         return self
     }
-    
+
+
+    /**
+
+        Register a callback which will be called when Future is completed with value
+
+        :param: ec execution context of callback
+        :param: c callback
+
+        :returns: Returns itself for chaining operations
+        
+    */
     public func onSuccess(ec: ExecutionContextType, _ c: SuccessCallback) -> Future {
         return onComplete(ec) {
             switch $0 {
@@ -93,6 +172,16 @@ public final class Future<T, E>: FutureType {
         }
     }
     
+    /**
+
+        Register a callback which will be called when Future is completed with error
+
+        :param: ec execution context of callback
+        :param: c callback
+
+        :returns: Returns itself for chaining operations
+        
+    */
     public func onError(ec: ExecutionContextType, _ c: ErrorCallback) -> Future {
         return onComplete(ec) {
             switch $0 {
@@ -106,14 +195,41 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- Convenience methods
     
+    /**
+
+        Register a callback which will be called on a main thread when Future is completed
+
+        :param: c callback
+
+        :returns: Returns itself for chaining operations
+        
+    */
     public func onComplete(c: CompleteCallback) -> Future {
         return onComplete(ExecutionContext.DefaultSideEffectsContext, c)
     }
     
+    /**
+
+        Register a callback which will be called on a main thread when Future is completed with value
+
+        :param: c callback
+
+        :returns: Returns itself for chaining operations
+        
+    */
     public func onSuccess(c: SuccessCallback) -> Future {
         return onSuccess(ExecutionContext.DefaultSideEffectsContext, c)
     }
     
+    /**
+
+        Register a callback which will be called on a main thread when Future is completed with error
+
+        :param: c callback
+
+        :returns: Returns itself for chaining operations
+        
+    */
     public func onError(c: ErrorCallback) -> Future {
         return onError(ExecutionContext.DefaultSideEffectsContext, c)
     }
