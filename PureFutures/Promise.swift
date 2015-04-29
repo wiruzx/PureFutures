@@ -36,11 +36,11 @@ public struct Promise<T, E> {
     }
     
     public func success(value: T) {
-        complete(Result(value))
+        complete(.success(value))
     }
     
     public func error(error: E) {
-        complete(Result(error))
+        complete(.error(error))
     }
     
     // MARK:- Other methods
@@ -55,11 +55,11 @@ public struct Promise<T, E> {
     }
     
     public func trySuccess(value: T) -> Bool {
-        return tryComplete(Result(value))
+        return tryComplete(.success(value))
     }
     
     public func tryError(error: E) -> Bool {
-        return tryComplete(Result(error))
+        return tryComplete(.error(error))
     }
     
     public func tryCompleteWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {

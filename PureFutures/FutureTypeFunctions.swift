@@ -56,7 +56,7 @@ public func flatMap<F: FutureType, F2: FutureType where F.ErrorType == F2.ErrorT
         case .Success(let box):
             p.completeWith(f(box.value))
         case .Error(let box):
-            p.complete(Result(box.value))
+            p.complete(.error(box.value))
         }
     }
     return p.future
@@ -97,7 +97,7 @@ public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(f
 }
 
 public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(fxs: S, initial: T, combine: (T, S.Generator.Element.SuccessType) -> T)(_ ec: ExecutionContextType) -> Future<T, S.Generator.Element.ErrorType> {
-    return reduce(fxs, Future(Result(initial))) { acc, futureValue in
+    return reduce(fxs, Future(.success(initial))) { acc, futureValue in
         flatMap(futureValue) { value in
             map(acc) { combine($0, value)}(ec)
         }(ec)

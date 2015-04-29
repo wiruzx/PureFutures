@@ -19,12 +19,16 @@ public enum Result<T, E> {
             return nil
         }
     }
+}
+
+public extension Result {
     
-    public init(_ value: T) {
-        self = .Success(Box(value))
+    static func success(value: T) -> Result {
+        return Result.Success(Box(value))
     }
     
-    public init(_ error: E) {
-        self = .Error(Box(error))
+    static func error(error: E) -> Result {
+        return Result.Error(Box(error))
     }
+
 }

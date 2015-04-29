@@ -64,11 +64,11 @@ public final class Future<T, E>: FutureType {
     // MARK:- Class methods
     
     public class func succeed(value: T) -> Future {
-        return Future(Result(value))
+        return Future(.success(value))
     }
     
     public class func failed(error: E) -> Future {
-        return Future(Result(error))
+        return Future(.error(error))
     }
     
     // MARK:- FutureType methods
