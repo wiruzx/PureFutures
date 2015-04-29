@@ -11,25 +11,29 @@ import Foundation
 // MARK:- deferred creation functions
 
 /**
-    Creates a new Deferred<T> which value become
+
+    Creates a new Deferred<T> whose value become
     result of execution `block` on background thread
 
     :param: block function, which result become value of Deferred
 
     :returns: a new Deferred<T>
+    
 */
 public func deferred<T>(block: () -> T) -> Deferred<T> {
     return deferred(ExecutionContext.DefaultPureOperationContext, block)
 }
 
 /**
-    Creates a new Deferred<T> which value become
+
+    Creates a new Deferred<T> whose value become
     result of execution `block` on `ec` execution context
 
     :param: ec execution context of block
     :param: block function, which result become value of Deferred
 
     :returns: a new Deferred<T>
+    
 */
 public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T> {
     let p = PurePromise<T>()
@@ -43,7 +47,7 @@ public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T>
 
 // MARK:- Deferred
 
-/// Represents value which will be available in the future.
+/// Represents a value that will be available in the future.
 public final class Deferred<T>: DeferredType {
     
     // MARK:- Type declarations
@@ -78,12 +82,14 @@ public final class Deferred<T>: DeferredType {
     }
     
     /**
+    
         Register an callback which will be called when Deferred completed
     
         :param: ec execution context of callback
         :param: c callback
     
         :returns: Returns itself for chaining operations
+        
     */
     public func onComplete(ec: ExecutionContextType, _ c: Callback) -> Deferred {
         
@@ -107,11 +113,13 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Convenience methods
     
     /**
+    
         Register an callback which will be called on main thread when Deferred completed
     
         :param: c callback
     
         :returns: Returns itself for chaining operations
+        
     */
     public func onComplete(c: Callback) -> Deferred {
         return onComplete(ExecutionContext.DefaultSideEffectsContext, c)
