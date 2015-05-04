@@ -8,14 +8,12 @@
 
 import typealias Foundation.NSTimeInterval
 
-public func ??<F: FutureType>(fx: F, @autoclosure x: () -> F.SuccessType) -> Deferred<F.SuccessType> {
-    let value = x()
-    return toDeferred(fx) { _ in value }(ExecutionContext.DefaultPureOperationContext)
+public func ??<F: FutureType>(fx: F, x: F.SuccessType) -> Deferred<F.SuccessType> {
+    return toDeferred(fx) { _ in x }(ExecutionContext.DefaultPureOperationContext)
 }
 
-public func ??<F: FutureType>(fx: F, @autoclosure x: () -> F) -> Future<F.SuccessType, F.ErrorType> {
-    let value = x()
-    return recoverWith(fx) { _ in value }(ExecutionContext.DefaultPureOperationContext)
+public func ??<F: FutureType>(fx: F, x: F) -> Future<F.SuccessType, F.ErrorType> {
+    return recoverWith(fx) { _ in x }(ExecutionContext.DefaultPureOperationContext)
 }
 
 public func andThen<F: FutureType>(fx: F, f: F.SuccessType -> Void)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
