@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
+/// Workaround for unimplemented IR generation for non-fixed multi-payload enum layout
 public struct Box<T> {
     
     private let storage: [T]
