@@ -274,7 +274,7 @@ public extension Future {
 
     */
     public func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
-        return PureFutures.andThen(self, f)(ec)
+        return PureFutures.andThen(f, ec)(self)
     }
     
     // MARK:- forced
@@ -300,7 +300,7 @@ public extension Future {
 
     */
     public func forced(interval: NSTimeInterval) -> ResultType? {
-        return PureFutures.forced(self, interval)
+        return PureFutures.forced(interval)(self)
     }
     
     // MARK:- map
@@ -332,7 +332,7 @@ public extension Future {
 
     */
     public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Future<U, E> {
-        return PureFutures.map(self, f)(ec)
+        return PureFutures.map(f, ec)(self)
     }
     
     // MARK:- transform
@@ -368,7 +368,7 @@ public extension Future {
         :returns: a new Future
     */
     public func transform<T1, E1>(ec: ExecutionContextType, _ s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
-        return PureFutures.transform(self, s, e)(ec)
+        return PureFutures.transform(s, e, ec)(self)
     }
     
     // MARK:- flatMap
@@ -399,7 +399,7 @@ public extension Future {
 
     */
     public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Future<U, E>) -> Future<U, E> {
-        return PureFutures.flatMap(self, f)(ec)
+        return PureFutures.flatMap(f, ec)(self)
     }
     
     // MARK:- flatten
@@ -446,7 +446,7 @@ public extension Future {
 
     */
     public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Future<T?, E> {
-        return PureFutures.filter(self, p)(ec)
+        return PureFutures.filter(p, ec)(self)
     }
     
     // MARK:- zip
@@ -501,7 +501,7 @@ public extension Future {
 
     */
     public func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
-        return PureFutures.recover(self, r)(ec)
+        return PureFutures.recover(r, ec)(self)
     }
     
     // MARK:- recoverWith
@@ -535,7 +535,7 @@ public extension Future {
 
     */
     public func recoverWith(ec: ExecutionContextType, _ r: E -> Future) -> Future {
-        return PureFutures.recoverWith(self, r)(ec)
+        return PureFutures.recoverWith(r, ec)(self)
     }
     
     // MARK:- toDeferred
@@ -579,7 +579,7 @@ public extension Future {
 
     */
     public func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
-        return PureFutures.toDeferred(self, r)(ec)
+        return PureFutures.toDeferred(r, ec)(self)
     }
     
     // MARK:- reduce
@@ -616,7 +616,7 @@ public extension Future {
 
     */
     public class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
-        return PureFutures.reduce(fxs, initial, combine)(ec)
+        return PureFutures.reduce(initial, combine, ec)(fxs)
     }
     
     // MARK:- traverse
@@ -651,7 +651,7 @@ public extension Future {
 
     */
     public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
-        return PureFutures.traverse(xs, f)(ec)
+        return PureFutures.traverse(f, ec)(xs)
     }
     
     // MARK:- sequence

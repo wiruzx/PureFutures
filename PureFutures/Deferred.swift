@@ -175,7 +175,7 @@ public extension Deferred {
 
     */
     public func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
-        return PureFutures.andThen(self, f)(ec)
+        return PureFutures.andThen(f, ec)(self)
     }
     
     // MARK:- forced
@@ -202,7 +202,7 @@ public extension Deferred {
 
     */
     public func forced(interval: NSTimeInterval) -> T? {
-        return PureFutures.forced(self, interval)
+        return PureFutures.forced(interval)(self)
     }
     
     // MARK:- map
@@ -234,7 +234,7 @@ public extension Deferred {
 
     */
     public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
-        return PureFutures.map(self, f)(ec)
+        return PureFutures.map(f, ec)(self)
     }
     
     // MARK:- flatMap
@@ -267,7 +267,7 @@ public extension Deferred {
 
     */
     public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
-        return PureFutures.flatMap(self, f)(ec)
+        return PureFutures.flatMap(f, ec)(self)
     }
     
     // MARK:- flatten
@@ -315,7 +315,7 @@ public extension Deferred {
 
     */
     public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
-        return PureFutures.filter(self, p)(ec)
+        return PureFutures.filter(p, ec)(self)
     }
     
     // MARK:- zip
@@ -366,7 +366,7 @@ public extension Deferred {
 
     */
     public class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
-        return PureFutures.reduce(dxs, initial, combine)(ec)
+        return PureFutures.reduce(initial, combine, ec)(dxs)
     }
     
     // MARK:- traverse
@@ -400,7 +400,7 @@ public extension Deferred {
 
     */
     public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
-        return PureFutures.traverse(xs, f)(ec)
+        return PureFutures.traverse(f, ec)(xs)
     }
     
     // MARK:- sequence
