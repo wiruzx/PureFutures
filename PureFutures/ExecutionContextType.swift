@@ -7,5 +7,6 @@
 //
 
 public protocol ExecutionContextType {
+    /// Should execute a task in some context
     func execute(task: () -> Void)
 }

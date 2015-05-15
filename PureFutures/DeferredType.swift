@@ -10,7 +10,21 @@ public protocol DeferredType {
     
     typealias Element
     
+    /**
+        Initialize a new Deferred with given element
+    
+        :param: x an Element
+    */
     init(_ x: Element)
+    
+    /**
+        Register an callback which should be called when Deferred completed
+    
+        :param: ec execution context of callback
+        :param: c callback
+    
+        :returns: Returns itself for chaining operations
+    */
     func onComplete(ec: ExecutionContextType, _ c: Element -> Void) -> Self
     
 }
