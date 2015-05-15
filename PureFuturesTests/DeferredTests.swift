@@ -272,6 +272,16 @@ class DeferredTests: XCTestCase {
     
     // MARK:- flatten
     
+    func testFlattenTemp() {
+        
+        let deferred = Deferred(Deferred(42))
+        
+        func f(def: Deferred<Int>) -> Int {
+            return def.forced()
+        }
+        
+    }
+    
     func testFlatten() {
         
         let deferred = Deferred(Deferred(42))
@@ -416,7 +426,7 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithSuccess() {
         
-        let def = Deferred(Result<Int, Void>(42))
+        let def = Deferred(Result<Int, Void>.success(42))
         
         let future = Deferred.toFuture(def)
         
@@ -432,7 +442,7 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithError() {
         
-        let def = Deferred(Result<Int, String>("Error"))
+        let def = Deferred(Result<Int, String>.error("Error"))
 
         let future = Deferred.toFuture(def)
         
