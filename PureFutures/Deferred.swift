@@ -149,94 +149,286 @@ public extension Deferred {
     
     // MARK:- andThen
     
+    /**
+
+        Applies the side-effecting function that will be executed on main thread
+        to the result of this deferred, and returns a new deferred with the result of this deferred
+
+        :param: f side-effecting function that will be applied to result of deferred
+
+        :returns: a new Deferred
+
+    */
     public func andThen(f: T -> Void) -> Deferred {
         return andThen(ExecutionContext.DefaultSideEffectsContext, f)
     }
     
+    /**
+
+        Applies the side-effecting function to the result of this deferred,
+        and returns a new deferred with the result of this deferred
+
+        :param: ec execution context of `f` function
+        :param: f side-effecting function that will be applied to result of deferred
+
+        :returns: a new Deferred
+
+    */
     public func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
         return PureFutures.andThen(self, f)(ec)
     }
     
     // MARK:- forced
     
+    /**
+
+        Stops the current thread, until value of deferred becomes available
+
+        :returns: value of deferred
+
+    */
     public func forced() -> T {
         return PureFutures.forced(self)
     }
     
+    
+    /**
+
+        Stops the currend thread, and wait for `inverval` seconds until value of deferred becoms available
+
+        :param: inverval number of seconds to wait
+
+        :returns: Value of deferred or nil if it hasn't become available yet
+
+    */
     public func forced(interval: NSTimeInterval) -> T? {
         return PureFutures.forced(self, interval)
     }
     
     // MARK:- map
     
+    /**
+
+        Creates a new deferred by applying a function `f` that 
+        will be executed on global queue to the result of this deferred.
+    
+        Do not put any UI-related code into `f` function
+
+        :param: f Function that will be applied to result of deferred
+
+        :returns: a new Deferred
+
+    */
     public func map<U>(f: T -> U) -> Deferred<U> {
         return map(ExecutionContext.DefaultPureOperationContext, f)
     }
     
+    /**
+
+        Creates a new deferred by applying a function `f` to the result of this deferred.
+
+        :param: ec Execution context of `f`
+        :param: f Function that will be applied to result of deferred
+
+        :returns: a new Deferred
+
+    */
     public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
         return PureFutures.map(self, f)(ec)
     }
     
     // MARK:- flatMap
     
+    /**
+
+        Creates a new deferred by applying a function that will be executed on global queue
+        to the result of this deferred, and returns the result of the function as the new deferred.
+    
+        Do not put any UI-related code into `f` function
+
+        :param: f Funcion that will be applied to result of deferred
+
+        :returns: a new Deferred
+
+    */
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
         return flatMap(ExecutionContext.DefaultPureOperationContext, f)
     }
 
+    /**
+
+        Creates a new deferred by applying a function to the result of this deferred, 
+        and returns the result of the function as the new deferred.
+
+        :param: ec Execution context of `f`
+        :param: f Funcion that will be applied to result of deferred
+
+        :returns: a new Deferred
+
+    */
     public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
         return PureFutures.flatMap(self, f)(ec)
     }
     
     // MARK:- flatten
     
+    /**
+
+        Removes one level of nesting of Deferred
+
+        :param: dx Deferred
+
+        :returns: flattened Deferred
+
+    */
     public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
         return PureFutures.flatten(dx)
     }
     
     // MARK:- filter
 
+    /**
+
+        Creates a new Deferred by filtering the value of the current Deferred 
+        with a predicate `p` which will be executed on global queue
+
+        Do not put any UI-related code into `p` function
+
+        :param: ec Execution context of `p`
+        :param: p Predicate function
+
+        :returns: A new Deferred with value or nil
+
+    */
     public func filter(p: T -> Bool) -> Deferred<T?> {
         return filter(ExecutionContext.DefaultPureOperationContext, p)
     }
     
+    /**
+
+        Creates a new Deferred by filtering the value of the current Deferred with a predicate `p`
+
+        :param: ec Execution context of `p`
+        :param: p Predicate function
+
+        :returns: A new Deferred with value or nil
+
+    */
     public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
         return PureFutures.filter(self, p)(ec)
     }
     
     // MARK:- zip
     
+    /**
+
+        Zips two deferred together and returns a new Deferred which contains a tuple of two elements
+
+        :param: dx Another deferred
+
+        :returns: Deferred with resuls of two deferreds
+
+    */
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
         return PureFutures.zip(self, dx)
     }
     
     // MARK:- reduce
     
+    /**
+
+        Reduces the elements of sequence of deferreds using the specified reducing function `combine`
+        which will be executed on global queue
+
+        Do not put any UI-related code into `combine` function
+
+        :param: dxs Sequence of Deferred
+        :param: initial Initial value that will be passed as first argument in `combine` function
+        :param: combine reducing function
+
+        :returns: Deferred which will contain result of reducing sequence of deferreds
+
+    */
     public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         return reduce(ExecutionContext.DefaultPureOperationContext, dxs, initial, combine)
     }
     
+    /**
+
+        Reduces the elements of sequence of deferreds using the specified reducing function `combine`
+
+        :param: ec Execution context of `combine`
+        :param: dxs Sequence of Deferred
+        :param: initial Initial value that will be passed as first argument in `combine` function
+        :param: combine reducing function
+
+        :returns: Deferred which will contain result of reducing sequence of deferreds
+
+    */
     public class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         return PureFutures.reduce(dxs, initial, combine)(ec)
     }
     
     // MARK:- traverse
     
+    /**
+
+        Transforms a sequence of values into Deferred of array of this values using the provided function `f`
+        which will be executed on global queue
+
+        Do not put any UI-related code into `f` function
+
+        :param: xs Sequence of values
+        :param: f Function for transformation values into Deferred
+
+        :returns: a new Deferred
+
+    */
     public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
         return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
     }
     
+    /**
+
+        Transforms a sequence of values into Deferred of array of this values using the provided function `f`
+
+        :param: ec Execution context of `f`
+        :param: xs Sequence of values
+        :param: f Function for transformation values into Deferred
+
+        :returns: a new Deferred
+
+    */
     public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
         return PureFutures.traverse(xs, f)(ec)
     }
     
     // MARK:- sequence
     
+    /**
+
+        Transforms a sequnce of Deferreds into Deferred of array of values:
+
+        :param: dxs Sequence of Deferreds
+
+        :returns: Deferred with array of values
+
+    */
     public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
         return PureFutures.sequence(dxs)
     }
     
     // MARK:- toFuture
     
+    /**
+
+        Transforms Deferred into Future
+
+        :param: dx Deferred
+
+        :returns: a new Future with result of Deferred
+
+    */
     public class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {
         return PureFutures.toFuture(dx)
     }
