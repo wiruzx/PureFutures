@@ -300,7 +300,7 @@ public extension Future {
 
     */
     public func forced(interval: NSTimeInterval) -> ResultType? {
-        return PureFutures.forced(self, interval)
+        return PureFutures.forced(interval)(self)
     }
     
     // MARK:- map
