@@ -19,7 +19,7 @@ import typealias Foundation.NSTimeInterval
 
 */
 public func ??<F: FutureType>(fx: F, x: F.SuccessType) -> Deferred<F.SuccessType> {
-    return toDeferred(fx) { _ in x }(ExecutionContext.DefaultPureOperationContext)
+    return toDeferred({ _ in x }, ExecutionContext.DefaultPureOperationContext)(fx)
 }
 
 /**
@@ -35,7 +35,7 @@ public func ??<F: FutureType>(fx: F, x: F.SuccessType) -> Deferred<F.SuccessType
 
 */
 public func ??<F: FutureType>(fx: F, x: F) -> Future<F.SuccessType, F.ErrorType> {
-    return recoverWith(fx) { _ in x }(ExecutionContext.DefaultPureOperationContext)
+    return recoverWith({ _ in x }, ExecutionContext.DefaultPureOperationContext)(fx)
 }
 
 /**
@@ -43,14 +43,15 @@ public func ??<F: FutureType>(fx: F, x: F) -> Future<F.SuccessType, F.ErrorType>
     Applies the side-effecting function to the success result of this future,
     and returns a new future with the result of this future
 
-    :param: fx Future
     :param: f side-effecting function that will be applied to result of `fx`
     :param: ec execution context of `f` function
+
+    :param: fx Future
 
     :returns: a new Future
 
 */
-public func andThen<F: FutureType>(fx: F, f: F.SuccessType -> Void)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
+public func andThen<F: FutureType>(f: F.SuccessType -> Void, ec: ExecutionContextType)(_ fx: F) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
@@ -68,29 +69,31 @@ public func andThen<F: FutureType>(fx: F, f: F.SuccessType -> Void)(_ ec: Execut
 
     Creates a new future by applying a function `f` to the success result of this future.
 
-    :param: fx Future
     :param: f Function that will be applied to success result of `fx`
     :param: ec Execution context of `f`
+
+    :param: Future
 
     :returns: a new Future
 
 */
-public func map<F: FutureType, T>(fx: F, f: F.SuccessType -> T)(_ ec: ExecutionContextType) -> Future<T, F.ErrorType> {
-    return transform(fx, f, id)(ec)
+public func map<F: FutureType, T>(f: F.SuccessType -> T, ec: ExecutionContextType) -> F -> Future<T, F.ErrorType> {
+    return transform(f, id, ec)
 }
 
 /**
 
     Creates a new future by applying the 's' function to the successful result of this future, or the 'e' function to the failed result.
 
-    :param: fx Future
     :param: s Function that will be applied to success result of `fx`
     :param: e Function that will be applied to failed result of `fx`
     :param: ec Execution context of `s` and `e` functions
 
+    :param: fx Future
+
     :returns: a new Future
 */
-public func transform<F: FutureType, S, E>(fx: F, s: F.SuccessType -> S, e: F.ErrorType -> E)(_ ec: ExecutionContextType) -> Future<S, E> {
+public func transform<F: FutureType, S, E>(s: F.SuccessType -> S, e: F.ErrorType -> E, ec: ExecutionContextType)(_ fx: F) -> Future<S, E> {
     let p = Promise<S, E>()
     fx.onComplete(ec) {
         switch $0 {
@@ -107,14 +110,15 @@ public func transform<F: FutureType, S, E>(fx: F, s: F.SuccessType -> S, e: F.Er
 
     Creates a new future by applying a function to the success result of this future, and returns the result of the function as the new future.
 
-    :param: fx Future
     :param: f Funcion that will be applied to success result of `fx`
     :param: ec Execution context of `f`
+
+    :param: fx Future
 
     :returns: a new Future
 
 */
-public func flatMap<F: FutureType, F2: FutureType where F.ErrorType == F2.ErrorType>(fx: F, f: F.SuccessType -> F2)(_ ec: ExecutionContextType) -> Future<F2.SuccessType, F2.ErrorType> {
+public func flatMap<F: FutureType, F2: FutureType where F.ErrorType == F2.ErrorType>(f: F.SuccessType -> F2, ec: ExecutionContextType)(_ fx: F) -> Future<F2.SuccessType, F2.ErrorType> {
     let p = Promise<F2.SuccessType, F2.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
@@ -159,15 +163,16 @@ public func flatten<F: FutureType, IF: FutureType where F.SuccessType == IF, F.E
 
     Creates a new Future by filtering the value of the current Future with a predicate `p`
 
-    :param: fx Future
     :param: p Predicate function
     :param: ec Execution context of `p`
+
+    :param: Future
 
     :returns: A new Future with value or nil
 
 */
-public func filter<F: FutureType>(fx: F, p: F.SuccessType -> Bool)(_ ec: ExecutionContextType) -> Future<F.SuccessType?, F.ErrorType> {
-    return map(fx) { x in p(x) ? x : nil }(ec)
+public func filter<F: FutureType>(p: F.SuccessType -> Bool, ec: ExecutionContextType) -> F -> Future<F.SuccessType?, F.ErrorType> {
+    return map({ x in p(x) ? x : nil }, ec)
 }
 
 /**
@@ -184,30 +189,31 @@ public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(f
     
     let ec = ExecutionContext.DefaultPureOperationContext
     
-    return flatMap(fa) { a in
-        map(fb) { b in
+    return flatMap({ a in
+        map({ b in
             (a, b)
-        }(ec)
-    }(ec)
+        }, ec)(fb)
+    }, ec)(fa)
 }
 
 /**
 
     Reduces the elements of sequence of futures using the specified reducing function `combine`
 
-    :param: fxs Sequence of Futures
     :param: initial Initial value that will be passed as first argument in `combine` function
     :param: combine reducing function
     :param: ec Execution context of `combine`
 
+    :param: fxs Sequence of Futures
+
     :returns: Future which will contain result of reducing sequence of futures
 
 */
-public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(fxs: S, initial: T, combine: (T, S.Generator.Element.SuccessType) -> T)(_ ec: ExecutionContextType) -> Future<T, S.Generator.Element.ErrorType> {
+public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(initial: T, combine: (T, S.Generator.Element.SuccessType) -> T, ec: ExecutionContextType)(_ fxs: S) -> Future<T, S.Generator.Element.ErrorType> {
     return reduce(fxs, Future(.success(initial))) { acc, futureValue in
-        flatMap(futureValue) { value in
-            map(acc) { combine($0, value)}(ec)
-        }(ec)
+        flatMap({ value in
+            map({ combine($0, value) }, ec)(acc)
+        }, ec)(futureValue)
     }
 }
 
@@ -215,15 +221,16 @@ public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(fxs
 
     Transforms a sequence of values into Future of array of this values using the provided function `f`
 
-    :param: xs Sequence of values
     :param: f Function for transformation values into Future
     :param: ec Execution context of `f`
+
+    :param: xs Sequence of values
 
     :returns: a new Future
 
 */
-public func traverse<S: SequenceType, F: FutureType>(xs: S, f: S.Generator.Element -> F)(_ ec: ExecutionContextType) -> Future<[F.SuccessType], F.ErrorType> {
-    return reduce(map(xs, f), []) { $0 + [$1] }(ec)
+public func traverse<S: SequenceType, F: FutureType>(f: S.Generator.Element -> F, ec: ExecutionContextType)(_ xs: S) -> Future<[F.SuccessType], F.ErrorType> {
+    return reduce([], { $0 + [$1] }, ec)(map(xs, f))
 }
 
 /**
@@ -238,7 +245,7 @@ public func traverse<S: SequenceType, F: FutureType>(xs: S, f: S.Generator.Eleme
 
 */
 public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs: S) -> Future<[S.Generator.Element.SuccessType], S.Generator.Element.ErrorType> {
-    return traverse(fxs, id)(ExecutionContext.DefaultPureOperationContext)
+    return traverse(id, ExecutionContext.DefaultPureOperationContext)(fxs)
 }
 
 /**
@@ -248,14 +255,15 @@ public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs:
     
     See: `toDeferred`
 
-    :param: fx Future
     :param: r Recover function
     :param: ec Execution context of `r` function
+
+    :param: fx Future
 
     :returns: a new Future that will never fail
 
 */
-public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
+public func recover<F: FutureType>(r: F.ErrorType -> F.SuccessType, ec: ExecutionContextType)(_ fx: F) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
@@ -272,14 +280,15 @@ public func recover<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec:
 
     Creates a new future that will handle fail results that this future might contain by assigning it a value of another future.
 
-    :param: fx Future
     :param: r Recover function
     :param: ec Execition context of `r` function
+
+    :param: fx Future
 
     :returns: a new Future
 
 */
-public func recoverWith<F: FutureType>(fx: F, r: F.ErrorType -> F)(_ ec: ExecutionContextType) -> Future<F.SuccessType, F.ErrorType> {
+public func recoverWith<F: FutureType>(r: F.ErrorType -> F, ec: ExecutionContextType)(_ fx: F) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
@@ -313,14 +322,15 @@ public func toDeferred<F: FutureType>(fx: F) -> Deferred<Result<F.SuccessType, F
 
     Transforms Future<T, E> into Deferred<T> and handles error case with `r` function
 
-    :param: fx Future
     :param: r Recover function
     :param: ec Execution context of `r` function
+
+    :param: fx Future
 
     :returns: Deferred with success value of `fx` or result of `r`
 
 */
-public func toDeferred<F: FutureType>(fx: F, r: F.ErrorType -> F.SuccessType)(_ ec: ExecutionContextType) -> Deferred<F.SuccessType> {
+public func toDeferred<F: FutureType>(r: F.ErrorType -> F.SuccessType, ec: ExecutionContextType)(_ fx: F) -> Deferred<F.SuccessType> {
     let p = PurePromise<F.SuccessType>()
     fx.onComplete(ec) {
         switch $0 {
