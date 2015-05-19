@@ -160,7 +160,7 @@ public extension Deferred {
 
     */
     public func andThen(f: T -> Void) -> Deferred {
-        return andThen(ExecutionContext.DefaultSideEffectsContext, f)
+        return PureFutures.andThen(f)(self)
     }
     
     /**
@@ -220,7 +220,7 @@ public extension Deferred {
 
     */
     public func map<U>(f: T -> U) -> Deferred<U> {
-        return map(ExecutionContext.DefaultPureOperationContext, f)
+        return PureFutures.map(f)(self)
     }
     
     /**
@@ -252,7 +252,7 @@ public extension Deferred {
 
     */
     public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
-        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
+        return PureFutures.flatMap(f)(self)
     }
 
     /**
@@ -301,7 +301,7 @@ public extension Deferred {
 
     */
     public func filter(p: T -> Bool) -> Deferred<T?> {
-        return filter(ExecutionContext.DefaultPureOperationContext, p)
+        return PureFutures.filter(p)(self)
     }
     
     /**
@@ -330,7 +330,7 @@ public extension Deferred {
 
     */
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
-        return PureFutures.zip(self, dx)
+        return PureFutures.zip(self)(dx)
     }
     
     // MARK:- reduce
@@ -350,7 +350,7 @@ public extension Deferred {
 
     */
     public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
-        return reduce(ExecutionContext.DefaultPureOperationContext, dxs, initial, combine)
+        return PureFutures.reduce(initial, combine)(dxs)
     }
     
     /**
@@ -385,7 +385,7 @@ public extension Deferred {
 
     */
     public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
-        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
+        return PureFutures.traverse(f)(xs)
     }
     
     /**

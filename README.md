@@ -1,6 +1,5 @@
 #PureFutures
 
-[![Build status](https://travis-ci.org/wiruzx/PureFutures.svg?branch=develop)](https://travis-ci.org/wiruzx/PureFutures)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 A simple Futures and Promises library.

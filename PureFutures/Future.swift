@@ -259,7 +259,7 @@ public extension Future {
 
     */
     public func andThen(f: T -> Void) -> Future {
-        return andThen(ExecutionContext.DefaultSideEffectsContext, f: f)
+        return PureFutures.andThen(f)(self)
     }
     
     /**
@@ -318,7 +318,7 @@ public extension Future {
 
     */
     public func map<U>(f: T -> U) -> Future<U, E> {
-        return map(ExecutionContext.DefaultPureOperationContext, f)
+        return PureFutures.map(f)(self)
     }
     
     /**
@@ -353,7 +353,7 @@ public extension Future {
         :returns: a new Future
     */
     public func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
-        return transform(ExecutionContext.DefaultPureOperationContext, s, e)
+        return PureFutures.transform(s, e)(self)
     }
     
     /**
@@ -384,7 +384,7 @@ public extension Future {
 
     */
     public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
-        return flatMap(ExecutionContext.DefaultPureOperationContext, f)
+        return PureFutures.flatMap(f)(self)
     }
     
     /**
@@ -432,7 +432,7 @@ public extension Future {
 
     */
     public func filter(p: T -> Bool) -> Future<T?, E> {
-        return filter(ExecutionContext.DefaultPureOperationContext, p)
+        return PureFutures.filter(p)(self)
     }
     
     /**
@@ -461,7 +461,7 @@ public extension Future {
 
     */
     public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
-        return PureFutures.zip(self, fx)
+        return PureFutures.zip(self)(fx)
     }
     
     // MARK:- recover
@@ -484,7 +484,7 @@ public extension Future {
 
     */
     public func recover(r: E -> T) -> Future {
-        return recover(ExecutionContext.DefaultPureOperationContext, r)
+        return PureFutures.recover(r)(self)
     }
     
     /**
@@ -521,7 +521,7 @@ public extension Future {
 
     */
     public func recoverWith(r: E -> Future) -> Future {
-        return recoverWith(ExecutionContext.DefaultPureOperationContext, r)
+        return PureFutures.recoverWith(r)(self)
     }
     
     /**
@@ -565,7 +565,7 @@ public extension Future {
 
     */
     public func toDeferred(r: E -> T) -> Deferred<T> {
-        return toDeferred(ExecutionContext.DefaultPureOperationContext, r)
+        return PureFutures.toDeferred(r)(self)
     }
     
     /**
@@ -600,7 +600,7 @@ public extension Future {
 
     */
     public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
-        return reduce(ExecutionContext.DefaultPureOperationContext, fxs, initial, combine)
+        return PureFutures.reduce(initial, combine)(fxs)
     }
     
     /**
@@ -636,7 +636,7 @@ public extension Future {
 
     */
     public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
-        return traverse(ExecutionContext.DefaultPureOperationContext, xs, f)
+        return PureFutures.traverse(f)(xs)
     }
     
     /**

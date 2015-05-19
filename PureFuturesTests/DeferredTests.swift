@@ -9,7 +9,7 @@
 import XCTest
 
 import class PureFutures.Deferred
-import struct PureFutures.PurePromise
+import class PureFutures.PurePromise
 import enum PureFutures.Result
 import func PureFutures.deferred
 import enum PureFutures.ExecutionContext
