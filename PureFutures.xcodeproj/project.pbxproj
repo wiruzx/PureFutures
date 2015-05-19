@@ -20,6 +20,22 @@
 		E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
 		E6267DE21AA280940068A0A0 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */; };
+		E64024861B0BCE8200095A7D /* DeferredType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */; };
+		E64024871B0BCE8200095A7D /* FutureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A01A8AE53B0094A4D4 /* FutureType.swift */; };
+		E64024881B0BCE8200095A7D /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
+		E64024891B0BCE8200095A7D /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
+		E640248A1B0BCE8200095A7D /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
+		E640248B1B0BCE8200095A7D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72901A8AD1750094A4D4 /* Future.swift */; };
+		E640248C1B0BCE8200095A7D /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
+		E640248D1B0BCE8200095A7D /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
+		E640248E1B0BCE8200095A7D /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
+		E640248F1B0BCE8200095A7D /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
+		E64024901B0BCE8200095A7D /* dispatch_queue_t+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */; };
+		E64024911B0BCE8200095A7D /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
+		E64024921B0BCE8200095A7D /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
+		E64024931B0BCE8200095A7D /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
+		E64024941B0BCE8200095A7D /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
+		E64024951B0BCE8200095A7D /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
@@ -56,6 +72,7 @@
 		E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+ExecutionContext.swift"; sourceTree = "<group>"; };
 		E6267DE11AA280940068A0A0 /* Await.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Await.swift; sourceTree = "<group>"; };
 		E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTests.swift; sourceTree = "<group>"; };
+		E640246D1B0BCE4200095A7D /* PureFuturesOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureFuturesOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FBE1A86BF41001B514C /* PureFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FC21A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -73,6 +90,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E64024691B0BCE4200095A7D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E65E6FBA1A86BF41001B514C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,6 +129,7 @@
 			children = (
 				E65E6FBE1A86BF41001B514C /* PureFutures.framework */,
 				E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */,
+				E640246D1B0BCE4200095A7D /* PureFuturesOSX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -214,6 +239,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		E640246A1B0BCE4200095A7D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E65E6FBB1A86BF41001B514C /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +256,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		E640246C1B0BCE4200095A7D /* PureFuturesOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E64024841B0BCE4300095A7D /* Build configuration list for PBXNativeTarget "PureFuturesOSX" */;
+			buildPhases = (
+				E64024681B0BCE4200095A7D /* Sources */,
+				E64024691B0BCE4200095A7D /* Frameworks */,
+				E640246A1B0BCE4200095A7D /* Headers */,
+				E640246B1B0BCE4200095A7D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PureFuturesOSX;
+			productName = PureFuturesOSX;
+			productReference = E640246D1B0BCE4200095A7D /* PureFuturesOSX.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		E65E6FBD1A86BF41001B514C /* PureFutures */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E65E6FD41A86BF41001B514C /* Build configuration list for PBXNativeTarget "PureFutures" */;
@@ -269,6 +319,9 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Victor Shamanov";
 				TargetAttributes = {
+					E640246C1B0BCE4200095A7D = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
 					E65E6FBD1A86BF41001B514C = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -290,12 +343,20 @@
 			projectRoot = "";
 			targets = (
 				E65E6FBD1A86BF41001B514C /* PureFutures */,
+				E640246C1B0BCE4200095A7D /* PureFuturesOSX */,
 				E65E6FC81A86BF41001B514C /* PureFuturesTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E640246B1B0BCE4200095A7D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E65E6FBC1A86BF41001B514C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -313,6 +374,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E64024681B0BCE4200095A7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E64024861B0BCE8200095A7D /* DeferredType.swift in Sources */,
+				E64024871B0BCE8200095A7D /* FutureType.swift in Sources */,
+				E64024881B0BCE8200095A7D /* ExecutionContextType.swift in Sources */,
+				E64024891B0BCE8200095A7D /* Deferred.swift in Sources */,
+				E640248A1B0BCE8200095A7D /* PurePromise.swift in Sources */,
+				E640248B1B0BCE8200095A7D /* Future.swift in Sources */,
+				E640248C1B0BCE8200095A7D /* Promise.swift in Sources */,
+				E640248D1B0BCE8200095A7D /* DeferredTypeFunctions.swift in Sources */,
+				E640248E1B0BCE8200095A7D /* FutureTypeFunctions.swift in Sources */,
+				E640248F1B0BCE8200095A7D /* ExecutionContext.swift in Sources */,
+				E64024901B0BCE8200095A7D /* dispatch_queue_t+ExecutionContext.swift in Sources */,
+				E64024911B0BCE8200095A7D /* NSOperationQueue+ExecutionContext.swift in Sources */,
+				E64024921B0BCE8200095A7D /* Box.swift in Sources */,
+				E64024931B0BCE8200095A7D /* Result.swift in Sources */,
+				E64024941B0BCE8200095A7D /* Await.swift in Sources */,
+				E64024951B0BCE8200095A7D /* Other.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E65E6FB91A86BF41001B514C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -361,6 +445,55 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		E64024801B0BCE4300095A7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/PureFutures/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_MODULE_NAME = PureFutures;
+				PRODUCT_NAME = PureFutures;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E64024811B0BCE4300095A7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/PureFutures/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_MODULE_NAME = PureFutures;
+				PRODUCT_NAME = PureFutures;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		E65E6FD21A86BF41001B514C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -514,6 +647,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E64024841B0BCE4300095A7D /* Build configuration list for PBXNativeTarget "PureFuturesOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E64024801B0BCE4300095A7D /* Debug */,
+				E64024811B0BCE4300095A7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		E65E6FB81A86BF41001B514C /* Build configuration list for PBXProject "PureFutures" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
