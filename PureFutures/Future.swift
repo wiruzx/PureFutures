@@ -461,7 +461,7 @@ public extension Future {
 
     */
     public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
-        return PureFutures.zip(self, fx)
+        return PureFutures.zip(self)(fx)
     }
     
     // MARK:- recover

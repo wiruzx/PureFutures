@@ -330,7 +330,7 @@ public extension Deferred {
 
     */
     public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
-        return PureFutures.zip(self, dx)
+        return PureFutures.zip(self)(dx)
     }
     
     // MARK:- reduce

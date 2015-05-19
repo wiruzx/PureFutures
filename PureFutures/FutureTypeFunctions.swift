@@ -180,12 +180,13 @@ public func filter<F: FutureType>(p: F.SuccessType -> Bool, _ ec: ExecutionConte
     Zips two future together and returns a new Future which success result contains a tuple of two elements
 
     :param: fa First future
+
     :param: fb Second future
 
     :returns: Future with resuls of two futures
 
 */
-public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(fa: F, fb: T) -> Future<(F.SuccessType, T.SuccessType), F.ErrorType> {
+public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(fa: F)(_ fb: T) -> Future<(F.SuccessType, T.SuccessType), F.ErrorType> {
     
     let ec = ExecutionContext.DefaultPureOperationContext
     

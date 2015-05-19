@@ -138,12 +138,13 @@ public func filter<D: DeferredType>(p: D.Element -> Bool, _ ec: ExecutionContext
     Zips two deferred together and returns a new Deferred which contains a tuple of two elements
 
     :param: da First deferred
+
     :param: db Second deferred
 
     :returns: Deferred with resuls of two deferreds
 
 */
-public func zip<DA: DeferredType, DB: DeferredType>(da: DA, db: DB) -> Deferred<(DA.Element, DB.Element)> {
+public func zip<DA: DeferredType, DB: DeferredType>(da: DA)(_ db: DB) -> Deferred<(DA.Element, DB.Element)> {
     
     let ec = ExecutionContext.DefaultPureOperationContext
     
