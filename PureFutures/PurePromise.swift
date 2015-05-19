@@ -13,7 +13,7 @@
     Allows you to complete `Deferred` that it holds
 
 */
-public struct PurePromise<T> {
+public final class PurePromise<T> {
     
     // MARK:- Public properties
     

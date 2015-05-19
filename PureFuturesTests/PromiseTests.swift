@@ -8,7 +8,7 @@
 
 import XCTest
 
-import struct PureFutures.Promise
+import class PureFutures.Promise
 import enum PureFutures.Result
 import enum PureFutures.ExecutionContext
 import class PureFutures.Future

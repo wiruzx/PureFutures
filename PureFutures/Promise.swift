@@ -13,7 +13,7 @@
     Allows you complete `Future` that it holds
 
 */
-public struct Promise<T, E> {
+public final class Promise<T, E> {
     
     // MARK:- Type declarations
     
