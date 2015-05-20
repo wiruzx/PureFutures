@@ -159,7 +159,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func andThen(f: T -> Void) -> Deferred {
+    func andThen(f: T -> Void) -> Deferred {
         return PureFutures.andThen(f)(self)
     }
     
@@ -174,7 +174,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
+    func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
         return PureFutures.andThen(f, ec)(self)
     }
     
@@ -187,7 +187,7 @@ public extension Deferred {
         :returns: value of deferred
 
     */
-    public func forced() -> T {
+    func forced() -> T {
         return PureFutures.forced(self)
     }
     
@@ -201,7 +201,7 @@ public extension Deferred {
         :returns: Value of deferred or nil if it hasn't become available yet
 
     */
-    public func forced(interval: NSTimeInterval) -> T? {
+    func forced(interval: NSTimeInterval) -> T? {
         return PureFutures.forced(interval)(self)
     }
     
@@ -219,7 +219,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func map<U>(f: T -> U) -> Deferred<U> {
+    func map<U>(f: T -> U) -> Deferred<U> {
         return PureFutures.map(f)(self)
     }
     
@@ -233,7 +233,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
+    func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
         return PureFutures.map(f, ec)(self)
     }
     
@@ -251,7 +251,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
+    func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
         return PureFutures.flatMap(f)(self)
     }
 
@@ -266,7 +266,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
+    func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
         return PureFutures.flatMap(f, ec)(self)
     }
     
@@ -281,7 +281,7 @@ public extension Deferred {
         :returns: flattened Deferred
 
     */
-    public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
+    class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
         return PureFutures.flatten(dx)
     }
     
@@ -300,7 +300,7 @@ public extension Deferred {
         :returns: A new Deferred with value or nil
 
     */
-    public func filter(p: T -> Bool) -> Deferred<T?> {
+    func filter(p: T -> Bool) -> Deferred<T?> {
         return PureFutures.filter(p)(self)
     }
     
@@ -314,7 +314,7 @@ public extension Deferred {
         :returns: A new Deferred with value or nil
 
     */
-    public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
+    func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
         return PureFutures.filter(p, ec)(self)
     }
     
@@ -329,7 +329,7 @@ public extension Deferred {
         :returns: Deferred with resuls of two deferreds
 
     */
-    public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
+    func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
         return PureFutures.zip(self)(dx)
     }
     
@@ -349,7 +349,7 @@ public extension Deferred {
         :returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+    class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         return PureFutures.reduce(initial, combine)(dxs)
     }
     
@@ -365,7 +365,7 @@ public extension Deferred {
         :returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+    class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         return PureFutures.reduce(initial, combine, ec)(dxs)
     }
     
@@ -384,7 +384,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+    class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
         return PureFutures.traverse(f)(xs)
     }
     
@@ -399,7 +399,7 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+    class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
         return PureFutures.traverse(f, ec)(xs)
     }
     
@@ -414,7 +414,7 @@ public extension Deferred {
         :returns: Deferred with array of values
 
     */
-    public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
+    class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
         return PureFutures.sequence(dxs)
     }
     
@@ -429,7 +429,7 @@ public extension Deferred {
         :returns: a new Future with result of Deferred
 
     */
-    public class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {
+    class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {
         return PureFutures.toFuture(dx)
     }
     

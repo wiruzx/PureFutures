@@ -258,7 +258,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func andThen(f: T -> Void) -> Future {
+    func andThen(f: T -> Void) -> Future {
         return PureFutures.andThen(f)(self)
     }
     
@@ -273,7 +273,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
+    func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
         return PureFutures.andThen(f, ec)(self)
     }
     
@@ -286,7 +286,7 @@ public extension Future {
         :returns: value of future
 
     */
-    public func forced() -> ResultType {
+    func forced() -> ResultType {
         return PureFutures.forced(self)
     }
     
@@ -299,7 +299,7 @@ public extension Future {
         :returns: Value of future or nil if it hasn't become available yet
 
     */
-    public func forced(interval: NSTimeInterval) -> ResultType? {
+    func forced(interval: NSTimeInterval) -> ResultType? {
         return PureFutures.forced(interval)(self)
     }
     
@@ -317,7 +317,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func map<U>(f: T -> U) -> Future<U, E> {
+    func map<U>(f: T -> U) -> Future<U, E> {
         return PureFutures.map(f)(self)
     }
     
@@ -331,7 +331,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Future<U, E> {
+    func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Future<U, E> {
         return PureFutures.map(f, ec)(self)
     }
     
@@ -352,7 +352,7 @@ public extension Future {
 
         :returns: a new Future
     */
-    public func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
+    func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
         return PureFutures.transform(s, e)(self)
     }
     
@@ -367,7 +367,7 @@ public extension Future {
 
         :returns: a new Future
     */
-    public func transform<T1, E1>(ec: ExecutionContextType, _ s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
+    func transform<T1, E1>(ec: ExecutionContextType, _ s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
         return PureFutures.transform(s, e, ec)(self)
     }
     
@@ -383,7 +383,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
+    func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
         return PureFutures.flatMap(f)(self)
     }
     
@@ -398,7 +398,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Future<U, E>) -> Future<U, E> {
+    func flatMap<U>(ec: ExecutionContextType, _ f: T -> Future<U, E>) -> Future<U, E> {
         return PureFutures.flatMap(f, ec)(self)
     }
     
@@ -413,7 +413,7 @@ public extension Future {
         :returns: flattened Future
 
     */
-    public class func flatten(fx: Future<Future<T, E>, E>) -> Future {
+    class func flatten(fx: Future<Future<T, E>, E>) -> Future {
         return PureFutures.flatten(fx)
     }
     
@@ -431,7 +431,7 @@ public extension Future {
         :returns: A new Future with value or nil
 
     */
-    public func filter(p: T -> Bool) -> Future<T?, E> {
+    func filter(p: T -> Bool) -> Future<T?, E> {
         return PureFutures.filter(p)(self)
     }
     
@@ -445,7 +445,7 @@ public extension Future {
         :returns: A new Future with value or nil
 
     */
-    public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Future<T?, E> {
+    func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Future<T?, E> {
         return PureFutures.filter(p, ec)(self)
     }
     
@@ -460,7 +460,7 @@ public extension Future {
         :returns: Future with resuls of two futures
 
     */
-    public func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
+    func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
         return PureFutures.zip(self)(fx)
     }
     
@@ -483,7 +483,7 @@ public extension Future {
         :returns: a new Future that will never fail
 
     */
-    public func recover(r: E -> T) -> Future {
+    func recover(r: E -> T) -> Future {
         return PureFutures.recover(r)(self)
     }
     
@@ -500,7 +500,7 @@ public extension Future {
         :returns: a new Future that will never fail
 
     */
-    public func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
+    func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
         return PureFutures.recover(r, ec)(self)
     }
     
@@ -520,7 +520,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func recoverWith(r: E -> Future) -> Future {
+    func recoverWith(r: E -> Future) -> Future {
         return PureFutures.recoverWith(r)(self)
     }
     
@@ -534,7 +534,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public func recoverWith(ec: ExecutionContextType, _ r: E -> Future) -> Future {
+    func recoverWith(ec: ExecutionContextType, _ r: E -> Future) -> Future {
         return PureFutures.recoverWith(r, ec)(self)
     }
     
@@ -547,7 +547,7 @@ public extension Future {
         :returns: Deferred
 
     */
-    public func toDeferred() -> Deferred<Result<T, E>> {
+    func toDeferred() -> Deferred<Result<T, E>> {
         return deferred
     }
     
@@ -564,7 +564,7 @@ public extension Future {
         :returns: Deferred with success value of `fx` or result of `r`
 
     */
-    public func toDeferred(r: E -> T) -> Deferred<T> {
+    func toDeferred(r: E -> T) -> Deferred<T> {
         return PureFutures.toDeferred(r)(self)
     }
     
@@ -578,7 +578,7 @@ public extension Future {
         :returns: Deferred with success value of `fx` or result of `r`
 
     */
-    public func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
+    func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
         return PureFutures.toDeferred(r, ec)(self)
     }
     
@@ -599,7 +599,7 @@ public extension Future {
         :returns: Future which will contain result of reducing sequence of futures
 
     */
-    public class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
+    class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
         return PureFutures.reduce(initial, combine)(fxs)
     }
     
@@ -615,7 +615,7 @@ public extension Future {
         :returns: Future which will contain result of reducing sequence of futures
 
     */
-    public class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
+    class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
         return PureFutures.reduce(initial, combine, ec)(fxs)
     }
     
@@ -635,7 +635,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
+    class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
         return PureFutures.traverse(f)(xs)
     }
     
@@ -650,7 +650,7 @@ public extension Future {
         :returns: a new Future
 
     */
-    public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
+    class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
         return PureFutures.traverse(f, ec)(xs)
     }
     
@@ -665,7 +665,7 @@ public extension Future {
         :returns: Future with array of values
 
     */
-    public class func sequence(fxs: [Future]) -> Future<[T], E> {
+    class func sequence(fxs: [Future]) -> Future<[T], E> {
         return PureFutures.sequence(fxs)
     }
     
