@@ -14,28 +14,28 @@
 		E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
 		E612D18A1AA526C0006ED075 /* AwaitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E612D1891AA526C0006ED075 /* AwaitTests.swift */; };
 		E612D18B1AA526C5006ED075 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
+		E615DFA71B0C15F8005631A5 /* DeferredType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */; };
+		E615DFA81B0C15F8005631A5 /* FutureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A01A8AE53B0094A4D4 /* FutureType.swift */; };
+		E615DFA91B0C15F8005631A5 /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
+		E615DFAA1B0C15F8005631A5 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
+		E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
+		E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72901A8AD1750094A4D4 /* Future.swift */; };
+		E615DFAD1B0C15F8005631A5 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
+		E615DFAE1B0C15F8005631A5 /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
+		E615DFAF1B0C15F8005631A5 /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
+		E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
+		E615DFB11B0C15F8005631A5 /* dispatch_queue_t+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */; };
+		E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
+		E615DFB31B0C15F8005631A5 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
+		E615DFB41B0C15F8005631A5 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
+		E615DFB51B0C15F8005631A5 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
+		E615DFB61B0C15F8005631A5 /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
 		E61611431AE79D7F00D426C5 /* PromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61611421AE79D7F00D426C5 /* PromiseTests.swift */; };
 		E6267DDC1AA21F300068A0A0 /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
 		E6267DDE1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */; };
 		E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
 		E6267DE21AA280940068A0A0 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */; };
-		E64024861B0BCE8200095A7D /* DeferredType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */; };
-		E64024871B0BCE8200095A7D /* FutureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A01A8AE53B0094A4D4 /* FutureType.swift */; };
-		E64024881B0BCE8200095A7D /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
-		E64024891B0BCE8200095A7D /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
-		E640248A1B0BCE8200095A7D /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
-		E640248B1B0BCE8200095A7D /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72901A8AD1750094A4D4 /* Future.swift */; };
-		E640248C1B0BCE8200095A7D /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
-		E640248D1B0BCE8200095A7D /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
-		E640248E1B0BCE8200095A7D /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
-		E640248F1B0BCE8200095A7D /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
-		E64024901B0BCE8200095A7D /* dispatch_queue_t+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */; };
-		E64024911B0BCE8200095A7D /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
-		E64024921B0BCE8200095A7D /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
-		E64024931B0BCE8200095A7D /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
-		E64024941B0BCE8200095A7D /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
-		E64024951B0BCE8200095A7D /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
@@ -66,13 +66,13 @@
 		E60A72A01A8AE53B0094A4D4 /* FutureType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureType.swift; sourceTree = "<group>"; };
 		E60A72A21A8AE7330094A4D4 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		E612D1891AA526C0006ED075 /* AwaitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AwaitTests.swift; sourceTree = "<group>"; };
+		E615DF8E1B0C1553005631A5 /* PureFuturesOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureFuturesOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E61611421AE79D7F00D426C5 /* PromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromiseTests.swift; sourceTree = "<group>"; };
 		E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionContextType.swift; sourceTree = "<group>"; };
 		E6267DDD1AA21F8E0068A0A0 /* dispatch_queue_t+ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "dispatch_queue_t+ExecutionContext.swift"; sourceTree = "<group>"; };
 		E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperationQueue+ExecutionContext.swift"; sourceTree = "<group>"; };
 		E6267DE11AA280940068A0A0 /* Await.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Await.swift; sourceTree = "<group>"; };
 		E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTests.swift; sourceTree = "<group>"; };
-		E640246D1B0BCE4200095A7D /* PureFuturesOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureFuturesOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FBE1A86BF41001B514C /* PureFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FC21A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,7 +90,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E64024691B0BCE4200095A7D /* Frameworks */ = {
+		E615DF8A1B0C1553005631A5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -129,7 +129,7 @@
 			children = (
 				E65E6FBE1A86BF41001B514C /* PureFutures.framework */,
 				E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */,
-				E640246D1B0BCE4200095A7D /* PureFuturesOSX.framework */,
+				E615DF8E1B0C1553005631A5 /* PureFuturesOSX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -239,7 +239,7 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		E640246A1B0BCE4200095A7D /* Headers */ = {
+		E615DF8B1B0C1553005631A5 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,14 +256,14 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E640246C1B0BCE4200095A7D /* PureFuturesOSX */ = {
+		E615DF8D1B0C1553005631A5 /* PureFuturesOSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E64024841B0BCE4300095A7D /* Build configuration list for PBXNativeTarget "PureFuturesOSX" */;
+			buildConfigurationList = E615DFA51B0C1553005631A5 /* Build configuration list for PBXNativeTarget "PureFuturesOSX" */;
 			buildPhases = (
-				E64024681B0BCE4200095A7D /* Sources */,
-				E64024691B0BCE4200095A7D /* Frameworks */,
-				E640246A1B0BCE4200095A7D /* Headers */,
-				E640246B1B0BCE4200095A7D /* Resources */,
+				E615DF891B0C1553005631A5 /* Sources */,
+				E615DF8A1B0C1553005631A5 /* Frameworks */,
+				E615DF8B1B0C1553005631A5 /* Headers */,
+				E615DF8C1B0C1553005631A5 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -271,7 +271,7 @@
 			);
 			name = PureFuturesOSX;
 			productName = PureFuturesOSX;
-			productReference = E640246D1B0BCE4200095A7D /* PureFuturesOSX.framework */;
+			productReference = E615DF8E1B0C1553005631A5 /* PureFuturesOSX.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		E65E6FBD1A86BF41001B514C /* PureFutures */ = {
@@ -319,7 +319,7 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Victor Shamanov";
 				TargetAttributes = {
-					E640246C1B0BCE4200095A7D = {
+					E615DF8D1B0C1553005631A5 = {
 						CreatedOnToolsVersion = 6.3.1;
 					};
 					E65E6FBD1A86BF41001B514C = {
@@ -343,14 +343,14 @@
 			projectRoot = "";
 			targets = (
 				E65E6FBD1A86BF41001B514C /* PureFutures */,
-				E640246C1B0BCE4200095A7D /* PureFuturesOSX */,
 				E65E6FC81A86BF41001B514C /* PureFuturesTests */,
+				E615DF8D1B0C1553005631A5 /* PureFuturesOSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		E640246B1B0BCE4200095A7D /* Resources */ = {
+		E615DF8C1B0C1553005631A5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -374,26 +374,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		E64024681B0BCE4200095A7D /* Sources */ = {
+		E615DF891B0C1553005631A5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E64024861B0BCE8200095A7D /* DeferredType.swift in Sources */,
-				E64024871B0BCE8200095A7D /* FutureType.swift in Sources */,
-				E64024881B0BCE8200095A7D /* ExecutionContextType.swift in Sources */,
-				E64024891B0BCE8200095A7D /* Deferred.swift in Sources */,
-				E640248A1B0BCE8200095A7D /* PurePromise.swift in Sources */,
-				E640248B1B0BCE8200095A7D /* Future.swift in Sources */,
-				E640248C1B0BCE8200095A7D /* Promise.swift in Sources */,
-				E640248D1B0BCE8200095A7D /* DeferredTypeFunctions.swift in Sources */,
-				E640248E1B0BCE8200095A7D /* FutureTypeFunctions.swift in Sources */,
-				E640248F1B0BCE8200095A7D /* ExecutionContext.swift in Sources */,
-				E64024901B0BCE8200095A7D /* dispatch_queue_t+ExecutionContext.swift in Sources */,
-				E64024911B0BCE8200095A7D /* NSOperationQueue+ExecutionContext.swift in Sources */,
-				E64024921B0BCE8200095A7D /* Box.swift in Sources */,
-				E64024931B0BCE8200095A7D /* Result.swift in Sources */,
-				E64024941B0BCE8200095A7D /* Await.swift in Sources */,
-				E64024951B0BCE8200095A7D /* Other.swift in Sources */,
+				E615DFA71B0C15F8005631A5 /* DeferredType.swift in Sources */,
+				E615DFA81B0C15F8005631A5 /* FutureType.swift in Sources */,
+				E615DFA91B0C15F8005631A5 /* ExecutionContextType.swift in Sources */,
+				E615DFAA1B0C15F8005631A5 /* Deferred.swift in Sources */,
+				E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */,
+				E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */,
+				E615DFAD1B0C15F8005631A5 /* Promise.swift in Sources */,
+				E615DFAE1B0C15F8005631A5 /* DeferredTypeFunctions.swift in Sources */,
+				E615DFAF1B0C15F8005631A5 /* FutureTypeFunctions.swift in Sources */,
+				E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */,
+				E615DFB11B0C15F8005631A5 /* dispatch_queue_t+ExecutionContext.swift in Sources */,
+				E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */,
+				E615DFB31B0C15F8005631A5 /* Box.swift in Sources */,
+				E615DFB41B0C15F8005631A5 /* Result.swift in Sources */,
+				E615DFB51B0C15F8005631A5 /* Await.swift in Sources */,
+				E615DFB61B0C15F8005631A5 /* Other.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,7 +445,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		E64024801B0BCE4300095A7D /* Debug */ = {
+		E615DFA11B0C1553005631A5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -464,14 +464,13 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_MODULE_NAME = PureFutures;
-				PRODUCT_NAME = PureFutures;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		E64024811B0BCE4300095A7D /* Release */ = {
+		E615DFA21B0C1553005631A5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
@@ -487,8 +486,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				PRODUCT_MODULE_NAME = PureFutures;
-				PRODUCT_NAME = PureFutures;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -647,11 +645,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E64024841B0BCE4300095A7D /* Build configuration list for PBXNativeTarget "PureFuturesOSX" */ = {
+		E615DFA51B0C1553005631A5 /* Build configuration list for PBXNativeTarget "PureFuturesOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E64024801B0BCE4300095A7D /* Debug */,
-				E64024811B0BCE4300095A7D /* Release */,
+				E615DFA11B0C1553005631A5 /* Debug */,
+				E615DFA21B0C1553005631A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};

@@ -259,7 +259,11 @@ public extension Future {
 
     */
     func andThen(f: T -> Void) -> Future {
+        #if os(iOS)
         return PureFutures.andThen(f)(self)
+        #else
+        return PureFuturesOSX.andThen(f)(self)
+        #endif
     }
     
     /**
@@ -274,7 +278,11 @@ public extension Future {
 
     */
     func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
+        #if os(iOS)
         return PureFutures.andThen(f, ec)(self)
+        #else
+        return PureFuturesOSX.andThen(f, ec)(self)
+        #endif
     }
     
     // MARK:- forced
@@ -287,7 +295,11 @@ public extension Future {
 
     */
     func forced() -> ResultType {
+        #if os(iOS)
         return PureFutures.forced(self)
+        #else
+        return PureFuturesOSX.forced(self)
+        #endif
     }
     
     /**
@@ -300,7 +312,11 @@ public extension Future {
 
     */
     func forced(interval: NSTimeInterval) -> ResultType? {
+        #if os(iOS)
         return PureFutures.forced(interval)(self)
+        #else
+        return PureFuturesOSX.forced(interval)(self)
+        #endif
     }
     
     // MARK:- map
@@ -318,7 +334,11 @@ public extension Future {
 
     */
     func map<U>(f: T -> U) -> Future<U, E> {
+        #if os(iOS)
         return PureFutures.map(f)(self)
+        #else
+        return PureFuturesOSX.map(f)(self)
+        #endif
     }
     
     /**
@@ -332,7 +352,11 @@ public extension Future {
 
     */
     func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Future<U, E> {
+        #if os(iOS)
         return PureFutures.map(f, ec)(self)
+        #else
+        return PureFuturesOSX.map(f, ec)(self)
+        #endif
     }
     
     // MARK:- transform
@@ -353,7 +377,11 @@ public extension Future {
         :returns: a new Future
     */
     func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
+        #if os(iOS)
         return PureFutures.transform(s, e)(self)
+        #else
+        return PureFuturesOSX.transform(s, e)(self)
+        #endif
     }
     
     /**
@@ -368,7 +396,11 @@ public extension Future {
         :returns: a new Future
     */
     func transform<T1, E1>(ec: ExecutionContextType, _ s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
+        #if os(iOS)
         return PureFutures.transform(s, e, ec)(self)
+        #else
+        return PureFuturesOSX.transform(s, e, ec)(self)
+        #endif
     }
     
     // MARK:- flatMap
@@ -384,7 +416,11 @@ public extension Future {
 
     */
     func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
+        #if os(iOS)
         return PureFutures.flatMap(f)(self)
+        #else
+        return PureFuturesOSX.flatMap(f)(self)
+        #endif
     }
     
     /**
@@ -399,7 +435,11 @@ public extension Future {
 
     */
     func flatMap<U>(ec: ExecutionContextType, _ f: T -> Future<U, E>) -> Future<U, E> {
+        #if os(iOS)
         return PureFutures.flatMap(f, ec)(self)
+        #else
+        return PureFuturesOSX.flatMap(f, ec)(self)
+        #endif
     }
     
     // MARK:- flatten
@@ -414,7 +454,11 @@ public extension Future {
 
     */
     class func flatten(fx: Future<Future<T, E>, E>) -> Future {
+        #if os(iOS)
         return PureFutures.flatten(fx)
+        #else
+        return PureFuturesOSX.flatten(fx)
+        #endif
     }
     
     // MARK:- filter
@@ -432,7 +476,11 @@ public extension Future {
 
     */
     func filter(p: T -> Bool) -> Future<T?, E> {
+        #if os(iOS)
         return PureFutures.filter(p)(self)
+        #else
+        return PureFuturesOSX.filter(p)(self)
+        #endif
     }
     
     /**
@@ -446,7 +494,11 @@ public extension Future {
 
     */
     func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Future<T?, E> {
+        #if os(iOS)
         return PureFutures.filter(p, ec)(self)
+        #else
+        return PureFuturesOSX.filter(p, ec)(self)
+        #endif
     }
     
     // MARK:- zip
@@ -461,7 +513,11 @@ public extension Future {
 
     */
     func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
+        #if os(iOS)
         return PureFutures.zip(self)(fx)
+        #else
+        return PureFuturesOSX.zip(self)(fx)
+        #endif
     }
     
     // MARK:- recover
@@ -484,7 +540,11 @@ public extension Future {
 
     */
     func recover(r: E -> T) -> Future {
+        #if os(iOS)
         return PureFutures.recover(r)(self)
+        #else
+        return PureFuturesOSX.recover(r)(self)
+        #endif
     }
     
     /**
@@ -501,7 +561,11 @@ public extension Future {
 
     */
     func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
+        #if os(iOS)
         return PureFutures.recover(r, ec)(self)
+        #else
+        return PureFuturesOSX.recover(r, ec)(self)
+        #endif
     }
     
     // MARK:- recoverWith
@@ -521,7 +585,11 @@ public extension Future {
 
     */
     func recoverWith(r: E -> Future) -> Future {
+        #if os(iOS)
         return PureFutures.recoverWith(r)(self)
+        #else
+        return PureFuturesOSX.recoverWith(r)(self)
+        #endif
     }
     
     /**
@@ -535,7 +603,11 @@ public extension Future {
 
     */
     func recoverWith(ec: ExecutionContextType, _ r: E -> Future) -> Future {
+        #if os(iOS)
         return PureFutures.recoverWith(r, ec)(self)
+        #else
+        return PureFuturesOSX.recoverWith(r, ec)(self)
+        #endif
     }
     
     // MARK:- toDeferred
@@ -565,7 +637,11 @@ public extension Future {
 
     */
     func toDeferred(r: E -> T) -> Deferred<T> {
+        #if os(iOS)
         return PureFutures.toDeferred(r)(self)
+        #else
+        return PureFuturesOSX.toDeferred(r)(self)
+        #endif
     }
     
     /**
@@ -579,7 +655,11 @@ public extension Future {
 
     */
     func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
+        #if os(iOS)
         return PureFutures.toDeferred(r, ec)(self)
+        #else
+        return PureFuturesOSX.toDeferred(r, ec)(self)
+        #endif
     }
     
     // MARK:- reduce
@@ -600,7 +680,11 @@ public extension Future {
 
     */
     class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
+        #if os(iOS)
         return PureFutures.reduce(initial, combine)(fxs)
+        #else
+        return PureFuturesOSX.reduce(initial, combine)(fxs)
+        #endif
     }
     
     /**
@@ -616,7 +700,11 @@ public extension Future {
 
     */
     class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
+        #if os(iOS)
         return PureFutures.reduce(initial, combine, ec)(fxs)
+        #else
+        return PureFuturesOSX.reduce(initial, combine, ec)(fxs)
+        #endif
     }
     
     // MARK:- traverse
@@ -636,7 +724,11 @@ public extension Future {
 
     */
     class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
+        #if os(iOS)
         return PureFutures.traverse(f)(xs)
+        #else
+        return PureFuturesOSX.traverse(f)(xs)
+        #endif
     }
     
     /**
@@ -651,7 +743,11 @@ public extension Future {
 
     */
     class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
+        #if os(iOS)
         return PureFutures.traverse(f, ec)(xs)
+        #else
+        return PureFuturesOSX.traverse(f, ec)(xs)
+        #endif
     }
     
     // MARK:- sequence
@@ -666,7 +762,11 @@ public extension Future {
 
     */
     class func sequence(fxs: [Future]) -> Future<[T], E> {
+        #if os(iOS)
         return PureFutures.sequence(fxs)
+        #else
+        return PureFuturesOSX.sequence(fxs)
+        #endif
     }
     
 }
