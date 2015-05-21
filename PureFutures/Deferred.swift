@@ -159,8 +159,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func andThen(f: T -> Void) -> Deferred {
+    func andThen(f: T -> Void) -> Deferred {
+        #if os(iOS)
         return PureFutures.andThen(f)(self)
+        #else
+        return PureFuturesOSX.andThen(f)(self)
+        #endif
     }
     
     /**
@@ -174,8 +178,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
+    func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
+        #if os(iOS)
         return PureFutures.andThen(f, ec)(self)
+        #else
+        return PureFuturesOSX.andThen(f, ec)(self)
+        #endif
     }
     
     // MARK:- forced
@@ -187,8 +195,12 @@ public extension Deferred {
         :returns: value of deferred
 
     */
-    public func forced() -> T {
+    func forced() -> T {
+        #if os(iOS)
         return PureFutures.forced(self)
+        #else
+        return PureFuturesOSX.forced(self)
+        #endif
     }
     
     
@@ -201,8 +213,12 @@ public extension Deferred {
         :returns: Value of deferred or nil if it hasn't become available yet
 
     */
-    public func forced(interval: NSTimeInterval) -> T? {
+    func forced(interval: NSTimeInterval) -> T? {
+        #if os(iOS)
         return PureFutures.forced(interval)(self)
+        #else
+        return PureFuturesOSX.forced(interval)(self)
+        #endif
     }
     
     // MARK:- map
@@ -219,8 +235,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func map<U>(f: T -> U) -> Deferred<U> {
+    func map<U>(f: T -> U) -> Deferred<U> {
+        #if os(iOS)
         return PureFutures.map(f)(self)
+        #else
+        return PureFuturesOSX.map(f)(self)
+        #endif
     }
     
     /**
@@ -233,8 +253,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
+    func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
+        #if os(iOS)
         return PureFutures.map(f, ec)(self)
+        #else
+        return PureFuturesOSX.map(f, ec)(self)
+        #endif
     }
     
     // MARK:- flatMap
@@ -251,8 +275,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
+    func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
+        #if os(iOS)
         return PureFutures.flatMap(f)(self)
+        #else
+        return PureFuturesOSX.flatMap(f)(self)
+        #endif
     }
 
     /**
@@ -266,8 +294,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
+    func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
+        #if os(iOS)
         return PureFutures.flatMap(f, ec)(self)
+        #else
+        return PureFuturesOSX.flatMap(f, ec)(self)
+        #endif
     }
     
     // MARK:- flatten
@@ -281,8 +313,12 @@ public extension Deferred {
         :returns: flattened Deferred
 
     */
-    public class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
+    class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
+        #if os(iOS)
         return PureFutures.flatten(dx)
+        #else
+        return PureFuturesOSX.flatten(dx)
+        #endif
     }
     
     // MARK:- filter
@@ -300,8 +336,12 @@ public extension Deferred {
         :returns: A new Deferred with value or nil
 
     */
-    public func filter(p: T -> Bool) -> Deferred<T?> {
+    func filter(p: T -> Bool) -> Deferred<T?> {
+        #if os(iOS)
         return PureFutures.filter(p)(self)
+        #else
+        return PureFuturesOSX.filter(p)(self)
+        #endif
     }
     
     /**
@@ -314,8 +354,12 @@ public extension Deferred {
         :returns: A new Deferred with value or nil
 
     */
-    public func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
+    func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
+        #if os(iOS)
         return PureFutures.filter(p, ec)(self)
+        #else
+        return PureFuturesOSX.filter(p, ec)(self)
+        #endif
     }
     
     // MARK:- zip
@@ -329,8 +373,12 @@ public extension Deferred {
         :returns: Deferred with resuls of two deferreds
 
     */
-    public func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
+    func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
+        #if os(iOS)
         return PureFutures.zip(self)(dx)
+        #else
+        return PureFuturesOSX.zip(self)(dx)
+        #endif
     }
     
     // MARK:- reduce
@@ -349,8 +397,12 @@ public extension Deferred {
         :returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+    class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+        #if os(iOS)
         return PureFutures.reduce(initial, combine)(dxs)
+        #else
+        return PureFuturesOSX.reduce(initial, combine)(dxs)
+        #endif
     }
     
     /**
@@ -365,8 +417,12 @@ public extension Deferred {
         :returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+    class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
+        #if os(iOS)
         return PureFutures.reduce(initial, combine, ec)(dxs)
+        #else
+        return PureFuturesOSX.reduce(initial, combine, ec)(dxs)
+        #endif
     }
     
     // MARK:- traverse
@@ -384,8 +440,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+    class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+        #if os(iOS)
         return PureFutures.traverse(f)(xs)
+        #else
+        return PureFuturesOSX.traverse(f)(xs)
+        #endif
     }
     
     /**
@@ -399,8 +459,12 @@ public extension Deferred {
         :returns: a new Deferred
 
     */
-    public class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+    class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
+        #if os(iOS)
         return PureFutures.traverse(f, ec)(xs)
+        #else
+        return PureFuturesOSX.traverse(f, ec)(xs)
+        #endif
     }
     
     // MARK:- sequence
@@ -414,8 +478,12 @@ public extension Deferred {
         :returns: Deferred with array of values
 
     */
-    public class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
+    class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
+        #if os(iOS)
         return PureFutures.sequence(dxs)
+        #else
+        return PureFuturesOSX.sequence(dxs)
+        #endif
     }
     
     // MARK:- toFuture
@@ -429,8 +497,12 @@ public extension Deferred {
         :returns: a new Future with result of Deferred
 
     */
-    public class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {
+    class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {
+        #if os(iOS)
         return PureFutures.toFuture(dx)
+        #else
+        return PureFuturesOSX.toFuture(dx)
+        #endif
     }
     
 }

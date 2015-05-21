@@ -13,6 +13,8 @@ import class PureFutures.PurePromise
 import enum PureFutures.Result
 import func PureFutures.deferred
 import enum PureFutures.ExecutionContext
+import func PureFutures.map
+import func PureFutures.|>
 
 class DeferredTests: XCTestCase {
     
@@ -454,6 +456,20 @@ class DeferredTests: XCTestCase {
         }
         
         waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    // MARK:- Pipeline operator
+    
+    func testPipelining() {
+        
+        let def = Deferred(10)
+        
+        let inc: Int -> Int = { $0 + 1 }
+        let toString: Int -> String = { $0.description }
+        
+        let result = def |> map(inc) |> map(toString)
+        
+        XCTAssert(result.forced() == "11")
     }
     
 }
