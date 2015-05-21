@@ -38,6 +38,8 @@
 		E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
+		E6786C231B0E6BB60072B6BF /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6786C221B0E6BB60072B6BF /* Operators.swift */; };
+		E6786C241B0E6D550072B6BF /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6786C221B0E6BB60072B6BF /* Operators.swift */; };
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
 		E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */; };
 		E6C0A9FA1AA36490006436AC /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
@@ -78,6 +80,7 @@
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FCF1A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
+		E6786C221B0E6BB60072B6BF /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseTests.swift; sourceTree = "<group>"; };
 		E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTests.swift; sourceTree = "<group>"; };
 		E6C0A9F91AA36490006436AC /* Other.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
@@ -195,6 +198,7 @@
 				E6E79F831A8A468500F09BC6 /* Result.swift */,
 				E6267DE11AA280940068A0A0 /* Await.swift */,
 				E6C0A9F91AA36490006436AC /* Other.swift */,
+				E6786C221B0E6BB60072B6BF /* Operators.swift */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -390,6 +394,7 @@
 				E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */,
 				E615DFB11B0C15F8005631A5 /* dispatch_queue_t+ExecutionContext.swift in Sources */,
 				E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */,
+				E6786C241B0E6D550072B6BF /* Operators.swift in Sources */,
 				E615DFB31B0C15F8005631A5 /* Box.swift in Sources */,
 				E615DFB41B0C15F8005631A5 /* Result.swift in Sources */,
 				E615DFB51B0C15F8005631A5 /* Await.swift in Sources */,
@@ -413,6 +418,7 @@
 				E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */,
 				E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */,
 				E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */,
+				E6786C231B0E6BB60072B6BF /* Operators.swift in Sources */,
 				E6267DE21AA280940068A0A0 /* Await.swift in Sources */,
 				E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */,
 				E608A34F1AE171B8009EAEF5 /* ExecutionContext.swift in Sources */,
@@ -652,6 +658,7 @@
 				E615DFA21B0C1553005631A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E65E6FB81A86BF41001B514C /* Build configuration list for PBXProject "PureFutures" */ = {
 			isa = XCConfigurationList;
