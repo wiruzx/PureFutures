@@ -201,8 +201,8 @@ public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(f
 
     Reduces the elements of sequence of futures using the specified reducing function `combine`
 
-    :param: initial Initial value that will be passed as first argument in `combine` function
     :param: combine reducing function
+    :param: initial Initial value that will be passed as first argument in `combine` function
     :param: ec Execution context of `combine`. By default is global queue
 
     :param: fxs Sequence of Futures
@@ -210,7 +210,7 @@ public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(f
     :returns: Future which will contain result of reducing sequence of futures
 
 */
-public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(initial: T, combine: ((T, S.Generator.Element.SuccessType) -> T), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ fxs: S) -> Future<T, S.Generator.Element.ErrorType> {
+public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(combine: ((T, S.Generator.Element.SuccessType) -> T), initial: T, _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ fxs: S) -> Future<T, S.Generator.Element.ErrorType> {
     return reduce(fxs, Future(.success(initial))) { acc, futureValue in
         flatMap({ value in
             map({ combine($0, value) }, ec)(acc)
@@ -231,7 +231,7 @@ public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(ini
 
 */
 public func traverse<S: SequenceType, F: FutureType>(f: (S.Generator.Element -> F), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ xs: S) -> Future<[F.SuccessType], F.ErrorType> {
-    return reduce([], { $0 + [$1] }, ec)(map(xs, f))
+    return reduce({ $0 + [$1] }, [], ec)(map(xs, f))
 }
 
 /**
