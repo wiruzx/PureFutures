@@ -159,8 +159,8 @@ public func zip<DA: DeferredType, DB: DeferredType>(da: DA)(_ db: DB) -> Deferre
 
     Reduces the elements of sequence of deferreds using the specified reducing function `combine`
 
-    :param: initial Initial value that will be passed as first argument in `combine` function
     :param: combine reducing function
+    :param: initial Initial value that will be passed as first argument in `combine` function
     :param: ec Execution context of `combine`. By defalut is global queue
 
     :param: dxs Sequence of Deferred
@@ -168,7 +168,7 @@ public func zip<DA: DeferredType, DB: DeferredType>(da: DA)(_ db: DB) -> Deferre
     :returns: Deferred which will contain result of reducing sequence of deferreds
 
 */
-public func reduce<S: SequenceType, T where S.Generator.Element: DeferredType>(initial: T, combine: ((T, S.Generator.Element.Element) -> T), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ dxs: S) -> Deferred<T> {
+public func reduce<S: SequenceType, T where S.Generator.Element: DeferredType>(combine: ((T, S.Generator.Element.Element) -> T), initial: T, _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ dxs: S) -> Deferred<T> {
     return reduce(dxs, Deferred(initial)) { acc, defValue in
         flatMap({ value in
             map({ combine($0, value) }, ec)(acc)
@@ -189,7 +189,7 @@ public func reduce<S: SequenceType, T where S.Generator.Element: DeferredType>(i
 
 */
 public func traverse<S: SequenceType, D: DeferredType>(f: (S.Generator.Element -> D), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ xs: S) -> Deferred<[D.Element]> {
-    return reduce([], { $0 + [$1] }, ec)(map(xs, f))
+    return reduce({ $0 + [$1] }, [], ec)(map(xs, f))
 }
 
 /**

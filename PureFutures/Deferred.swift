@@ -399,7 +399,7 @@ public extension Deferred {
     */
     class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         #if os(iOS)
-        return PureFutures.reduce(initial, combine)(dxs)
+        return PureFutures.reduce(combine, initial)(dxs)
         #else
         return PureFuturesOSX.reduce(initial, combine)(dxs)
         #endif
@@ -419,7 +419,7 @@ public extension Deferred {
     */
     class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
         #if os(iOS)
-        return PureFutures.reduce(initial, combine, ec)(dxs)
+        return PureFutures.reduce(combine, initial, ec)(dxs)
         #else
         return PureFuturesOSX.reduce(initial, combine, ec)(dxs)
         #endif

@@ -681,7 +681,7 @@ public extension Future {
     */
     class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
         #if os(iOS)
-        return PureFutures.reduce(initial, combine)(fxs)
+        return PureFutures.reduce(combine, initial)(fxs)
         #else
         return PureFuturesOSX.reduce(initial, combine)(fxs)
         #endif
@@ -701,7 +701,7 @@ public extension Future {
     */
     class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
         #if os(iOS)
-        return PureFutures.reduce(initial, combine, ec)(fxs)
+        return PureFutures.reduce(combine, initial, ec)(fxs)
         #else
         return PureFuturesOSX.reduce(initial, combine, ec)(fxs)
         #endif
