@@ -37,3 +37,25 @@ public extension Result {
     }
 
 }
+
+public extension Result {
+    
+    func map<U>(f: T -> U) -> Result<U, E> {
+        switch self {
+        case .Success(let box):
+            return .success(f(box.value))
+        case .Error(let box):
+            return .error(box.value)
+        }
+    }
+    
+    func flatMap<U>(f: T -> Result<U, E>) -> Result<U, E> {
+        switch self {
+        case .Success(let box):
+            return f(box.value)
+        case .Error(let box):
+            return .error(box.value)
+        }
+    }
+    
+}
