@@ -211,7 +211,7 @@ public func zip<F: FutureType, T: FutureType where F.ErrorType == T.ErrorType>(f
 
 */
 public func reduce<S: SequenceType, T where S.Generator.Element: FutureType>(combine: ((T, S.Generator.Element.SuccessType) -> T), initial: T, _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ fxs: S) -> Future<T, S.Generator.Element.ErrorType> {
-    return reduce(fxs, Future(.success(initial))) { acc, futureValue in
+    return reduce(fxs, .create(.success(initial))) { acc, futureValue in
         flatMap({ value in
             map({ combine($0, value) }, ec)(acc)
         }, ec)(futureValue)

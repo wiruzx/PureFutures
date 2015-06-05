@@ -246,7 +246,7 @@ class PromiseTests: XCTestCase {
             firstExp.fulfill()
         })
         
-        promise.tryCompleteWith(Future(.success(42)))
+        promise.tryCompleteWith(Future.create(.success(42)))
         
         let resultExp = expectationWithDescription("Result Future is copleted")
         

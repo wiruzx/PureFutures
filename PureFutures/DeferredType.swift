@@ -11,11 +11,13 @@ public protocol DeferredType {
     typealias Element
     
     /**
-        Initialize a new Deferred with given element
+        Creates a new Deferred with given element
     
         :param: x an Element
+    
+        :returns: Returns new Deferred
     */
-    init(_ x: Element)
+    static func create(x: Element) -> Self
     
     /**
         Register an callback which should be called when Deferred completed

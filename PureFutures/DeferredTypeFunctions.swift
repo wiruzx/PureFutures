@@ -169,7 +169,7 @@ public func zip<DA: DeferredType, DB: DeferredType>(da: DA)(_ db: DB) -> Deferre
 
 */
 public func reduce<S: SequenceType, T where S.Generator.Element: DeferredType>(combine: ((T, S.Generator.Element.Element) -> T), initial: T, _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ dxs: S) -> Deferred<T> {
-    return reduce(dxs, Deferred(initial)) { acc, defValue in
+    return reduce(dxs, .create(initial)) { acc, defValue in
         flatMap({ value in
             map({ combine($0, value) }, ec)(acc)
         }, ec)(defValue)

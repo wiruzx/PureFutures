@@ -77,8 +77,10 @@ public final class Deferred<T>: DeferredType {
     // MARK:- DeferredType methods
     
     /// Creates immediately completed Deferred with given value
-    public init(_ x: T) {
-        setValue(x)
+    public static func create(x: T) -> Deferred {
+        let d = Deferred()
+        d.setValue(x)
+        return d
     }
     
     /**
