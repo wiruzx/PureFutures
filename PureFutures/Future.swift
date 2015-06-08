@@ -131,12 +131,12 @@ public final class Future<T, E>: FutureType {
         return .create(.error(error))
     }
     
-    // MARK:- FutureType methods
-
     /// Creates a new Future with given Result<T, E>
     public static func create(x: ResultType) -> Future {
         return Future(deferred: .create(x))
     }
+
+    // MARK:- FutureType methods
 
     /**
 
