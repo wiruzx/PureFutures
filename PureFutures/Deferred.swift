@@ -74,6 +74,10 @@ public final class Deferred<T>: DeferredType {
     internal init() {
     }
     
+    public init<D: DeferredType where D.Element == T>(deferred: D) {
+        deferred.onComplete(ExecutionContext.DefaultPureOperationContext, setValue)
+    }
+    
     /// Creates immediately completed Deferred with given value
     public static func create(x: T) -> Deferred {
         let d = Deferred()

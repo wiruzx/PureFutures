@@ -102,6 +102,10 @@ public final class Future<T, E>: FutureType {
         self.deferred = deferred
     }
     
+    public init<F: FutureType where F.Element == Result<T, E>>(future: F) {
+        deferred = Deferred(deferred: future)
+    }
+    
     // MARK:- Class methods
 
     /**
