@@ -95,7 +95,15 @@ public final class Future<T, E>: FutureType {
     // MARK:- Initialization
     
     internal init() {
-        deferred = Deferred<ResultType>()
+        deferred = Deferred()
+    }
+    
+    internal init(deferred: Deferred<ResultType>) {
+        self.deferred = deferred
+    }
+    
+    public init<F: FutureType where F.Element == Result<T, E>>(future: F) {
+        deferred = Deferred(deferred: future)
     }
     
     // MARK:- Class methods
@@ -110,7 +118,7 @@ public final class Future<T, E>: FutureType {
 
     */
     public class func succeed(value: T) -> Future {
-        return Future(.success(value))
+        return .create(.success(value))
     }
 
 
@@ -124,16 +132,15 @@ public final class Future<T, E>: FutureType {
         
     */
     public class func failed(error: E) -> Future {
-        return Future(.error(error))
+        return .create(.error(error))
     }
     
-    // MARK:- FutureType methods
-
     /// Creates a new Future with given Result<T, E>
-    public init(_ x: ResultType) {
-        self.deferred = Deferred(x)
+    public static func create(x: ResultType) -> Future {
+        return Future(deferred: .create(x))
     }
 
+    // MARK:- FutureType methods
 
     /**
 

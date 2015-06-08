@@ -11,13 +11,6 @@ public protocol DeferredType {
     typealias Element
     
     /**
-        Initialize a new Deferred with given element
-    
-        :param: x an Element
-    */
-    init(_ x: Element)
-    
-    /**
         Register an callback which should be called when Deferred completed
     
         :param: ec execution context of callback
