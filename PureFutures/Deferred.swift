@@ -79,7 +79,7 @@ public final class Deferred<T>: DeferredType {
     }
     
     /// Creates immediately completed Deferred with given value
-    public static func create(x: T) -> Deferred {
+    public static func completed(x: T) -> Deferred {
         let d = Deferred()
         d.setValue(x)
         return d

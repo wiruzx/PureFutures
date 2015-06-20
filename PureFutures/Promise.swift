@@ -61,7 +61,8 @@ public final class Promise<T, E> {
     
         :param: future Value that conforms to `FutureType` protocol
 
-    */    public func completeWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {
+    */
+    public func completeWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {
         future.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
     }
 
