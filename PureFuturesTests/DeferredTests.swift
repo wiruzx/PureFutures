@@ -157,7 +157,7 @@ class DeferredTests: XCTestCase {
     
     func testForcedCompleted() {
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
         if let result = deferred.forced(1) {
             XCTAssertEqual(result, 42)
@@ -219,7 +219,7 @@ class DeferredTests: XCTestCase {
     
     func testAndThen() {
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -235,7 +235,7 @@ class DeferredTests: XCTestCase {
     
     func testMap() {
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
         let result = deferred.map { $0 * 2 }
         
@@ -256,9 +256,9 @@ class DeferredTests: XCTestCase {
     
     func testFlatMap() {
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
-        let result = deferred.flatMap { .create($0 * 2) }
+        let result = deferred.flatMap { .completed($0 * 2) }
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -276,7 +276,7 @@ class DeferredTests: XCTestCase {
     
     func testFlattenTemp() {
         
-        let deferred = Deferred.create(Deferred.create(42))
+        let deferred = Deferred.completed(Deferred.completed(42))
         
         func f(def: Deferred<Int>) -> Int {
             return def.forced()
@@ -286,7 +286,7 @@ class DeferredTests: XCTestCase {
     
     func testFlatten() {
         
-        let deferred = Deferred.create(Deferred.create(42))
+        let deferred = Deferred.completed(Deferred.completed(42))
         
         let flat = Deferred.flatten(deferred)
         
@@ -304,7 +304,7 @@ class DeferredTests: XCTestCase {
     
     func testFilterPass() {
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
         let result = deferred.filter { $0 % 2 == 0}
         
@@ -326,7 +326,7 @@ class DeferredTests: XCTestCase {
     
     func testFilterSkip() {
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
         let result = deferred.filter { $0 % 2 != 0}
         
@@ -346,8 +346,8 @@ class DeferredTests: XCTestCase {
     
     func testZip() {
         
-        let first = Deferred.create(0)
-        let second = Deferred.create(42)
+        let first = Deferred.completed(0)
+        let second = Deferred.completed(42)
         
         let result = first.zip(second)
         
@@ -368,7 +368,7 @@ class DeferredTests: XCTestCase {
     
     func testReduce() {
         
-        let defs = Array(1...9).map { Deferred.create($0) }
+        let defs = Array(1...9).map { Deferred.completed($0) }
         
         let result = Deferred.reduce(defs, 0, +)
         
@@ -390,7 +390,7 @@ class DeferredTests: XCTestCase {
         
         let xs = Array(1...9)
         
-        let result = Deferred.traverse(xs) { Deferred.create($0 + 1) }
+        let result = Deferred.traverse(xs) { Deferred.completed($0 + 1) }
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -408,7 +408,7 @@ class DeferredTests: XCTestCase {
     
     func testSequence() {
         
-        let defs = Array(1...5).map { Deferred.create($0) }
+        let defs = Array(1...5).map { Deferred.completed($0) }
         
         let result = Deferred.sequence(defs)
         
@@ -428,7 +428,7 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithSuccess() {
         
-        let def = Deferred.create(Result<Int, Void>.success(42))
+        let def = Deferred.completed(Result<Int, Void>.success(42))
         
         let future = Deferred.toFuture(def)
         
@@ -444,7 +444,7 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithError() {
         
-        let def = Deferred.create(Result<Int, String>.error("Error"))
+        let def = Deferred.completed(Result<Int, String>.error("Error"))
 
         let future = Deferred.toFuture(def)
         
@@ -462,7 +462,7 @@ class DeferredTests: XCTestCase {
     
     func testPipelining() {
         
-        let def = Deferred.create(10)
+        let def = Deferred.completed(10)
         
         let inc: Int -> Int = { $0 + 1 }
         let toString: Int -> String = { $0.description }

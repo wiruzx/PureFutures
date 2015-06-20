@@ -594,7 +594,7 @@ class FutureTests: XCTestCase {
     func testReduceWithFailed() {
         
         var futures = Array(1...9).map { Future<Int, NSError>.succeed($0) }
-        futures.append(.create(.error(error)))
+        futures.append(.failed(error))
         
         let result = Future.reduce(futures, 0, +)
         

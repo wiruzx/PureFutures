@@ -118,7 +118,7 @@ public final class Future<T, E>: FutureType {
 
     */
     public class func succeed(value: T) -> Future {
-        return .create(.success(value))
+        return .completed(.success(value))
     }
 
 
@@ -132,12 +132,12 @@ public final class Future<T, E>: FutureType {
         
     */
     public class func failed(error: E) -> Future {
-        return .create(.error(error))
+        return .completed(.error(error))
     }
     
     /// Creates a new Future with given Result<T, E>
-    public static func create(x: ResultType) -> Future {
-        return Future(deferred: .create(x))
+    public static func completed(x: ResultType) -> Future {
+        return Future(deferred: .completed(x))
     }
 
     // MARK:- FutureType methods

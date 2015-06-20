@@ -72,7 +72,7 @@ class PurePromiseTests: XCTestCase {
         
         let expectation = expectationWithDescription("Deferred is completed")
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
         promise.deferred.onComplete { result in
             XCTAssertEqual(result, 42)
@@ -88,7 +88,7 @@ class PurePromiseTests: XCTestCase {
         
         let expectation = expectationWithDescription("Deferred is completed")
         
-        let deferred = Deferred.create(42)
+        let deferred = Deferred.completed(42)
         
         promise.deferred.onComplete { result in
             XCTAssertEqual(result, 42)
@@ -132,7 +132,7 @@ class PurePromiseTests: XCTestCase {
             exp1.fulfill()
         })
         
-        promise.tryCompleteWith(Deferred.create(42))
+        promise.tryCompleteWith(Deferred.completed(42))
         
         let resultExp = expectationWithDescription("Result deferred is completed")
         
