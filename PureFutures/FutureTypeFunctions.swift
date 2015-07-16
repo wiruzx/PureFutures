@@ -51,7 +51,7 @@ public func ??<F: FutureType>(fx: F, x: F) -> Future<F.SuccessType, F.ErrorType>
     :returns: a new Future
 
 */
-public func andThen<F: FutureType>(f: (F.SuccessType -> Void), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ fx: F) -> Future<F.SuccessType, F.ErrorType> {
+public func andThen<F: FutureType>(f: (F.SuccessType -> Void), _ ec: ExecutionContextType = ExecutionContext.DefaultSideEffectsContext)(_ fx: F) -> Future<F.SuccessType, F.ErrorType> {
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
