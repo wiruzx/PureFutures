@@ -15,13 +15,13 @@ import Foundation
     Creates a new Deferred<T> whose value become
     result of execution `block` on background thread
 
-    :param: block function, which result become value of Deferred
+    - parameter block: function, which result become value of Deferred
 
-    :returns: a new Deferred<T>
+    - returns: a new Deferred<T>
     
 */
 public func deferred<T>(block: () -> T) -> Deferred<T> {
-    return deferred(ExecutionContext.DefaultPureOperationContext, block)
+    return deferred(ExecutionContext.DefaultPureOperationContext, block: block)
 }
 
 /**
@@ -29,10 +29,10 @@ public func deferred<T>(block: () -> T) -> Deferred<T> {
     Creates a new Deferred<T> whose value become
     result of execution `block` on `ec` execution context
 
-    :param: ec execution context of block
-    :param: block function, which result become value of Deferred
+    - parameter ec: execution context of block
+    - parameter block: function, which result become value of Deferred
 
-    :returns: a new Deferred<T>
+    - returns: a new Deferred<T>
     
 */
 public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T> {
@@ -51,6 +51,8 @@ public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T>
 public final class Deferred<T>: DeferredType {
     
     // MARK:- Type declarations
+    
+    public typealias Element = T
     
     public typealias Callback = T -> Void
     
@@ -91,10 +93,10 @@ public final class Deferred<T>: DeferredType {
     
         Register an callback which will be called when Deferred completed
     
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
     
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onComplete(ec: ExecutionContextType, _ c: Callback) -> Deferred {
@@ -122,9 +124,9 @@ public final class Deferred<T>: DeferredType {
     
         Register an callback which will be called on main thread when Deferred completed
     
-        :param: c callback
+        - parameter c: callback
     
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onComplete(c: Callback) -> Deferred {
@@ -160,9 +162,9 @@ public extension Deferred {
         Applies the side-effecting function that will be executed on main thread
         to the result of this deferred, and returns a new deferred with the result of this deferred
 
-        :param: f side-effecting function that will be applied to result of deferred
+        - parameter f: side-effecting function that will be applied to result of deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     func andThen(f: T -> Void) -> Deferred {
@@ -178,10 +180,10 @@ public extension Deferred {
         Applies the side-effecting function to the result of this deferred,
         and returns a new deferred with the result of this deferred
 
-        :param: ec execution context of `f` function
-        :param: f side-effecting function that will be applied to result of deferred
+        - parameter ec: execution context of `f` function
+        - parameter f: side-effecting function that will be applied to result of deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     func andThen(ec: ExecutionContextType, _ f: T -> Void) -> Deferred {
@@ -198,7 +200,7 @@ public extension Deferred {
 
         Stops the current thread, until value of deferred becomes available
 
-        :returns: value of deferred
+        - returns: value of deferred
 
     */
     func forced() -> T {
@@ -214,9 +216,9 @@ public extension Deferred {
 
         Stops the currend thread, and wait for `inverval` seconds until value of deferred becoms available
 
-        :param: inverval number of seconds to wait
+        - parameter inverval: number of seconds to wait
 
-        :returns: Value of deferred or nil if it hasn't become available yet
+        - returns: Value of deferred or nil if it hasn't become available yet
 
     */
     func forced(interval: NSTimeInterval) -> T? {
@@ -236,9 +238,9 @@ public extension Deferred {
     
         Do not put any UI-related code into `f` function
 
-        :param: f Function that will be applied to result of deferred
+        - parameter f: Function that will be applied to result of deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     func map<U>(f: T -> U) -> Deferred<U> {
@@ -253,10 +255,10 @@ public extension Deferred {
 
         Creates a new deferred by applying a function `f` to the result of this deferred.
 
-        :param: ec Execution context of `f`
-        :param: f Function that will be applied to result of deferred
+        - parameter ec: Execution context of `f`
+        - parameter f: Function that will be applied to result of deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Deferred<U> {
@@ -276,9 +278,9 @@ public extension Deferred {
     
         Do not put any UI-related code into `f` function
 
-        :param: f Funcion that will be applied to result of deferred
+        - parameter f: Funcion that will be applied to result of deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     func flatMap<U>(f: T -> Deferred<U>) -> Deferred<U> {
@@ -294,10 +296,10 @@ public extension Deferred {
         Creates a new deferred by applying a function to the result of this deferred, 
         and returns the result of the function as the new deferred.
 
-        :param: ec Execution context of `f`
-        :param: f Funcion that will be applied to result of deferred
+        - parameter ec: Execution context of `f`
+        - parameter f: Funcion that will be applied to result of deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     func flatMap<U>(ec: ExecutionContextType, _ f: T -> Deferred<U>) -> Deferred<U> {
@@ -314,9 +316,9 @@ public extension Deferred {
 
         Removes one level of nesting of Deferred
 
-        :param: dx Deferred
+        - parameter dx: Deferred
 
-        :returns: flattened Deferred
+        - returns: flattened Deferred
 
     */
     class func flatten(dx: Deferred<Deferred<T>>) -> Deferred<T> {
@@ -336,10 +338,10 @@ public extension Deferred {
 
         Do not put any UI-related code into `p` function
 
-        :param: ec Execution context of `p`
-        :param: p Predicate function
+        - parameter ec: Execution context of `p`
+        - parameter p: Predicate function
 
-        :returns: A new Deferred with value or nil
+        - returns: A new Deferred with value or nil
 
     */
     func filter(p: T -> Bool) -> Deferred<T?> {
@@ -354,10 +356,10 @@ public extension Deferred {
 
         Creates a new Deferred by filtering the value of the current Deferred with a predicate `p`
 
-        :param: ec Execution context of `p`
-        :param: p Predicate function
+        - parameter ec: Execution context of `p`
+        - parameter p: Predicate function
 
-        :returns: A new Deferred with value or nil
+        - returns: A new Deferred with value or nil
 
     */
     func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Deferred<T?> {
@@ -374,9 +376,9 @@ public extension Deferred {
 
         Zips two deferred together and returns a new Deferred which contains a tuple of two elements
 
-        :param: dx Another deferred
+        - parameter dx: Another deferred
 
-        :returns: Deferred with resuls of two deferreds
+        - returns: Deferred with resuls of two deferreds
 
     */
     func zip<U>(dx: Deferred<U>) -> Deferred<(T, U)> {
@@ -396,11 +398,11 @@ public extension Deferred {
 
         Do not put any UI-related code into `combine` function
 
-        :param: dxs Sequence of Deferred
-        :param: initial Initial value that will be passed as first argument in `combine` function
-        :param: combine reducing function
+        - parameter dxs: Sequence of Deferred
+        - parameter initial: Initial value that will be passed as first argument in `combine` function
+        - parameter combine: reducing function
 
-        :returns: Deferred which will contain result of reducing sequence of deferreds
+        - returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
     class func reduce<U>(dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
@@ -415,12 +417,12 @@ public extension Deferred {
 
         Reduces the elements of sequence of deferreds using the specified reducing function `combine`
 
-        :param: ec Execution context of `combine`
-        :param: dxs Sequence of Deferred
-        :param: initial Initial value that will be passed as first argument in `combine` function
-        :param: combine reducing function
+        - parameter ec: Execution context of `combine`
+        - parameter dxs: Sequence of Deferred
+        - parameter initial: Initial value that will be passed as first argument in `combine` function
+        - parameter combine: reducing function
 
-        :returns: Deferred which will contain result of reducing sequence of deferreds
+        - returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
     class func reduce<U>(ec: ExecutionContextType, _ dxs: [Deferred], _ initial: U, _ combine: (U, T) -> U) -> Deferred<U> {
@@ -440,10 +442,10 @@ public extension Deferred {
 
         Do not put any UI-related code into `f` function
 
-        :param: xs Sequence of values
-        :param: f Function for transformation values into Deferred
+        - parameter xs: Sequence of values
+        - parameter f: Function for transformation values into Deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     class func traverse<U>(xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
@@ -458,11 +460,11 @@ public extension Deferred {
 
         Transforms a sequence of values into Deferred of array of this values using the provided function `f`
 
-        :param: ec Execution context of `f`
-        :param: xs Sequence of values
-        :param: f Function for transformation values into Deferred
+        - parameter ec: Execution context of `f`
+        - parameter xs: Sequence of values
+        - parameter f: Function for transformation values into Deferred
 
-        :returns: a new Deferred
+        - returns: a new Deferred
 
     */
     class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Deferred<U>) -> Deferred<[U]> {
@@ -479,9 +481,9 @@ public extension Deferred {
 
         Transforms a sequnce of Deferreds into Deferred of array of values:
 
-        :param: dxs Sequence of Deferreds
+        - parameter dxs: Sequence of Deferreds
 
-        :returns: Deferred with array of values
+        - returns: Deferred with array of values
 
     */
     class func sequence(dxs: [Deferred]) -> Deferred<[T]> {
@@ -498,9 +500,9 @@ public extension Deferred {
 
         Transforms Deferred into Future
 
-        :param: dx Deferred
+        - parameter dx: Deferred
 
-        :returns: a new Future with result of Deferred
+        - returns: a new Future with result of Deferred
 
     */
     class func toFuture<E>(dx: Deferred<Result<T, E>>) -> Future<T, E> {

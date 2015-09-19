@@ -12,9 +12,9 @@ import Foundation
 
     Converts NSTimeInterval to dispatch_time_t
 
-    :param: inverval infinite of finite NSTimeInterval
+    - parameter inverval: infinite of finite NSTimeInterval
 
-    :returns: dispatch_time_t value
+    - returns: dispatch_time_t value
 
 */
 private func timeFromTimeInterval(interval: NSTimeInterval) -> dispatch_time_t {
@@ -30,10 +30,10 @@ private func timeFromTimeInterval(interval: NSTimeInterval) -> dispatch_time_t {
     
     Blocks current thread until callback is called or `interval` is over
 
-    :param: interval How many seconds we're going to wait value
-    :param: block Closure, parameter of which should be called with result value
+    - parameter interval: How many seconds we're going to wait value
+    - parameter block: Closure, parameter of which should be called with result value
 
-    :returns: Optional value which will be nil if interval is over before value was set.
+    - returns: Optional value which will be nil if interval is over before value was set.
 
 */
 internal func await<T>(interval: NSTimeInterval, block: (T -> Void) -> Void) -> T? {

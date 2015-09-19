@@ -40,7 +40,7 @@ public final class PurePromise<T> {
     
         See also: `tryComplete`
     
-        :param: value value that deferred will be completed with
+        - parameter value: value that deferred will be completed with
     
     */
     public func complete(value: T) {
@@ -55,7 +55,7 @@ public final class PurePromise<T> {
     
         See also: `tryCompleteWith`
     
-        :param: deferred Value that conforms to `DeferredType` protocol
+        - parameter deferred: Value that conforms to `DeferredType` protocol
     
     */
     public func completeWith<D: DeferredType where D.Element == T>(deferred: D) {
@@ -72,9 +72,9 @@ public final class PurePromise<T> {
     
         See also: `complete`
     
-        :param: value value that deferred will be completed with
+        - parameter value: value that deferred will be completed with
     
-        :returns: Bool which says if completing was successful or not
+        - returns: Bool which says if completing was successful or not
 
     */
     public func tryComplete(value: T) -> Bool {
@@ -94,9 +94,9 @@ public final class PurePromise<T> {
     
         See also: `completeWith`
     
-        :param: deferred Value that should conform to `DeferredType` protocol
+        - parameter deferred: Value that should conform to `DeferredType` protocol
     
-        :returns: Bool which says if completing was successful or not
+        - returns: Bool which says if completing was successful or not
 
     */
     public func tryCompleteWith<D: DeferredType where D.Element == T>(deferred: D) {

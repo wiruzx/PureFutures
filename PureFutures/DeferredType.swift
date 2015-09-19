@@ -13,10 +13,10 @@ public protocol DeferredType {
     /**
         Register an callback which should be called when Deferred completed
     
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
     
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
     */
     func onComplete(ec: ExecutionContextType, _ c: Element -> Void) -> Self
     
