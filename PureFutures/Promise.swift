@@ -44,7 +44,7 @@ public final class Promise<T, E> {
     
         See also: `tryComplete`
     
-        :param: value value, that future will be completed with
+        - parameter value: value, that future will be completed with
 
     */
     public func complete(value: Result<T, E>) {
@@ -59,7 +59,7 @@ public final class Promise<T, E> {
     
         See also: `tryCompleteWith`
     
-        :param: future Value that conforms to `FutureType` protocol
+        - parameter future: Value that conforms to `FutureType` protocol
 
     */
     public func completeWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {
@@ -73,7 +73,7 @@ public final class Promise<T, E> {
     
         See also: `trySuccess`
 
-        :param: value value, that future will be succeed with
+        - parameter value: value, that future will be succeed with
 
     */
     public func success(value: T) {
@@ -87,7 +87,7 @@ public final class Promise<T, E> {
 
         See also: `tryError`
 
-        :param: error error, that future will be succeed with
+        - parameter error: error, that future will be succeed with
 
     */
     public func error(error: E) {
@@ -104,9 +104,9 @@ public final class Promise<T, E> {
 
         See also: `complete`
 
-        :param: value result that future will be completed with
+        - parameter value: result that future will be completed with
 
-        :returns: Bool which says if completing was successful or not
+        - returns: Bool which says if completing was successful or not
 
     */
     public func tryComplete(value: Result<T, E>) -> Bool {
@@ -126,9 +126,9 @@ public final class Promise<T, E> {
 
         See also: `success`
 
-        :param: value a success value that future will be completed with
+        - parameter value: a success value that future will be completed with
 
-        :returns: Bool which says if completing was successful or not
+        - returns: Bool which says if completing was successful or not
 
     */
     public func trySuccess(value: T) -> Bool {
@@ -143,9 +143,9 @@ public final class Promise<T, E> {
 
         See also: `success`
 
-        :param: error an error that future will be completed with
+        - parameter error: an error that future will be completed with
 
-        :returns: Bool which says if completing was successful or not
+        - returns: Bool which says if completing was successful or not
 
     */
     public func tryError(error: E) -> Bool {
@@ -160,9 +160,9 @@ public final class Promise<T, E> {
 
         See also: `completeWith`
 
-        :param: future a future value that future will be completed with
+        - parameter future: a future value that future will be completed with
 
-        :returns: Bool which says if completing was successful or not
+        - returns: Bool which says if completing was successful or not
 
     */
     public func tryCompleteWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {

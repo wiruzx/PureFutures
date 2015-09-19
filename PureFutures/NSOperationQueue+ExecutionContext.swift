@@ -9,7 +9,7 @@
 import class Foundation.NSOperationQueue
 
 extension NSOperationQueue: ExecutionContextType {
-    public override func execute(task: () -> Void) {
+    public func execute(task: () -> Void) {
         addOperationWithBlock(task)
     }
 }

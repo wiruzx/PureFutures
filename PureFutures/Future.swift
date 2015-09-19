@@ -15,13 +15,13 @@ import typealias Foundation.NSTimeInterval
     Creates a new `Future<T, E>` whose value will be
     result of execution `f` on background thread
 
-    :param: f function, which result will become value of returned Future
+    - parameter f: function, which result will become value of returned Future
 
-    :returns: a new Future<T, E>
+    - returns: a new Future<T, E>
     
 */
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
-    return future(ExecutionContext.DefaultPureOperationContext, f)
+    return future(ExecutionContext.DefaultPureOperationContext, f: f)
 }
 
 /**
@@ -29,10 +29,10 @@ public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
     Creates a new `Future<T, E>` whose value will be
     result of execution `f` on `ec` execution context
 
-    :param: ec execution context of given function
-    :param: f function, which result will become value of returned Future
+    - parameter ec: execution context of given function
+    - parameter f: function, which result will become value of returned Future
 
-    :returns: a new Future<T, E>
+    - returns: a new Future<T, E>
     
 */
 public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Future<T, E> {
@@ -64,6 +64,9 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Fut
 public final class Future<T, E>: FutureType {
     
     // MARK:- Type declarations
+    
+    public typealias SuccessType = T
+    public typealias ErrorType = E
     
     public typealias ResultType = Result<T, E>
     
@@ -112,9 +115,9 @@ public final class Future<T, E>: FutureType {
     
         Returns a new immediately completed `Future<T, E>` with given `value`
 
-        :param: value value which Future will have
+        - parameter value: value which Future will have
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     public class func succeed(value: T) -> Future {
@@ -126,9 +129,9 @@ public final class Future<T, E>: FutureType {
 
         Returns a new immediately completed `Future<T, E>` with given `error`
 
-        :param: error error which Future will have
+        - parameter error: error which Future will have
 
-        :returns: a new Future
+        - returns: a new Future
         
     */
     public class func failed(error: E) -> Future {
@@ -146,10 +149,10 @@ public final class Future<T, E>: FutureType {
 
         Register a callback which will be called when Future is completed
 
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
 
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onComplete(ec: ExecutionContextType, _ c: CompleteCallback) -> Future {
@@ -162,10 +165,10 @@ public final class Future<T, E>: FutureType {
 
         Register a callback which will be called when Future is completed with value
 
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
 
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onSuccess(ec: ExecutionContextType, _ c: SuccessCallback) -> Future {
@@ -183,10 +186,10 @@ public final class Future<T, E>: FutureType {
 
         Register a callback which will be called when Future is completed with error
 
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
 
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onError(ec: ExecutionContextType, _ c: ErrorCallback) -> Future {
@@ -206,9 +209,9 @@ public final class Future<T, E>: FutureType {
 
         Register a callback which will be called on a main thread when Future is completed
 
-        :param: c callback
+        - parameter c: callback
 
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onComplete(c: CompleteCallback) -> Future {
@@ -219,9 +222,9 @@ public final class Future<T, E>: FutureType {
 
         Register a callback which will be called on a main thread when Future is completed with value
 
-        :param: c callback
+        - parameter c: callback
 
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onSuccess(c: SuccessCallback) -> Future {
@@ -232,9 +235,9 @@ public final class Future<T, E>: FutureType {
 
         Register a callback which will be called on a main thread when Future is completed with error
 
-        :param: c callback
+        - parameter c: callback
 
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
         
     */
     public func onError(c: ErrorCallback) -> Future {
@@ -259,10 +262,10 @@ public extension Future {
         Applies the side-effecting function that will be executed on main thread
         to the result of this future, and returns a new future with the result of this future
 
-        :param: ec execution context of `f` function
-        :param: f side-effecting function that will be applied to success result of future
+        - parameter ec: execution context of `f` function
+        - parameter f: side-effecting function that will be applied to success result of future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func andThen(f: T -> Void) -> Future {
@@ -278,10 +281,10 @@ public extension Future {
         Applies the side-effecting function to the success result of this future,
         and returns a new future with the result of this future
 
-        :param: ec execution context of `f` function
-        :param: f side-effecting function that will be applied to success result of future
+        - parameter ec: execution context of `f` function
+        - parameter f: side-effecting function that will be applied to success result of future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func andThen(ec: ExecutionContextType, f: T -> Void) -> Future {
@@ -298,7 +301,7 @@ public extension Future {
 
         Stops the current thread, until value of future becomes available
 
-        :returns: value of future
+        - returns: value of future
 
     */
     func forced() -> ResultType {
@@ -313,9 +316,9 @@ public extension Future {
 
         Stops the currend thread, and wait for `inverval` seconds until value of future becoms available
 
-        :param: inverval number of seconds to wait
+        - parameter inverval: number of seconds to wait
 
-        :returns: Value of future or nil if it hasn't become available yet
+        - returns: Value of future or nil if it hasn't become available yet
 
     */
     func forced(interval: NSTimeInterval) -> ResultType? {
@@ -335,9 +338,9 @@ public extension Future {
     
         Do not put any UI-related code into `f` function
 
-        :param: f Function that will be applied to success result of future
+        - parameter f: Function that will be applied to success result of future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func map<U>(f: T -> U) -> Future<U, E> {
@@ -352,10 +355,10 @@ public extension Future {
 
         Creates a new future by applying a function `f` to the success result of this future.
 
-        :param: ec Execution context of `f`
-        :param: f Function that will be applied to success result of future
+        - parameter ec: Execution context of `f`
+        - parameter f: Function that will be applied to success result of future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func map<U>(ec: ExecutionContextType, _ f: T -> U) -> Future<U, E> {
@@ -377,11 +380,11 @@ public extension Future {
     
         Do not put any UI-related code into `s` and `e` functions
 
-        :param: ec Execution context of `s` and `e` functions
-        :param: s Function that will be applied to success result of the future
-        :param: e Function that will be applied to failed result of the future
+        - parameter ec: Execution context of `s` and `e` functions
+        - parameter s: Function that will be applied to success result of the future
+        - parameter e: Function that will be applied to failed result of the future
 
-        :returns: a new Future
+        - returns: a new Future
     */
     func transform<T1, E1>(s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
         #if os(iOS)
@@ -396,11 +399,11 @@ public extension Future {
         Creates a new future by applying the 's' function to the successful result of this future, 
         or the 'e' function to the failed result.
 
-        :param: ec Execution context of `s` and `e` functions
-        :param: s Function that will be applied to success result of the future
-        :param: e Function that will be applied to failed result of the future
+        - parameter ec: Execution context of `s` and `e` functions
+        - parameter s: Function that will be applied to success result of the future
+        - parameter e: Function that will be applied to failed result of the future
 
-        :returns: a new Future
+        - returns: a new Future
     */
     func transform<T1, E1>(ec: ExecutionContextType, _ s: T -> T1, _ e: E -> E1) -> Future<T1, E1> {
         #if os(iOS)
@@ -417,9 +420,9 @@ public extension Future {
         Creates a new future by applying a function which will be executed on global queue
         to the success result of this future, and returns the result of the function as the new future.
 
-        :param: f Funcion that will be applied to success result of the future
+        - parameter f: Funcion that will be applied to success result of the future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func flatMap<U>(f: T -> Future<U, E>) -> Future<U, E> {
@@ -435,10 +438,10 @@ public extension Future {
         Creates a new future by applying a function to the success result of this future, 
         and returns the result of the function as the new future.
 
-        :param: ec Execution context of `f`
-        :param: f Funcion that will be applied to success result of the future
+        - parameter ec: Execution context of `f`
+        - parameter f: Funcion that will be applied to success result of the future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func flatMap<U>(ec: ExecutionContextType, _ f: T -> Future<U, E>) -> Future<U, E> {
@@ -455,9 +458,9 @@ public extension Future {
 
         Removes one level of nesting of Future
 
-        :param: fx Future
+        - parameter fx: Future
 
-        :returns: flattened Future
+        - returns: flattened Future
 
     */
     class func flatten(fx: Future<Future<T, E>, E>) -> Future {
@@ -477,9 +480,9 @@ public extension Future {
     
         Do not put any UI-related code into `p` function
 
-        :param: p Predicate function
+        - parameter p: Predicate function
 
-        :returns: A new Future with value or nil
+        - returns: A new Future with value or nil
 
     */
     func filter(p: T -> Bool) -> Future<T?, E> {
@@ -494,10 +497,10 @@ public extension Future {
 
         Creates a new Future by filtering the value of the current Future with a predicate `p`
 
-        :param: ec Execution context of `p`
-        :param: p Predicate function
+        - parameter ec: Execution context of `p`
+        - parameter p: Predicate function
 
-        :returns: A new Future with value or nil
+        - returns: A new Future with value or nil
 
     */
     func filter(ec: ExecutionContextType, _ p: T -> Bool) -> Future<T?, E> {
@@ -514,9 +517,9 @@ public extension Future {
 
         Zips two future together and returns a new Future which success result contains a tuple of two elements
 
-        :param: fx Another future
+        - parameter fx: Another future
 
-        :returns: Future with resuls of two futures
+        - returns: Future with resuls of two futures
 
     */
     func zip<U>(fx: Future<U, E>) -> Future<(T, U), E> {
@@ -540,10 +543,10 @@ public extension Future {
         
         See: `toDeferred`
 
-        :param: ec Execution context of `r` function
-        :param: r Recover function
+        - parameter ec: Execution context of `r` function
+        - parameter r: Recover function
 
-        :returns: a new Future that will never fail
+        - returns: a new Future that will never fail
 
     */
     func recover(r: E -> T) -> Future {
@@ -561,10 +564,10 @@ public extension Future {
         
         See: `toDeferred`
 
-        :param: ec Execution context of `r` function
-        :param: r Recover function
+        - parameter ec: Execution context of `r` function
+        - parameter r: Recover function
 
-        :returns: a new Future that will never fail
+        - returns: a new Future that will never fail
 
     */
     func recover(ec: ExecutionContextType, _ r: E -> T) -> Future {
@@ -585,10 +588,10 @@ public extension Future {
     
         Do not put any UI-related code into `r` function
     
-        :param: ec Execition context of `r` function
-        :param: r Recover function
+        - parameter ec: Execition context of `r` function
+        - parameter r: Recover function
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func recoverWith(r: E -> Future) -> Future {
@@ -603,10 +606,10 @@ public extension Future {
 
         Creates a new future that will handle fail results that this future might contain by assigning it a value of another future.
 
-        :param: ec Execition context of `r` function
-        :param: r Recover function
+        - parameter ec: Execition context of `r` function
+        - parameter r: Recover function
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     func recoverWith(ec: ExecutionContextType, _ r: E -> Future) -> Future {
@@ -623,7 +626,7 @@ public extension Future {
 
         Transforms Future into Deferred
 
-        :returns: Deferred
+        - returns: Deferred
 
     */
     func toDeferred() -> Deferred<Result<T, E>> {
@@ -637,10 +640,10 @@ public extension Future {
     
         Do not put any UI-related code into `r` function
 
-        :param: ec Execution context of `r` function
-        :param: r Recover function
+        - parameter ec: Execution context of `r` function
+        - parameter r: Recover function
 
-        :returns: Deferred with success value of `fx` or result of `r`
+        - returns: Deferred with success value of `fx` or result of `r`
 
     */
     func toDeferred(r: E -> T) -> Deferred<T> {
@@ -655,10 +658,10 @@ public extension Future {
 
         Transforms Future<T, E> into Deferred<T> and handles error case with `r` function
 
-        :param: ec Execution context of `r` function
-        :param: r Recover function
+        - parameter ec: Execution context of `r` function
+        - parameter r: Recover function
 
-        :returns: Deferred with success value of `fx` or result of `r`
+        - returns: Deferred with success value of `fx` or result of `r`
 
     */
     func toDeferred(ec: ExecutionContextType, _ r: E -> T) -> Deferred<T> {
@@ -678,12 +681,12 @@ public extension Future {
 
         Do not put any UI-related code into `combine` function
 
-        :param: ec Execution context of `combine`
-        :param: fxs Sequence of Futures
-        :param: initial Initial value that will be passed as first argument in `combine` function
-        :param: combine reducing function
+        - parameter ec: Execution context of `combine`
+        - parameter fxs: Sequence of Futures
+        - parameter initial: Initial value that will be passed as first argument in `combine` function
+        - parameter combine: reducing function
 
-        :returns: Future which will contain result of reducing sequence of futures
+        - returns: Future which will contain result of reducing sequence of futures
 
     */
     class func reduce<U>(fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
@@ -698,12 +701,12 @@ public extension Future {
 
         Reduces the elements of sequence of futures using the specified reducing function `combine`
 
-        :param: ec Execution context of `combine`
-        :param: fxs Sequence of Futures
-        :param: initial Initial value that will be passed as first argument in `combine` function
-        :param: combine reducing function
+        - parameter ec: Execution context of `combine`
+        - parameter fxs: Sequence of Futures
+        - parameter initial: Initial value that will be passed as first argument in `combine` function
+        - parameter combine: reducing function
 
-        :returns: Future which will contain result of reducing sequence of futures
+        - returns: Future which will contain result of reducing sequence of futures
 
     */
     class func reduce<U>(ec: ExecutionContextType, _ fxs: [Future], _ initial: U, _ combine: (U, T) -> U) -> Future<U, E> {
@@ -723,11 +726,11 @@ public extension Future {
     
         Do not put any UI-related code into `f` function
 
-        :param: ec Execution context of `f`
-        :param: xs Sequence of values
-        :param: f Function for transformation values into Future
+        - parameter ec: Execution context of `f`
+        - parameter xs: Sequence of values
+        - parameter f: Function for transformation values into Future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     class func traverse<U>(xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
@@ -742,11 +745,11 @@ public extension Future {
 
         Transforms an array of values into Future of array of this values using the provided function `f`
 
-        :param: ec Execution context of `f`
-        :param: xs Sequence of values
-        :param: f Function for transformation values into Future
+        - parameter ec: Execution context of `f`
+        - parameter xs: Sequence of values
+        - parameter f: Function for transformation values into Future
 
-        :returns: a new Future
+        - returns: a new Future
 
     */
     class func traverse<U>(ec: ExecutionContextType, _ xs: [T], _ f: T -> Future<U, E>) -> Future<[U], E> {
@@ -763,9 +766,9 @@ public extension Future {
 
         Transforms a sequnce of Futures into Future of array of values
 
-        :param: fxs Sequence of Futures
+        - parameter fxs: Sequence of Futures
 
-        :returns: Future with array of values
+        - returns: Future with array of values
 
     */
     class func sequence(fxs: [Future]) -> Future<[T], E> {

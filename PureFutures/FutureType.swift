@@ -16,20 +16,20 @@ public protocol FutureType: DeferredType {
     /**
         Register an callback which should be called when Future completed
     
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
     
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
     */
     func onComplete(ec: ExecutionContextType, _ c: Result<SuccessType, ErrorType> -> Void) -> Self
     
     /**
         Register an callback which should be called when Future succeed
     
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
     
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
     */
     func onSuccess(ec: ExecutionContextType, _ c: SuccessType -> Void) -> Self
     
@@ -37,10 +37,10 @@ public protocol FutureType: DeferredType {
     /**
         Register an callback which should be called when Future failed
     
-        :param: ec execution context of callback
-        :param: c callback
+        - parameter ec: execution context of callback
+        - parameter c: callback
     
-        :returns: Returns itself for chaining operations
+        - returns: Returns itself for chaining operations
     */
     func onError(ec: ExecutionContextType, _ c: ErrorType -> Void) -> Self
     

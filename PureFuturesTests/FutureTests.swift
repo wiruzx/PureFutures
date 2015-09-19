@@ -884,7 +884,7 @@ class FutureTests: XCTestCase {
     
     func testCoalescingToFutureWithBothFailed() {
      
-        let first = Future<Int, NSError>.failed(NSError())
+        let first = Future<Int, NSError>.failed(NSError(domain: "", code: 0, userInfo: nil))
         let second = Future<Int, NSError>.failed(error)
         
         let result = first ?? second
