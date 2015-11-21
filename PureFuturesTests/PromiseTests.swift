@@ -51,7 +51,7 @@ class PromiseTests: XCTestCase {
             expectation.fulfill()
         }
         
-        promise.complete(.success(42))
+        promise.complete(.Success(42))
         
         waitForExpectationsWithTimeout(1, handler: nil)
     }
@@ -71,7 +71,7 @@ class PromiseTests: XCTestCase {
         }
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(.success(42))
+            self.promise.complete(.Success(42))
         }
         
         waitForExpectationsWithTimeout(1, handler: nil)
@@ -154,8 +154,8 @@ class PromiseTests: XCTestCase {
             switch result {
             case .Success(_):
                 XCTFail("This should not be called")
-            case .Error(let box):
-                XCTAssertEqual(box.value, "An error message")
+            case .Error(let error):
+                XCTAssertEqual(error, "An error message")
             }
             
             expectation.fulfill()
@@ -170,15 +170,15 @@ class PromiseTests: XCTestCase {
     
     func testTryComplete() {
         
-        XCTAssertTrue(promise.tryComplete(.success(42)))
-        XCTAssertFalse(promise.tryComplete(.success(10)))
+        XCTAssertTrue(promise.tryComplete(.Success(42)))
+        XCTAssertFalse(promise.tryComplete(.Success(10)))
         
         let expectation = expectationWithDescription("Future is copleted")
         
         promise.future.onComplete {
             switch $0 {
-            case .Success(let box):
-                XCTAssertEqual(box.value, 42)
+            case .Success(let value):
+                XCTAssertEqual(value, 42)
             case .Error(_):
                 XCTFail("Result should not be error")
             }
@@ -199,8 +199,8 @@ class PromiseTests: XCTestCase {
         
         promise.future.onComplete {
             switch $0 {
-            case .Success(let box):
-                XCTAssertEqual(box.value, 42)
+            case .Success(let value):
+                XCTAssertEqual(value, 42)
             case .Error(_):
                 XCTFail("Result should not be error")
             }
@@ -224,8 +224,8 @@ class PromiseTests: XCTestCase {
             switch $0 {
             case .Success(_):
                 XCTFail("Result should not be a value")
-            case .Error(let box):
-                XCTAssertEqual(box.value, "FirstError")
+            case .Error(let error):
+                XCTAssertEqual(error, "FirstError")
             }
             expectation.fulfill()
         }
@@ -241,19 +241,19 @@ class PromiseTests: XCTestCase {
         
         promise.tryCompleteWith(future {
             sleep(1)
-            return .success(10)
+            return .Success(10)
         }.andThen { _ in
             firstExp.fulfill()
         })
         
-        promise.tryCompleteWith(Future.completed(.success(42)))
+        promise.tryCompleteWith(Future.completed(.Success(42)))
         
         let resultExp = expectationWithDescription("Result Future is copleted")
         
         promise.future.onComplete {
             switch $0 {
-            case .Success(let box):
-                XCTAssertEqual(box.value, 42)
+            case .Success(let value):
+                XCTAssertEqual(value, 42)
             case .Error(_):
                 XCTFail("Result should not be error")
             }

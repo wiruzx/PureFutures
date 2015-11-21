@@ -25,7 +25,6 @@
 		E615DFAF1B0C15F8005631A5 /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
 		E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
 		E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
-		E615DFB31B0C15F8005631A5 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
 		E615DFB41B0C15F8005631A5 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E615DFB51B0C15F8005631A5 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E615DFB61B0C15F8005631A5 /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
@@ -43,7 +42,6 @@
 		E6C0A9FA1AA36490006436AC /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
 		E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
 		E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
-		E6E79F821A8A432800F09BC6 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
 		E6E79F841A8A468500F09BC6 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
 		E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
@@ -83,7 +81,6 @@
 		E6C0A9F91AA36490006436AC /* Other.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
 		E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTypeFunctions.swift; sourceTree = "<group>"; };
 		E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTypeFunctions.swift; sourceTree = "<group>"; };
-		E6E79F811A8A432800F09BC6 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 		E6E79F831A8A468500F09BC6 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		E6E79F911A8AB80E00F09BC6 /* Deferred.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deferred.swift; sourceTree = "<group>"; };
 		E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromise.swift; sourceTree = "<group>"; };
@@ -190,7 +187,6 @@
 		E6C9001C1AE15D3600117FBE /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				E6E79F811A8A432800F09BC6 /* Box.swift */,
 				E6E79F831A8A468500F09BC6 /* Result.swift */,
 				E6267DE11AA280940068A0A0 /* Await.swift */,
 				E6C0A9F91AA36490006436AC /* Other.swift */,
@@ -392,7 +388,6 @@
 				E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */,
 				E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */,
 				E6786C241B0E6D550072B6BF /* Operators.swift in Sources */,
-				E615DFB31B0C15F8005631A5 /* Box.swift in Sources */,
 				E615DFB41B0C15F8005631A5 /* Result.swift in Sources */,
 				E615DFB51B0C15F8005631A5 /* Await.swift in Sources */,
 				E615DFB61B0C15F8005631A5 /* Other.swift in Sources */,
@@ -409,7 +404,6 @@
 				E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */,
 				E60A729B1A8AE0C80094A4D4 /* DeferredType.swift in Sources */,
 				E60A72A11A8AE53B0094A4D4 /* FutureType.swift in Sources */,
-				E6E79F821A8A432800F09BC6 /* Box.swift in Sources */,
 				E60A72911A8AD1750094A4D4 /* Future.swift in Sources */,
 				E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */,
 				E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */,

@@ -77,7 +77,7 @@ public final class Promise<T, E> {
 
     */
     public func success(value: T) {
-        complete(.success(value))
+        complete(.Success(value))
     }
     
     /**
@@ -91,7 +91,7 @@ public final class Promise<T, E> {
 
     */
     public func error(error: E) {
-        complete(.error(error))
+        complete(.Error(error))
     }
     
     // MARK:- Other methods
@@ -132,7 +132,7 @@ public final class Promise<T, E> {
 
     */
     public func trySuccess(value: T) -> Bool {
-        return tryComplete(.success(value))
+        return tryComplete(.Success(value))
     }
 
     /**
@@ -149,7 +149,7 @@ public final class Promise<T, E> {
 
     */
     public func tryError(error: E) -> Bool {
-        return tryComplete(.error(error))
+        return tryComplete(.Error(error))
     }
 
     /**

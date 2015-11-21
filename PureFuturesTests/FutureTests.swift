@@ -29,7 +29,7 @@ class FutureTests: XCTestCase {
     
     func testFutureWithDefaultExecutionContext() {
         
-        let f = future { Result<Int, Void>.success(42) }
+        let f = future { Result<Int, Void>.Success(42) }
         
         let expectation = futureIsCompleteExpectation()
         
@@ -45,12 +45,12 @@ class FutureTests: XCTestCase {
         
         let f1: Future<Int, Void> = future(ExecutionContext.Global(.Async)) {
             XCTAssertFalse(NSThread.isMainThread())
-            return .success(42)
+            return .Success(42)
         }
         
         let f2: Future<Int, Void> = future(ExecutionContext.Main(.Async)) {
             XCTAssertTrue(NSThread.isMainThread())
-            return .success(42)
+            return .Success(42)
         }
         
         let firstExpectation = futureIsCompleteExpectation()
@@ -84,7 +84,7 @@ class FutureTests: XCTestCase {
     
     func testOnCompleteImmediate() {
         
-        promise.complete(.success(42))
+        promise.complete(.Success(42))
         
         let expectation = futureIsCompleteExpectation()
         
@@ -109,7 +109,7 @@ class FutureTests: XCTestCase {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
             sleep(1)
-            self.promise.complete(.success(42))
+            self.promise.complete(.Success(42))
         }
         
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -118,7 +118,7 @@ class FutureTests: XCTestCase {
     func testOnCompleteOnMainThread() {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(.success(42))
+            self.promise.complete(.Success(42))
         }
         
         let expectation = futureIsCompleteExpectation()
@@ -136,7 +136,7 @@ class FutureTests: XCTestCase {
     func testOnCompleteOnBackgroundThread() {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(.success(42))
+            self.promise.complete(.Success(42))
         }
         
         let expectation = futureIsCompleteExpectation()
@@ -771,8 +771,8 @@ class FutureTests: XCTestCase {
         
         deferred.onComplete { result in
             switch result {
-            case .Success(let box):
-                XCTAssertEqual(box.value, 42)
+            case .Success(let value):
+                XCTAssertEqual(value, 42)
             case .Error(_):
                 XCTFail("an error occured")
             }

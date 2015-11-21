@@ -55,11 +55,11 @@ public func andThen<F: FutureType>(f: (F.SuccessType -> Void), _ ec: ExecutionCo
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
-        case .Success(let box):
-            f(box.value)
-            p.success(box.value)
-        case .Error(let box):
-            p.error(box.value)
+        case .Success(let value):
+            p.success(value)
+            f(value)
+        case .Error(let error):
+            p.error(error)
         }
     }
     return p.future
@@ -97,10 +97,10 @@ public func transform<F: FutureType, S, E>(s: (F.SuccessType -> S), _ e: (F.Erro
     let p = Promise<S, E>()
     fx.onComplete(ec) {
         switch $0 {
-        case .Success(let box):
-            p.success(s(box.value))
-        case .Error(let box):
-            p.error(e(box.value))
+        case .Success(let value):
+            p.success(s(value))
+        case .Error(let error):
+            p.error(e(error))
         }
     }
     return p.future
@@ -122,10 +122,10 @@ public func flatMap<F: FutureType, F2: FutureType where F.ErrorType == F2.ErrorT
     let p = Promise<F2.SuccessType, F2.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
-        case .Success(let box):
-            p.completeWith(f(box.value))
-        case .Error(let box):
-            p.complete(.error(box.value))
+        case .Success(let value):
+            p.completeWith(f(value))
+        case .Error(let error):
+            p.complete(.Error(error))
         }
     }
     return p.future
@@ -147,12 +147,12 @@ public func flatten<F: FutureType, IF: FutureType where F.SuccessType == IF, F.E
     
     fx.onComplete(ec) { result in
         switch result {
-        case .Success(let box):
-            box.value.onComplete(ec) {
+        case .Success(let value):
+            value.onComplete(ec) {
                 p.complete($0)
             }
-        case .Error(let box):
-            p.error(box.value)
+        case .Error(let error):
+            p.error(error)
         }
     }
     
@@ -268,10 +268,10 @@ public func recover<F: FutureType>(r: (F.ErrorType -> F.SuccessType), _ ec: Exec
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
-        case .Success(let box):
-            p.success(box.value)
-        case .Error(let box):
-            p.success(r(box.value))
+        case .Success(let value):
+            p.success(value)
+        case .Error(let error):
+            p.success(r(error))
         }
     }
     return p.future
@@ -293,10 +293,10 @@ public func recoverWith<F: FutureType>(r: (F.ErrorType -> F), _ ec: ExecutionCon
     let p = Promise<F.SuccessType, F.ErrorType>()
     fx.onComplete(ec) {
         switch $0 {
-        case .Success(let box):
-            p.success(box.value)
-        case .Error(let box):
-            p.completeWith(r(box.value))
+        case .Success(let value):
+            p.success(value)
+        case .Error(let error):
+            p.completeWith(r(error))
         }
     }
     return p.future
@@ -335,10 +335,10 @@ public func toDeferred<F: FutureType>(r: (F.ErrorType -> F.SuccessType), _ ec: E
     let p = PurePromise<F.SuccessType>()
     fx.onComplete(ec) {
         switch $0 {
-        case .Success(let box):
-            p.complete(box.value)
-        case .Error(let box):
-            p.complete(r(box.value))
+        case .Success(let value):
+            p.complete(value)
+        case .Error(let error):
+            p.complete(r(error))
         }
     }
     return p.deferred

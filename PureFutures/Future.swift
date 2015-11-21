@@ -121,7 +121,7 @@ public final class Future<T, E>: FutureType {
 
     */
     public class func succeed(value: T) -> Future {
-        return .completed(.success(value))
+        return .completed(.Success(value))
     }
 
 
@@ -135,7 +135,7 @@ public final class Future<T, E>: FutureType {
         
     */
     public class func failed(error: E) -> Future {
-        return .completed(.error(error))
+        return .completed(.Error(error))
     }
     
     /// Creates a new Future with given Result<T, E>
@@ -174,8 +174,8 @@ public final class Future<T, E>: FutureType {
     public func onSuccess(ec: ExecutionContextType, _ c: SuccessCallback) -> Future {
         return onComplete(ec) {
             switch $0 {
-            case .Success(let boxed):
-                c(boxed.value)
+            case .Success(let value):
+                c(value)
             default:
                 break
             }
@@ -195,8 +195,8 @@ public final class Future<T, E>: FutureType {
     public func onError(ec: ExecutionContextType, _ c: ErrorCallback) -> Future {
         return onComplete(ec) {
             switch $0 {
-            case .Error(let boxed):
-                c(boxed.value)
+            case .Error(let error):
+                c(error)
             default:
                 break
             }

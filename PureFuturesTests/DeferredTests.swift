@@ -428,7 +428,7 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithSuccess() {
         
-        let def = Deferred.completed(Result<Int, Void>.success(42))
+        let def = Deferred.completed(Result<Int, Void>.Success(42))
         
         let future = Deferred.toFuture(def)
         
@@ -444,7 +444,7 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithError() {
         
-        let def = Deferred.completed(Result<Int, String>.error("Error"))
+        let def = Deferred.completed(Result<Int, String>.Error("Error"))
 
         let future = Deferred.toFuture(def)
         
