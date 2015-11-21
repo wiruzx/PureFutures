@@ -12,6 +12,8 @@ import PureFutures
 
 class FutureTests: XCTestCase {
     
+    enum VoidError: ErrorType {}
+    
     var promise: Promise<Int, NSError>!
     let error = NSError(domain: "FutureTests", code: 0, userInfo: nil)
 
@@ -29,7 +31,7 @@ class FutureTests: XCTestCase {
     
     func testFutureWithDefaultExecutionContext() {
         
-        let f = future { Result<Int, Void>.Success(42) }
+        let f = future { Result<Int, VoidError>.Success(42) }
         
         let expectation = futureIsCompleteExpectation()
         
@@ -43,12 +45,12 @@ class FutureTests: XCTestCase {
     
     func testFutureWithExecutionContext() {
         
-        let f1: Future<Int, Void> = future(ExecutionContext.Global(.Async)) {
+        let f1: Future<Int, VoidError> = future(ExecutionContext.Global(.Async)) {
             XCTAssertFalse(NSThread.isMainThread())
             return .Success(42)
         }
         
-        let f2: Future<Int, Void> = future(ExecutionContext.Main(.Async)) {
+        let f2: Future<Int, VoidError> = future(ExecutionContext.Main(.Async)) {
             XCTAssertTrue(NSThread.isMainThread())
             return .Success(42)
         }
@@ -200,7 +202,7 @@ class FutureTests: XCTestCase {
     // MARK:- forced
     
     func testForcedCompleted() {
-        let future = Future<Int, Void>.succeed(42)
+        let future = Future<Int, VoidError>.succeed(42)
         
         if let value = future.forced(1)?.value {
             XCTAssertEqual(value, 42)
@@ -260,7 +262,7 @@ class FutureTests: XCTestCase {
     
     func testAndThen() {
         
-        let future = Future<Int, Void>.succeed(42)
+        let future = Future<Int, VoidError>.succeed(42)
         
         let expectation = futureIsCompleteExpectation()
         
@@ -297,10 +299,11 @@ class FutureTests: XCTestCase {
         
         let future = Future<Int, NSError>.succeed(42)
         
-        let result = future.transform({
+        let result: Future<Int, NSError> = future.transform({
             $0 / 2
-        }, { _ in
-            XCTFail("This should not be called")
+        }, { e in
+            XCTFail("Error handler should not be called")
+            return e
         })
         
         let expectation = futureIsCompleteExpectation()
@@ -381,7 +384,7 @@ class FutureTests: XCTestCase {
     
     func testFlatMap() {
         
-        let future = Future<Int, Void>.succeed(42)
+        let future = Future<Int, VoidError>.succeed(42)
         
         let result = future.flatMap { Future.succeed($0 / 2) }
         
@@ -429,7 +432,7 @@ class FutureTests: XCTestCase {
     
     func testFlatten() {
         
-        typealias NestedFuture = Future<Future<Int, Void>, Void>
+        typealias NestedFuture = Future<Future<Int, VoidError>, VoidError>
         
         let future = NestedFuture.succeed(Future.succeed(42))
         
@@ -817,7 +820,7 @@ class FutureTests: XCTestCase {
     
     func testCoalescingToDeferredWithSucceed() {
         
-        let future = Future<Int, Void>.succeed(42)
+        let future = Future<Int, VoidError>.succeed(42)
         
         let deferred = future ?? 10
         

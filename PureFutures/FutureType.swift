@@ -9,7 +9,7 @@
 public protocol FutureType: DeferredType {
     
     typealias Success
-    typealias Error
+    typealias Error: ErrorType
     
     typealias Element = Result<Success, Error>
     

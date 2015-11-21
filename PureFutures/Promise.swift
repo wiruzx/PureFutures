@@ -13,7 +13,7 @@
     Allows you complete `Future` that it holds
 
 */
-public final class Promise<T, E> {
+public final class Promise<T, E: ErrorType> {
     
     // MARK:- Type declarations
     

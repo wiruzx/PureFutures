@@ -61,7 +61,7 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Fut
 
 */
 
-public final class Future<T, E>: FutureType {
+public final class Future<T, E: ErrorType>: FutureType {
     
     // MARK:- Type declarations
     

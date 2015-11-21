@@ -16,7 +16,12 @@ import func PureFutures.future
 
 class PromiseTests: XCTestCase {
     
-    var promise: Promise<Int, String>!
+    enum TestErrorType: ErrorType {
+        case Error1
+        case Error2
+    }
+    
+    var promise: Promise<Int, TestErrorType>!
     
     override func setUp() {
         super.setUp()
@@ -155,13 +160,13 @@ class PromiseTests: XCTestCase {
             case .Success(_):
                 XCTFail("This should not be called")
             case .Error(let error):
-                XCTAssertEqual(error, "An error message")
+                XCTAssertEqual(error, TestErrorType.Error1)
             }
             
             expectation.fulfill()
         }
         
-        promise.error("An error message")
+        promise.error(.Error1)
         
         waitForExpectationsWithTimeout(1, handler: nil)
     }
@@ -215,8 +220,8 @@ class PromiseTests: XCTestCase {
     
     func testTryError() {
         
-        XCTAssertTrue(promise.tryError("FirstError"))
-        XCTAssertFalse(promise.tryError("SecondError"))
+        XCTAssertTrue(promise.tryError(.Error1))
+        XCTAssertFalse(promise.tryError(.Error2))
         
         let expectation = expectationWithDescription("Future is copleted")
         
@@ -225,7 +230,7 @@ class PromiseTests: XCTestCase {
             case .Success(_):
                 XCTFail("Result should not be a value")
             case .Error(let error):
-                XCTAssertEqual(error, "FirstError")
+                XCTAssertEqual(error, TestErrorType.Error1)
             }
             expectation.fulfill()
         }

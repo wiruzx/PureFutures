@@ -216,7 +216,7 @@ public func sequence<S: SequenceType where S.Generator.Element: DeferredType>(dx
     - returns: a new Future with result of Deferred
 
 */
-public func toFuture<D: DeferredType, T, E where D.Element == Result<T, E>>(dx: D) -> Future<T, E> {
+public func toFuture<D: DeferredType, T, E: ErrorType where D.Element == Result<T, E>>(dx: D) -> Future<T, E> {
     let p = Promise<T, E>()
     
     dx.onComplete(ExecutionContext.DefaultPureOperationContext) {

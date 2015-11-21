@@ -10,7 +10,7 @@
     Used as result of computations which could 
     either complete with Success and Error cases
 */
-public enum Result<T, E> {
+public enum Result<T, E: ErrorType> {
     
     case Success(T)
     case Error(E)

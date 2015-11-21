@@ -428,7 +428,9 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithSuccess() {
         
-        let def = Deferred.completed(Result<Int, Void>.Success(42))
+        enum VoidError: ErrorType {}
+        
+        let def = Deferred.completed(Result<Int, VoidError>.Success(42))
         
         let future = Deferred.toFuture(def)
         
@@ -444,14 +446,18 @@ class DeferredTests: XCTestCase {
     
     func testToFutureWithError() {
         
-        let def = Deferred.completed(Result<Int, String>.Error("Error"))
+        enum TestErrorType: ErrorType {
+            case Error
+        }
+        
+        let def = Deferred.completed(Result<Int, TestErrorType>.Error(.Error))
 
         let future = Deferred.toFuture(def)
         
         let expectation = deferredIsCompleteExpectation()
         
         future.onError {
-            XCTAssertEqual($0, "Error")
+            XCTAssertEqual($0, TestErrorType.Error)
             expectation.fulfill()
         }
         
