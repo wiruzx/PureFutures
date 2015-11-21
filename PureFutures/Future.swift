@@ -65,8 +65,8 @@ public final class Future<T, E>: FutureType {
     
     // MARK:- Type declarations
     
-    public typealias SuccessType = T
-    public typealias ErrorType = E
+    public typealias Success = T
+    public typealias Error = E
     
     public typealias ResultType = Result<T, E>
     

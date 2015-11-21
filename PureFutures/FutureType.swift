@@ -8,10 +8,10 @@
 
 public protocol FutureType: DeferredType {
     
-    typealias SuccessType
-    typealias ErrorType
+    typealias Success
+    typealias Error
     
-    typealias Element = Result<SuccessType, ErrorType>
+    typealias Element = Result<Success, Error>
     
     /**
         Register an callback which should be called when Future completed
@@ -21,7 +21,7 @@ public protocol FutureType: DeferredType {
     
         - returns: Returns itself for chaining operations
     */
-    func onComplete(ec: ExecutionContextType, _ c: Result<SuccessType, ErrorType> -> Void) -> Self
+    func onComplete(ec: ExecutionContextType, _ c: Result<Success, Error> -> Void) -> Self
     
     /**
         Register an callback which should be called when Future succeed
@@ -31,7 +31,7 @@ public protocol FutureType: DeferredType {
     
         - returns: Returns itself for chaining operations
     */
-    func onSuccess(ec: ExecutionContextType, _ c: SuccessType -> Void) -> Self
+    func onSuccess(ec: ExecutionContextType, _ c: Success -> Void) -> Self
     
     
     /**
@@ -42,6 +42,6 @@ public protocol FutureType: DeferredType {
     
         - returns: Returns itself for chaining operations
     */
-    func onError(ec: ExecutionContextType, _ c: ErrorType -> Void) -> Self
+    func onError(ec: ExecutionContextType, _ c: Error -> Void) -> Self
     
 }
