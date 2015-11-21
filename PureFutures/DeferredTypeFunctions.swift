@@ -8,220 +8,211 @@
 
 import typealias Foundation.NSTimeInterval
 
-/**
-
-    Applies the side-effecting function to the result of this deferred,
-    and returns a new deferred with the result of this deferred
-
-    - parameter f: side-effecting function that will be applied to result of `dx`
-    - parameter ec: execution context of `f` function. By default is main queue
-    - parameter dx: Deferred
-
-    - returns: a new Deferred
-
-*/
-public func andThen<D: DeferredType>(f: (D.Element -> Void), _ ec: ExecutionContextType = ExecutionContext.DefaultSideEffectsContext)(_ dx: D) -> Deferred<D.Element> {
-    let p = PurePromise<D.Element>()
-    dx.onComplete(ec) { value in
-        f(value)
-        p.complete(value)
-    }
-    return p.deferred
-}
-
-/**
-
-    Stops the current thread, until value of `dx` becomes available
-
-    - parameter dx: Deferred
-
-    - returns: value of deferred
-
-*/
-public func forced<D: DeferredType>(dx: D) -> D.Element {
-    return forced(NSTimeInterval.infinity)(dx)!
-}
-
-/**
-
-    Stops the currend thread, and wait for `inverval` seconds until value of `dx` becoms available
-
-    - parameter inverval: number of seconds to wait
-
-    - parameter dx: Deferred
-
-    - returns: Value of deferred or nil if it hasn't become available yet
-
-*/
-public func forced<D: DeferredType>(interval: NSTimeInterval)(_ dx: D) -> D.Element? {
-    return await(interval) { completion in
-        dx.onComplete(ExecutionContext.DefaultPureOperationContext, completion)
-        return
-    }
-}
-
-/**
-
-    Creates a new deferred by applying a function `f` to the result of this deferred.
-
-    - parameter f: Function that will be applied to result of `dx`
-    - parameter ec: Execution context of `f`. By defalut is global queue
-
-    - parameter dx: Deferred
-
-    - returns: a new Deferred
-
-*/
-public func map<D: DeferredType, T>(f: (D.Element -> T), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ dx: D) -> Deferred<T> {
-    let p = PurePromise<T>()
-    dx.onComplete(ec) { p.complete(f($0)) }
-    return p.deferred
-}
-
-/**
-
-    Creates a new deferred by applying a function to the result of this deferred, and returns the result of the function as the new deferred.
-
-    - parameter f: Funcion that will be applied to result of `dx`
-    - parameter ec: Execution context of `f`. By defalut is global queue
-
-    - parameter dx: Deferred
-
-    - returns: a new Deferred
-
-*/
-public func flatMap<D: DeferredType, D2: DeferredType>(f: (D.Element -> D2), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ dx: D) -> Deferred<D2.Element> {
-    let p = PurePromise<D2.Element>()
-    dx.onComplete(ec) { p.completeWith(f($0)) }
-    return p.deferred
-}
-
-/**
-
-    Converts Deferred<Deferred<T>> into Deferred<T>
-
-    - parameter dx: Deferred
-
-    - returns: flattened Deferred
-
-*/
-public func flatten<D: DeferredType, ID: DeferredType where D.Element == ID>(dx: D) -> Deferred<ID.Element> {
-    let p = PurePromise<ID.Element>()
+extension DeferredType {
     
-    let ec = ExecutionContext.DefaultPureOperationContext
-    
-    dx.onComplete(ec) { def in
-        def.onComplete(ec) { p.complete($0) }
+    /**
+
+        Applies the side-effecting function to the result of this deferred,
+        and returns a new deferred with the result of this deferred
+
+        - parameter ec: execution context of `f` function. By default is main queue
+        - parameter f: side-effecting function that will be applied to result of `dx`
+
+        - returns: a new Deferred
+
+    */
+    public func andThen(ec: ExecutionContextType = ExecutionContext.DefaultSideEffectsContext, f: Element -> Void) -> Deferred<Element> {
+        let p = PurePromise<Element>()
+        
+        onComplete(ec) { value in
+            p.complete(value)
+            f(value)
+        }
+        
+        return p.deferred
     }
     
-    return p.deferred
-}
+    /**
 
-/**
+        Blocks the current thread, until value of `dx` becomes available
 
-    Creates a new Deferred by filtering the value of the current Deferred with a predicate `p`
+        - returns: value of deferred
 
-    - parameter p: Predicate function
-    - parameter ec: Execution context of `p`. By defalut is global queue
-
-    - parameter Deferred:
-
-    - returns: A new Deferred with value or nil
-
-*/
-public func filter<D: DeferredType>(p: (D.Element -> Bool), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext) -> D -> Deferred<D.Element?> {
-    return map({ x in p(x) ? x : nil }, ec)
-}
-
-/**
-
-    Zips two deferred together and returns a new Deferred which contains a tuple of two elements
-
-    - parameter da: First deferred
-
-    - parameter db: Second deferred
-
-    - returns: Deferred with resuls of two deferreds
-
-*/
-public func zip<DA: DeferredType, DB: DeferredType>(da: DA)(_ db: DB) -> Deferred<(DA.Element, DB.Element)> {
+    */
+    public func forced() -> Element {
+        return forced(NSTimeInterval.infinity)!
+    }
     
-    let ec = ExecutionContext.DefaultPureOperationContext
+    /**
+
+        Blocks the currend thread, and wait for `inverval` seconds until value of `dx` becoms available
+
+        - parameter inverval: number of seconds to wait
+
+        - returns: Value of deferred or nil if it hasn't become available yet
+
+    */
+    public func forced(interval: NSTimeInterval) -> Element? {
+        return await(interval) { completion in
+            self.onComplete(ExecutionContext.DefaultPureOperationContext, completion)
+            return
+        }
+    }
     
-    return flatMap({ a in
-        map({ b in
-            (a, b)
-        }, ec)(db)
-    }, ec)(da)
-}
+    /**
 
-/**
+        Creates a new deferred by applying a function `f` to the result of this deferred.
 
-    Reduces the elements of sequence of deferreds using the specified reducing function `combine`
+        - parameter ec: Execution context of `f`. By defalut is global queue
+        - parameter f: Function that will be applied to result of `dx`
 
-    - parameter combine: reducing function
-    - parameter initial: Initial value that will be passed as first argument in `combine` function
-    - parameter ec: Execution context of `combine`. By defalut is global queue
+        - returns: a new Deferred
 
-    - parameter dxs: Sequence of Deferred
+    */
+    public func map<T>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, f: Element -> T) -> Deferred<T> {
+        let p = PurePromise<T>()
+        
+        onComplete(ec) { x in
+            p.complete(f(x))
+        }
+        
+        return p.deferred
+    }
+    
+    /**
 
-    - returns: Deferred which will contain result of reducing sequence of deferreds
+        Creates a new deferred by applying a function to the result of this deferred, and returns the result of the function as the new deferred.
 
-*/
-public func reduce<S: SequenceType, T where S.Generator.Element: DeferredType>(combine: ((T, S.Generator.Element.Element) -> T), _ initial: T, _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ dxs: S) -> Deferred<T> {
-    return dxs.reduce(.completed(initial)) { acc, defValue in
-        flatMap({ value in
-            map({ combine($0, value) }, ec)(acc)
-        }, ec)(defValue)
+        - parameter ec: Execution context of `f`. By defalut is global queue
+        - parameter f: Funcion that will be applied to result of `dx`
+
+        - returns: a new Deferred
+
+    */
+    public func flatMap<D: DeferredType>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, f: Element -> D) -> Deferred<D.Element> {
+        let p = PurePromise<D.Element>()
+        
+        onComplete(ec) { x in
+            p.completeWith(f(x))
+        }
+        
+        return p.deferred
+    }
+    
+    /**
+
+        Creates a new Deferred by filtering the value of the current Deferred with a predicate `p`
+
+        - parameter ec: Execution context of `p`. By defalut is global queue
+        - parameter p: Predicate function
+
+        - returns: A new Deferred with value or nil
+
+    */
+    public func filter(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, p: Element -> Bool) -> Deferred<Element?> {
+        return map(ec) { x in p(x) ? x : nil }
+    }
+    
+    /**
+
+        Zips with another Deferred and returns a new Deferred which contains a tuple of two elements
+
+        - parameter d: Another deferred
+
+        - returns: Deferred with resuls of two deferreds
+
+    */
+    public func zip<D: DeferredType>(d: D) -> Deferred<(Element, D.Element)> {
+        
+        let ec = ExecutionContext.DefaultPureOperationContext
+        
+        return flatMap(ec) { a in
+            d.map(ec) { b in
+                (a, b)
+            }
+        }
     }
 }
 
-/**
+// MARK: - Nested DeferredType extensions
 
-    Transforms a sequence of values into Deferred of array of this values using the provided function `f`
+extension DeferredType where Element: DeferredType {
+    /**
 
-    - parameter f: Function for transformation values into Deferred
-    - parameter ec: Execution context of `f`. By defalut is global queue
+        Converts Deferred<Deferred<T>> into Deferred<T>
 
-    - parameter xs: Sequence of values
+        - parameter dx: Deferred
 
-    - returns: a new Deferred
+        - returns: flattened Deferred
 
-*/
-public func traverse<S: SequenceType, D: DeferredType>(f: (S.Generator.Element -> D), _ ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext)(_ xs: S) -> Deferred<[D.Element]> {
-    return reduce({ $0 + [$1] }, [], ec)(xs.map(f))
+    */
+    public func flatten() -> Deferred<Element.Element> {
+        let p = PurePromise<Element.Element>()
+        
+        let ec = ExecutionContext.DefaultPureOperationContext
+        
+        onComplete(ec) { d in
+            p.completeWith(d)
+        }
+        
+        return p.deferred
+    }
 }
 
-/**
+// MARK: - SequenceTyep extensions
 
-    Transforms a sequnce of Deferreds into Deferred of array of values:
-
-    [Deferred<T>] -> Deferred<[T]>
-
-    - parameter dxs: Sequence of Deferreds
-
-    - returns: Deferred with array of values
-
-*/
-public func sequence<S: SequenceType where S.Generator.Element: DeferredType>(dxs: S) -> Deferred<[S.Generator.Element.Element]> {
-    return traverse(id, ExecutionContext.DefaultPureOperationContext)(dxs)
-}
-
-/**
-
-    Transforms Deferred into Future
-
-    - parameter dx: Deferred
-
-    - returns: a new Future with result of Deferred
-
-*/
-public func toFuture<D: DeferredType, T, E: ErrorType where D.Element == Result<T, E>>(dx: D) -> Future<T, E> {
-    let p = Promise<T, E>()
+extension SequenceType where Generator.Element: DeferredType {
     
-    dx.onComplete(ExecutionContext.DefaultPureOperationContext) {
-        p.complete($0)
+    /**
+
+        Reduces the elements of sequence of deferreds using the specified reducing function `combine`
+
+        - parameter ec: Execution context of `combine`. By defalut is global queue
+        - parameter combine: reducing function
+        - parameter initial: Initial value that will be passed as first argument in `combine` function
+
+        - returns: Deferred which will contain result of reducing sequence of deferreds
+
+    */
+    public func reduce<T>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, combine: ((T, Generator.Element.Element) -> T), initial: T) -> Deferred<T> {
+        return reduce(.completed(initial)) { acc, d in
+            d.flatMap(ec) { x in
+                acc.map(ec) { combine($0, x) }
+            }
+        }
     }
     
-    return p.future
+    /**
+
+        Transforms a sequnce of Deferreds into Deferred of array of values:
+
+        [Deferred<T>] -> Deferred<[T]>
+
+        - parameter dxs: Sequence of Deferreds
+
+        - returns: Deferred with array of values
+
+    */
+    public func sequence() -> Deferred<[Generator.Element.Element]> {
+        return traverse(ExecutionContext.DefaultPureOperationContext, f: id)
+    }
+    
+}
+
+extension SequenceType {
+    
+    /**
+
+        Transforms a sequence of values into Deferred of array of this values using the provided function `f`
+
+        - parameter ec: Execution context of `f`. By defalut is global queue
+        - parameter f: Function for transformation values into Deferred
+
+        - returns: a new Deferred
+
+    */
+    public func traverse<D: DeferredType>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, f: Generator.Element -> D) -> Deferred<[D.Element]> {
+        // TODO: Replace $0 + [$1] with the more efficient variant
+        return map(f).reduce(ec, combine: { $0 + [$1] }, initial: [])
+    }
 }

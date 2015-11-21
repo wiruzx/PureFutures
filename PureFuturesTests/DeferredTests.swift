@@ -258,7 +258,7 @@ class DeferredTests: XCTestCase {
         
         let deferred = Deferred.completed(42)
         
-        let result = deferred.flatMap { .completed($0 * 2) }
+        let result = deferred.flatMap { x in Deferred.completed(x * 2) }
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -288,7 +288,7 @@ class DeferredTests: XCTestCase {
         
         let deferred = Deferred.completed(Deferred.completed(42))
         
-        let flat = Deferred.flatten(deferred)
+        let flat = deferred.flatten()
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -370,7 +370,7 @@ class DeferredTests: XCTestCase {
         
         let defs = Array(1...9).map { Deferred.completed($0) }
         
-        let result = Deferred.reduce(defs, 0, +)
+        let result = defs.reduce(combine: +, initial: 0)
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -388,9 +388,7 @@ class DeferredTests: XCTestCase {
     
     func testTraverse() {
         
-        let xs = Array(1...9)
-        
-        let result = Deferred.traverse(xs) { Deferred.completed($0 + 1) }
+        let result = Array(1...9).traverse { Deferred.completed($0 + 1) }
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -410,7 +408,7 @@ class DeferredTests: XCTestCase {
         
         let defs = Array(1...5).map { Deferred.completed($0) }
         
-        let result = Deferred.sequence(defs)
+        let result = defs.sequence()
         
         let expectation = deferredIsCompleteExpectation()
         
@@ -422,60 +420,6 @@ class DeferredTests: XCTestCase {
         }
         
         waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
-    // MARK:- toFuture
-    
-    func testToFutureWithSuccess() {
-        
-        enum VoidError: ErrorType {}
-        
-        let def = Deferred.completed(Result<Int, VoidError>.Success(42))
-        
-        let future = Deferred.toFuture(def)
-        
-        let expectation = deferredIsCompleteExpectation()
-        
-        future.onSuccess {
-            XCTAssertEqual($0, 42)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
-    func testToFutureWithError() {
-        
-        enum TestErrorType: ErrorType {
-            case Error
-        }
-        
-        let def = Deferred.completed(Result<Int, TestErrorType>.Error(.Error))
-
-        let future = Deferred.toFuture(def)
-        
-        let expectation = deferredIsCompleteExpectation()
-        
-        future.onError {
-            XCTAssertEqual($0, TestErrorType.Error)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
-    // MARK:- Pipeline operator
-    
-    func testPipelining() {
-        
-        let def = Deferred.completed(10)
-        
-        let inc: Int -> Int = { $0 + 1 }
-        let toString: Int -> String = { $0.description }
-        
-        let result = def |> map(inc) |> map(toString)
-        
-        XCTAssert(result.forced() == "11")
     }
     
 }

@@ -305,11 +305,12 @@ public extension Future {
 
     */
     func forced() -> ResultType {
-        #if os(iOS)
-        return PureFutures.forced(self)
-        #else
-        return PureFuturesOSX.forced(self)
-        #endif
+        fatalError("Not implemented")
+//        #if os(iOS)
+//        return PureFutures.forced(self)
+//        #else
+//        return PureFuturesOSX.forced(self)
+//        #endif
     }
     
     /**
@@ -322,11 +323,12 @@ public extension Future {
 
     */
     func forced(interval: NSTimeInterval) -> ResultType? {
-        #if os(iOS)
-        return PureFutures.forced(interval)(self)
-        #else
-        return PureFuturesOSX.forced(interval)(self)
-        #endif
+        fatalError("Not implemented")
+//        #if os(iOS)
+//        return PureFutures.forced(interval)(self)
+//        #else
+//        return PureFuturesOSX.forced(interval)(self)
+//        #endif
     }
     
     // MARK:- map
