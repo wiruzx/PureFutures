@@ -117,21 +117,6 @@ public final class Deferred<T>: DeferredType {
         
         return self
     }
-    
-    // MARK:- Convenience methods
-    
-    /**
-    
-        Register an callback which will be called on main thread when Deferred completed
-    
-        - parameter c: callback
-    
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onComplete(c: Callback) -> Deferred {
-        return onComplete(SideEffects, c)
-    }
 
     // MARK:- Internal methods
 

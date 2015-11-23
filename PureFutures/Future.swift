@@ -159,43 +159,6 @@ public final class Future<T, E: ErrorType>: FutureType {
         return self
     }
 
-
-    /**
-
-        Register a callback which will be called when Future is completed with value
-
-        - parameter ec: execution context of callback
-        - parameter c: callback
-
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onSuccess(ec: ExecutionContextType = SideEffects, _ c: SuccessCallback) -> Future {
-        return onComplete(ec) { result in
-            if let value = result.value {
-                c(value)
-            }
-        }
-    }
-    
-    /**
-
-        Register a callback which will be called when Future is completed with error
-
-        - parameter ec: execution context of callback
-        - parameter c: callback
-
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onError(ec: ExecutionContextType = SideEffects, _ c: ErrorCallback) -> Future {
-        return onComplete(ec) { result in
-            if let error = result.error {
-                c(error)
-            }
-        }
-    }
-    
     // MARK:- Internal methods
     
     internal func setValue<R: ResultType where R.Value == T, R.Error == E>(value: R) {

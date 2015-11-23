@@ -340,3 +340,23 @@ extension SequenceType {
     }
     
 }
+
+// MARK: - Convenience extension
+
+public extension FutureType {
+    func onSuccess(ec: ExecutionContextType = SideEffects, _ c: Value.Value -> Void) -> Self {
+        return onComplete(ec) { result in
+            if let value = result.value {
+                c(value)
+            }
+        }
+    }
+    
+    func onError(ec: ExecutionContextType = SideEffects, _ c: Value.Error -> Void) -> Self {
+        return onComplete(ec) { result in
+            if let error = result.error {
+                c(error)
+            }
+        }
+    }
+}

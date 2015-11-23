@@ -216,3 +216,11 @@ extension SequenceType {
         return map(f).reduce(ec, initial: []) { $0 + [$1] }
     }
 }
+
+// MARK: - Convenience extension
+
+extension DeferredType {
+    public func onComplete(c: Value -> Void) -> Self {
+        return onComplete(SideEffects, c)
+    }
+}

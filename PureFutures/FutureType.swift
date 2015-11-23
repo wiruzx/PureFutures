@@ -14,6 +14,8 @@ public protocol FutureType: DeferredType {
     
     /**
         Register an callback which should be called when Future succeed
+
+        Has a default implementation
     
         - parameter ec: execution context of callback
         - parameter c: callback
@@ -25,6 +27,8 @@ public protocol FutureType: DeferredType {
     
     /**
         Register an callback which should be called when Future failed
+
+        Has a default implementation
     
         - parameter ec: execution context of callback
         - parameter c: callback
