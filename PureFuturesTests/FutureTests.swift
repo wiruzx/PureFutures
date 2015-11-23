@@ -87,7 +87,7 @@ class FutureTests: XCTestCase {
     
     func testOnCompleteImmediate() {
         
-        promise.complete(.Success(42))
+        promise.complete(Result.Success(42))
         
         let expectation = futureIsCompleteExpectation()
         
@@ -112,7 +112,7 @@ class FutureTests: XCTestCase {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
             sleep(1)
-            self.promise.complete(.Success(42))
+            self.promise.complete(Result.Success(42))
         }
         
         waitForExpectationsWithTimeout(2, handler: nil)
@@ -121,7 +121,7 @@ class FutureTests: XCTestCase {
     func testOnCompleteOnMainThread() {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(.Success(42))
+            self.promise.complete(Result.Success(42))
         }
         
         let expectation = futureIsCompleteExpectation()
@@ -139,7 +139,7 @@ class FutureTests: XCTestCase {
     func testOnCompleteOnBackgroundThread() {
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(.Success(42))
+            self.promise.complete(Result.Success(42))
         }
         
         let expectation = futureIsCompleteExpectation()

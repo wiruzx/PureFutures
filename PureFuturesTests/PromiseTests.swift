@@ -56,7 +56,7 @@ class PromiseTests: XCTestCase {
             expectation.fulfill()
         }
         
-        promise.complete(.Success(42))
+        promise.complete(Result.Success(42))
         
         waitForExpectationsWithTimeout(1, handler: nil)
     }
@@ -76,7 +76,7 @@ class PromiseTests: XCTestCase {
         }
         
         dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(.Success(42))
+            self.promise.complete(Result.Success(42))
         }
         
         waitForExpectationsWithTimeout(1, handler: nil)
@@ -175,8 +175,8 @@ class PromiseTests: XCTestCase {
     
     func testTryComplete() {
         
-        XCTAssertTrue(promise.tryComplete(.Success(42)))
-        XCTAssertFalse(promise.tryComplete(.Success(10)))
+        XCTAssertTrue(promise.tryComplete(Result.Success(42)))
+        XCTAssertFalse(promise.tryComplete(Result.Success(10)))
         
         let expectation = expectationWithDescription("Future is copleted")
         
