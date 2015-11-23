@@ -21,7 +21,7 @@ import Foundation
     
 */
 public func deferred<T>(block: () -> T) -> Deferred<T> {
-    return deferred(ExecutionContext.DefaultPureOperationContext, block: block)
+    return deferred(Pure, block: block)
 }
 
 /**
@@ -77,7 +77,7 @@ public final class Deferred<T>: DeferredType {
     }
     
     public init<D: DeferredType where D.Element == T>(deferred: D) {
-        deferred.onComplete(ExecutionContext.DefaultPureOperationContext, setValue)
+        deferred.onComplete(Pure, setValue)
     }
     
     /// Creates immediately completed Deferred with given value
@@ -130,7 +130,7 @@ public final class Deferred<T>: DeferredType {
         
     */
     public func onComplete(c: Callback) -> Deferred {
-        return onComplete(ExecutionContext.DefaultSideEffectsContext, c)
+        return onComplete(SideEffects, c)
     }
 
     // MARK:- Internal methods

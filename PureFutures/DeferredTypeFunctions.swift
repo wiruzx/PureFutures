@@ -21,7 +21,7 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func andThen(ec: ExecutionContextType = ExecutionContext.DefaultSideEffectsContext, f: Element -> Void) -> Deferred<Element> {
+    public func andThen(ec: ExecutionContextType = SideEffects, f: Element -> Void) -> Deferred<Element> {
         let p = PurePromise<Element>()
         
         onComplete(ec) { value in
@@ -54,7 +54,7 @@ extension DeferredType {
     */
     public func forced(interval: NSTimeInterval) -> Element? {
         return await(interval) { completion in
-            self.onComplete(ExecutionContext.DefaultPureOperationContext, completion)
+            self.onComplete(Pure, completion)
             return
         }
     }
@@ -69,7 +69,7 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func map<T>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, f: Element -> T) -> Deferred<T> {
+    public func map<T>(ec: ExecutionContextType = Pure, f: Element -> T) -> Deferred<T> {
         let p = PurePromise<T>()
         
         onComplete(ec) { x in
@@ -89,7 +89,7 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func flatMap<D: DeferredType>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, f: Element -> D) -> Deferred<D.Element> {
+    public func flatMap<D: DeferredType>(ec: ExecutionContextType = Pure, f: Element -> D) -> Deferred<D.Element> {
         let p = PurePromise<D.Element>()
         
         onComplete(ec) { x in
@@ -109,7 +109,7 @@ extension DeferredType {
         - returns: A new Deferred with value or nil
 
     */
-    public func filter(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, p: Element -> Bool) -> Deferred<Element?> {
+    public func filter(ec: ExecutionContextType = Pure, p: Element -> Bool) -> Deferred<Element?> {
         return map(ec) { x in p(x) ? x : nil }
     }
     
@@ -124,7 +124,7 @@ extension DeferredType {
     */
     public func zip<D: DeferredType>(d: D) -> Deferred<(Element, D.Element)> {
         
-        let ec = ExecutionContext.DefaultPureOperationContext
+        let ec = Pure
         
         return flatMap(ec) { a in
             d.map(ec) { b in
@@ -149,7 +149,7 @@ extension DeferredType where Element: DeferredType {
     public func flatten() -> Deferred<Element.Element> {
         let p = PurePromise<Element.Element>()
         
-        let ec = ExecutionContext.DefaultPureOperationContext
+        let ec = Pure
         
         onComplete(ec) { d in
             p.completeWith(d)
@@ -174,7 +174,7 @@ extension SequenceType where Generator.Element: DeferredType {
         - returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public func reduce<T>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, combine: ((T, Generator.Element.Element) -> T), initial: T) -> Deferred<T> {
+    public func reduce<T>(ec: ExecutionContextType = Pure, combine: ((T, Generator.Element.Element) -> T), initial: T) -> Deferred<T> {
         return reduce(.completed(initial)) { acc, d in
             d.flatMap(ec) { x in
                 acc.map(ec) { combine($0, x) }
@@ -194,7 +194,7 @@ extension SequenceType where Generator.Element: DeferredType {
 
     */
     public func sequence() -> Deferred<[Generator.Element.Element]> {
-        return traverse(ExecutionContext.DefaultPureOperationContext, f: id)
+        return traverse(Pure, f: id)
     }
     
 }
@@ -211,7 +211,7 @@ extension SequenceType {
         - returns: a new Deferred
 
     */
-    public func traverse<D: DeferredType>(ec: ExecutionContextType = ExecutionContext.DefaultPureOperationContext, f: Generator.Element -> D) -> Deferred<[D.Element]> {
+    public func traverse<D: DeferredType>(ec: ExecutionContextType = Pure, f: Generator.Element -> D) -> Deferred<[D.Element]> {
         // TODO: Replace $0 + [$1] with the more efficient variant
         return map(f).reduce(ec, combine: { $0 + [$1] }, initial: [])
     }

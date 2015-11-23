@@ -21,7 +21,7 @@ import typealias Foundation.NSTimeInterval
     
 */
 public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
-    return future(ExecutionContext.DefaultPureOperationContext, f: f)
+    return future(Pure, f: f)
 }
 
 /**
@@ -215,7 +215,7 @@ public final class Future<T, E: ErrorType>: FutureType {
         
     */
     public func onComplete(c: CompleteCallback) -> Future {
-        return onComplete(ExecutionContext.DefaultSideEffectsContext, c)
+        return onComplete(SideEffects, c)
     }
     
     /**
@@ -228,7 +228,7 @@ public final class Future<T, E: ErrorType>: FutureType {
         
     */
     public func onSuccess(c: SuccessCallback) -> Future {
-        return onSuccess(ExecutionContext.DefaultSideEffectsContext, c)
+        return onSuccess(SideEffects, c)
     }
     
     /**
@@ -241,7 +241,7 @@ public final class Future<T, E: ErrorType>: FutureType {
         
     */
     public func onError(c: ErrorCallback) -> Future {
-        return onError(ExecutionContext.DefaultSideEffectsContext, c)
+        return onError(SideEffects, c)
     }
     
     
