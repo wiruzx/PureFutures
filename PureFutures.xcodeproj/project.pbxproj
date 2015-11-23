@@ -25,7 +25,6 @@
 		E615DFAF1B0C15F8005631A5 /* FutureTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */; };
 		E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
 		E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
-		E615DFB41B0C15F8005631A5 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E615DFB51B0C15F8005631A5 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E615DFB61B0C15F8005631A5 /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
 		E61611431AE79D7F00D426C5 /* PromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61611421AE79D7F00D426C5 /* PromiseTests.swift */; };
@@ -35,14 +34,16 @@
 		E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
-		E6786C231B0E6BB60072B6BF /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6786C221B0E6BB60072B6BF /* Operators.swift */; };
-		E6786C241B0E6D550072B6BF /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6786C221B0E6BB60072B6BF /* Operators.swift */; };
+		E66D05391C03B26D0064C7A4 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66D05381C03B26D0064C7A4 /* ResultExtension.swift */; };
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
+		E6A3271B1C03945100481149 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A3271A1C03945100481149 /* Result.framework */; };
+		E6A327201C03947600481149 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A3271E1C03947600481149 /* Result.framework */; };
+		E6A327211C0394BC00481149 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A3271A1C03945100481149 /* Result.framework */; };
+		E6A327241C03960400481149 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E6A3271A1C03945100481149 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */; };
 		E6C0A9FA1AA36490006436AC /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
 		E6D362011A9D00DF003D5B2C /* DeferredTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */; };
 		E6D362031A9D03A2003D5B2C /* FutureTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */; };
-		E6E79F841A8A468500F09BC6 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
 		E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
 /* End PBXBuildFile section */
@@ -56,6 +57,19 @@
 			remoteInfo = PureFutures;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E6A327231C0395F800481149 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E6A327241C03960400481149 /* Result.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionContext.swift; sourceTree = "<group>"; };
@@ -75,13 +89,14 @@
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FCF1A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
-		E6786C221B0E6BB60072B6BF /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		E66D05381C03B26D0064C7A4 /* ResultExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseTests.swift; sourceTree = "<group>"; };
+		E6A3271A1C03945100481149 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = SOURCE_ROOT; };
+		E6A3271E1C03947600481149 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = SOURCE_ROOT; };
 		E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTests.swift; sourceTree = "<group>"; };
 		E6C0A9F91AA36490006436AC /* Other.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
 		E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTypeExtension.swift; sourceTree = "<group>"; };
 		E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTypeExtension.swift; sourceTree = "<group>"; };
-		E6E79F831A8A468500F09BC6 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		E6E79F911A8AB80E00F09BC6 /* Deferred.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deferred.swift; sourceTree = "<group>"; };
 		E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromise.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6A327201C03947600481149 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E6A3271B1C03945100481149 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */,
+				E6A327211C0394BC00481149 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +159,7 @@
 				E6C9001B1AE15D1D00117FBE /* ExecutionContext */,
 				E6C9001C1AE15D3600117FBE /* Other */,
 				E65E6FC11A86BF41001B514C /* Supporting Files */,
+				E6A3271D1C03945700481149 /* Frameworks */,
 			);
 			path = PureFutures;
 			sourceTree = "<group>";
@@ -175,6 +194,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		E6A3271D1C03945700481149 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E6A3271A1C03945100481149 /* Result.framework */,
+				E6A3271E1C03947600481149 /* Result.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		E6C9001B1AE15D1D00117FBE /* ExecutionContext */ = {
 			isa = PBXGroup;
 			children = (
@@ -187,10 +215,9 @@
 		E6C9001C1AE15D3600117FBE /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				E6E79F831A8A468500F09BC6 /* Result.swift */,
 				E6267DE11AA280940068A0A0 /* Await.swift */,
 				E6C0A9F91AA36490006436AC /* Other.swift */,
-				E6786C221B0E6BB60072B6BF /* Operators.swift */,
+				E66D05381C03B26D0064C7A4 /* ResultExtension.swift */,
 			);
 			name = Other;
 			sourceTree = "<group>";
@@ -278,6 +305,7 @@
 				E65E6FBA1A86BF41001B514C /* Frameworks */,
 				E65E6FBB1A86BF41001B514C /* Headers */,
 				E65E6FBC1A86BF41001B514C /* Resources */,
+				E6A327221C03952C00481149 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -295,6 +323,7 @@
 				E65E6FC51A86BF41001B514C /* Sources */,
 				E65E6FC61A86BF41001B514C /* Frameworks */,
 				E65E6FC71A86BF41001B514C /* Resources */,
+				E6A327231C0395F800481149 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -371,6 +400,23 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E6A327221C03952C00481149 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E615DF891B0C1553005631A5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -387,8 +433,6 @@
 				E615DFAF1B0C15F8005631A5 /* FutureTypeExtension.swift in Sources */,
 				E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */,
 				E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */,
-				E6786C241B0E6D550072B6BF /* Operators.swift in Sources */,
-				E615DFB41B0C15F8005631A5 /* Result.swift in Sources */,
 				E615DFB51B0C15F8005631A5 /* Await.swift in Sources */,
 				E615DFB61B0C15F8005631A5 /* Other.swift in Sources */,
 			);
@@ -399,16 +443,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6267DDC1AA21F300068A0A0 /* ExecutionContextType.swift in Sources */,
-				E6E79F841A8A468500F09BC6 /* Result.swift in Sources */,
 				E6C0A9FA1AA36490006436AC /* Other.swift in Sources */,
 				E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */,
 				E60A729B1A8AE0C80094A4D4 /* DeferredType.swift in Sources */,
 				E60A72A11A8AE53B0094A4D4 /* FutureType.swift in Sources */,
 				E60A72911A8AD1750094A4D4 /* Future.swift in Sources */,
+				E66D05391C03B26D0064C7A4 /* ResultExtension.swift in Sources */,
 				E6D362031A9D03A2003D5B2C /* FutureTypeExtension.swift in Sources */,
 				E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */,
 				E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */,
-				E6786C231B0E6BB60072B6BF /* Operators.swift in Sources */,
 				E6267DE21AA280940068A0A0 /* Await.swift in Sources */,
 				E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */,
 				E608A34F1AE171B8009EAEF5 /* ExecutionContext.swift in Sources */,
@@ -450,6 +493,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -477,6 +524,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/PureFutures/Info.plist";
@@ -586,6 +637,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = PureFutures/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -605,6 +660,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = PureFutures/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -618,7 +677,10 @@
 		E65E6FD81A86BF41001B514C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -633,7 +695,10 @@
 		E65E6FD91A86BF41001B514C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = PureFuturesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.wiruzx.$(PRODUCT_NAME:rfc1034identifier)";

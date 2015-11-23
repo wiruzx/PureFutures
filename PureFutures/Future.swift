@@ -7,35 +7,26 @@
 //
 
 import typealias Foundation.NSTimeInterval
+import class Foundation.NSError
+
+import enum Result.Result
+import protocol Result.ResultType
+import func Result.materialize
 
 // MARK:- future creation function
 
 /**
 
     Creates a new `Future<T, E>` whose value will be
-    result of execution `f` on background thread
-
-    - parameter f: function, which result will become value of returned Future
-
-    - returns: a new Future<T, E>
-    
-*/
-public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
-    return future(Pure, f: f)
-}
-
-/**
-
-    Creates a new `Future<T, E>` whose value will be
     result of execution `f` on `ec` execution context
 
-    - parameter ec: execution context of given function
+    - parameter ec: execution context of given function (global queue by default)
     - parameter f: function, which result will become value of returned Future
 
     - returns: a new Future<T, E>
     
 */
-public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Future<T, E> {
+public func future<T, E>(ec: ExecutionContextType = Pure, f: () -> Result<T, E>) -> Future<T, E> {
     let p = Promise<T, E>()
     
     ec.execute {
@@ -43,6 +34,19 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Fut
     }
     
     return p.future
+}
+
+/**
+     Creates a new `Future<T, E>` whose value will be
+     result of execution throwing function `f` on `ec` execution context
+     
+     - parameter ec: execution context of given function (global queue by default)
+     - parameter f: throwing function, which result will become value of returned Future
+     
+     - returns: a new Future<T, NSError>
+*/
+public func future<T>(ec: ExecutionContextType = Pure, f: () throws -> T) -> Future<T, NSError> {
+    return future { materialize(f) }
 }
 
 // MARK:- Future
@@ -65,23 +69,20 @@ public final class Future<T, E: ErrorType>: FutureType {
     
     // MARK:- Type declarations
     
-    public typealias Success = T
-    public typealias Error = E
+    public typealias Value = Result<T, E>
     
-    public typealias ResultType = Result<T, E>
-    
-    public typealias CompleteCallback = ResultType -> Void
+    public typealias CompleteCallback = Value -> Void
     public typealias SuccessCallback = T -> Void
     public typealias ErrorCallback = E -> Void
     
     // MARK:- Private properties
     
-    private let deferred: Deferred<ResultType>
+    private let deferred: Deferred<Value>
     
     // MARK:- Public properties
 
     /// Value of Future
-    public private(set) var value: ResultType? {
+    public private(set) var value: Value? {
         set {
             deferred.setValue(newValue!)
         }
@@ -101,12 +102,12 @@ public final class Future<T, E: ErrorType>: FutureType {
         deferred = Deferred()
     }
     
-    internal init(deferred: Deferred<ResultType>) {
+    internal init(deferred: Deferred<Value>) {
         self.deferred = deferred
     }
     
-    public init<F: FutureType where F.Element == Result<T, E>>(future: F) {
-        deferred = Deferred(deferred: future)
+    public init<F: FutureType where F.Value.Value == T, F.Value.Error == E>(future: F) {
+        deferred = future.map { Result(result: $0) }
     }
     
     // MARK:- Class methods
@@ -135,11 +136,11 @@ public final class Future<T, E: ErrorType>: FutureType {
         
     */
     public class func failed(error: E) -> Future {
-        return .completed(.Error(error))
+        return .completed(.Failure(error))
     }
     
     /// Creates a new Future with given Result<T, E>
-    public static func completed(x: ResultType) -> Future {
+    public static func completed(x: Value) -> Future {
         return Future(deferred: .completed(x))
     }
 
@@ -155,100 +156,15 @@ public final class Future<T, E: ErrorType>: FutureType {
         - returns: Returns itself for chaining operations
         
     */
-    public func onComplete(ec: ExecutionContextType, _ c: CompleteCallback) -> Future {
+    public func onComplete(ec: ExecutionContextType = SideEffects, _ c: CompleteCallback) -> Future {
         deferred.onComplete(ec, c)
         return self
     }
 
-
-    /**
-
-        Register a callback which will be called when Future is completed with value
-
-        - parameter ec: execution context of callback
-        - parameter c: callback
-
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onSuccess(ec: ExecutionContextType, _ c: SuccessCallback) -> Future {
-        return onComplete(ec) {
-            switch $0 {
-            case .Success(let value):
-                c(value)
-            default:
-                break
-            }
-        }
-    }
-    
-    /**
-
-        Register a callback which will be called when Future is completed with error
-
-        - parameter ec: execution context of callback
-        - parameter c: callback
-
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onError(ec: ExecutionContextType, _ c: ErrorCallback) -> Future {
-        return onComplete(ec) {
-            switch $0 {
-            case .Error(let error):
-                c(error)
-            default:
-                break
-            }
-        }
-    }
-    
-    // MARK:- Convenience methods
-    
-    /**
-
-        Register a callback which will be called on a main thread when Future is completed
-
-        - parameter c: callback
-
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onComplete(c: CompleteCallback) -> Future {
-        return onComplete(SideEffects, c)
-    }
-    
-    /**
-
-        Register a callback which will be called on a main thread when Future is completed with value
-
-        - parameter c: callback
-
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onSuccess(c: SuccessCallback) -> Future {
-        return onSuccess(SideEffects, c)
-    }
-    
-    /**
-
-        Register a callback which will be called on a main thread when Future is completed with error
-
-        - parameter c: callback
-
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onError(c: ErrorCallback) -> Future {
-        return onError(SideEffects, c)
-    }
-    
-    
     // MARK:- Internal methods
     
-    internal func setValue(value: ResultType) {
-        self.value = value
+    internal func setValue<R: ResultType where R.Value == T, R.Error == E>(value: R) {
+        self.value = Result(result: value)
     }
     
 }

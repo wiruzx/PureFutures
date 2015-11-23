@@ -21,8 +21,8 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func andThen(ec: ExecutionContextType = SideEffects, f: Element -> Void) -> Deferred<Element> {
-        let p = PurePromise<Element>()
+    public func andThen(ec: ExecutionContextType = SideEffects, f: Value -> Void) -> Deferred<Value> {
+        let p = PurePromise<Value>()
         
         onComplete(ec) { value in
             p.complete(value)
@@ -39,7 +39,7 @@ extension DeferredType {
         - returns: value of deferred
 
     */
-    public func forced() -> Element {
+    public func forced() -> Value {
         return forced(NSTimeInterval.infinity)!
     }
     
@@ -52,7 +52,7 @@ extension DeferredType {
         - returns: Value of deferred or nil if it hasn't become available yet
 
     */
-    public func forced(interval: NSTimeInterval) -> Element? {
+    public func forced(interval: NSTimeInterval) -> Value? {
         return await(interval) { completion in
             self.onComplete(Pure, completion)
             return
@@ -69,7 +69,7 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func map<T>(ec: ExecutionContextType = Pure, f: Element -> T) -> Deferred<T> {
+    public func map<T>(ec: ExecutionContextType = Pure, f: Value -> T) -> Deferred<T> {
         let p = PurePromise<T>()
         
         onComplete(ec) { x in
@@ -89,8 +89,8 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func flatMap<D: DeferredType>(ec: ExecutionContextType = Pure, f: Element -> D) -> Deferred<D.Element> {
-        let p = PurePromise<D.Element>()
+    public func flatMap<D: DeferredType>(ec: ExecutionContextType = Pure, f: Value -> D) -> Deferred<D.Value> {
+        let p = PurePromise<D.Value>()
         
         onComplete(ec) { x in
             p.completeWith(f(x))
@@ -109,7 +109,7 @@ extension DeferredType {
         - returns: A new Deferred with value or nil
 
     */
-    public func filter(ec: ExecutionContextType = Pure, p: Element -> Bool) -> Deferred<Element?> {
+    public func filter(ec: ExecutionContextType = Pure, p: Value -> Bool) -> Deferred<Value?> {
         return map(ec) { x in p(x) ? x : nil }
     }
     
@@ -122,7 +122,7 @@ extension DeferredType {
         - returns: Deferred with resuls of two deferreds
 
     */
-    public func zip<D: DeferredType>(d: D) -> Deferred<(Element, D.Element)> {
+    public func zip<D: DeferredType>(d: D) -> Deferred<(Value, D.Value)> {
         
         let ec = Pure
         
@@ -136,7 +136,7 @@ extension DeferredType {
 
 // MARK: - Nested DeferredType extensions
 
-extension DeferredType where Element: DeferredType {
+extension DeferredType where Value: DeferredType {
     /**
 
         Converts Deferred<Deferred<T>> into Deferred<T>
@@ -146,8 +146,8 @@ extension DeferredType where Element: DeferredType {
         - returns: flattened Deferred
 
     */
-    public func flatten() -> Deferred<Element.Element> {
-        let p = PurePromise<Element.Element>()
+    public func flatten() -> Deferred<Value.Value> {
+        let p = PurePromise<Value.Value>()
         
         let ec = Pure
         
@@ -174,7 +174,7 @@ extension SequenceType where Generator.Element: DeferredType {
         - returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public func reduce<T>(ec: ExecutionContextType = Pure, initial: T, combine: ((T, Generator.Element.Element) -> T)) -> Deferred<T> {
+    public func reduce<T>(ec: ExecutionContextType = Pure, initial: T, combine: ((T, Generator.Element.Value) -> T)) -> Deferred<T> {
         return reduce(.completed(initial)) { acc, d in
             d.flatMap(ec) { x in
                 acc.map(ec) { combine($0, x) }
@@ -193,7 +193,7 @@ extension SequenceType where Generator.Element: DeferredType {
         - returns: Deferred with array of values
 
     */
-    public func sequence() -> Deferred<[Generator.Element.Element]> {
+    public func sequence() -> Deferred<[Generator.Element.Value]> {
         return traverse(Pure, f: identity)
     }
     
@@ -211,8 +211,16 @@ extension SequenceType {
         - returns: a new Deferred
 
     */
-    public func traverse<D: DeferredType>(ec: ExecutionContextType = Pure, f: Generator.Element -> D) -> Deferred<[D.Element]> {
+    public func traverse<D: DeferredType>(ec: ExecutionContextType = Pure, f: Generator.Element -> D) -> Deferred<[D.Value]> {
         // TODO: Replace $0 + [$1] with the more efficient variant
         return map(f).reduce(ec, initial: []) { $0 + [$1] }
+    }
+}
+
+// MARK: - Convenience extension
+
+extension DeferredType {
+    public func onComplete(c: Value -> Void) -> Self {
+        return onComplete(SideEffects, c)
     }
 }

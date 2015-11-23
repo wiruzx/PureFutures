@@ -52,7 +52,7 @@ public final class Deferred<T>: DeferredType {
     
     // MARK:- Type declarations
     
-    public typealias Element = T
+    public typealias Value = T
     
     public typealias Callback = T -> Void
     
@@ -76,7 +76,7 @@ public final class Deferred<T>: DeferredType {
     internal init() {
     }
     
-    public init<D: DeferredType where D.Element == T>(deferred: D) {
+    public init<D: DeferredType where D.Value == T>(deferred: D) {
         deferred.onComplete(Pure, setValue)
     }
     
@@ -116,21 +116,6 @@ public final class Deferred<T>: DeferredType {
         }
         
         return self
-    }
-    
-    // MARK:- Convenience methods
-    
-    /**
-    
-        Register an callback which will be called on main thread when Deferred completed
-    
-        - parameter c: callback
-    
-        - returns: Returns itself for chaining operations
-        
-    */
-    public func onComplete(c: Callback) -> Deferred {
-        return onComplete(SideEffects, c)
     }
 
     // MARK:- Internal methods

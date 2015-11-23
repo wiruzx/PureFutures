@@ -6,42 +6,35 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
+import protocol Result.ResultType
+
 public protocol FutureType: DeferredType {
     
-    typealias Success
-    typealias Error: ErrorType
-    
-    typealias Element = Result<Success, Error>
-    
-    /**
-        Register an callback which should be called when Future completed
-    
-        - parameter ec: execution context of callback
-        - parameter c: callback
-    
-        - returns: Returns itself for chaining operations
-    */
-    func onComplete(ec: ExecutionContextType, _ c: Result<Success, Error> -> Void) -> Self
+    typealias Value: ResultType
     
     /**
         Register an callback which should be called when Future succeed
+
+        Has a default implementation
     
         - parameter ec: execution context of callback
         - parameter c: callback
     
         - returns: Returns itself for chaining operations
     */
-    func onSuccess(ec: ExecutionContextType, _ c: Success -> Void) -> Self
+    func onSuccess(ec: ExecutionContextType, _ c: Value.Value -> Void) -> Self
     
     
     /**
         Register an callback which should be called when Future failed
+
+        Has a default implementation
     
         - parameter ec: execution context of callback
         - parameter c: callback
     
         - returns: Returns itself for chaining operations
     */
-    func onError(ec: ExecutionContextType, _ c: Error -> Void) -> Self
+    func onError(ec: ExecutionContextType, _ c: Value.Error -> Void) -> Self
     
 }
