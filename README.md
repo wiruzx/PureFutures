@@ -4,8 +4,6 @@
 
 A simple Futures and Promises library.
 
-Highly inspired by [Scala's implementation](http://docs.scala-lang.org/overviews/core/futures.html)
-
 ##Instalation
 
 ###Carthage
