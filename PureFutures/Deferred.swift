@@ -52,7 +52,7 @@ public final class Deferred<T>: DeferredType {
     
     // MARK:- Type declarations
     
-    public typealias Element = T
+    public typealias Value = T
     
     public typealias Callback = T -> Void
     
@@ -76,7 +76,7 @@ public final class Deferred<T>: DeferredType {
     internal init() {
     }
     
-    public init<D: DeferredType where D.Element == T>(deferred: D) {
+    public init<D: DeferredType where D.Value == T>(deferred: D) {
         deferred.onComplete(Pure, setValue)
     }
     

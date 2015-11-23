@@ -67,20 +67,20 @@ public final class Future<T, E: ErrorType>: FutureType {
     
     // MARK:- Type declarations
     
-    public typealias Element = Result<T, E>
+    public typealias Value = Result<T, E>
     
-    public typealias CompleteCallback = Element -> Void
+    public typealias CompleteCallback = Value -> Void
     public typealias SuccessCallback = T -> Void
     public typealias ErrorCallback = E -> Void
     
     // MARK:- Private properties
     
-    private let deferred: Deferred<Element>
+    private let deferred: Deferred<Value>
     
     // MARK:- Public properties
 
     /// Value of Future
-    public private(set) var value: Element? {
+    public private(set) var value: Value? {
         set {
             deferred.setValue(newValue!)
         }
@@ -100,11 +100,11 @@ public final class Future<T, E: ErrorType>: FutureType {
         deferred = Deferred()
     }
     
-    internal init(deferred: Deferred<Element>) {
+    internal init(deferred: Deferred<Value>) {
         self.deferred = deferred
     }
     
-    public init<F: FutureType where F.Element.Value == T, F.Element.Error == E>(future: F) {
+    public init<F: FutureType where F.Value.Value == T, F.Value.Error == E>(future: F) {
         deferred = future.map { Result(result: $0) }
     }
     
@@ -138,7 +138,7 @@ public final class Future<T, E: ErrorType>: FutureType {
     }
     
     /// Creates a new Future with given Result<T, E>
-    public static func completed(x: Element) -> Future {
+    public static func completed(x: Value) -> Future {
         return Future(deferred: .completed(x))
     }
 

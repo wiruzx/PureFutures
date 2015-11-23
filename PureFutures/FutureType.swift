@@ -10,7 +10,7 @@ import protocol Result.ResultType
 
 public protocol FutureType: DeferredType {
     
-    typealias Element: ResultType
+    typealias Value: ResultType
     
     /**
         Register an callback which should be called when Future succeed
@@ -20,7 +20,7 @@ public protocol FutureType: DeferredType {
     
         - returns: Returns itself for chaining operations
     */
-    func onSuccess(ec: ExecutionContextType, _ c: Element.Value -> Void) -> Self
+    func onSuccess(ec: ExecutionContextType, _ c: Value.Value -> Void) -> Self
     
     
     /**
@@ -31,6 +31,6 @@ public protocol FutureType: DeferredType {
     
         - returns: Returns itself for chaining operations
     */
-    func onError(ec: ExecutionContextType, _ c: Element.Error -> Void) -> Self
+    func onError(ec: ExecutionContextType, _ c: Value.Error -> Void) -> Self
     
 }

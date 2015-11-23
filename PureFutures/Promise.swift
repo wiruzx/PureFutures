@@ -61,7 +61,7 @@ public final class Promise<T, E: ErrorType> {
         - parameter future: Value that conforms to `FutureType` protocol
 
     */
-    public func completeWith<F: FutureType where F.Element.Value == T, F.Element.Error == E>(future: F) {
+    public func completeWith<F: FutureType where F.Value.Value == T, F.Value.Error == E>(future: F) {
         future.onComplete(Pure) { self.complete($0) }
     }
 
@@ -164,7 +164,7 @@ public final class Promise<T, E: ErrorType> {
         - returns: Bool which says if completing was successful or not
 
     */
-    public func tryCompleteWith<F: FutureType where F.Element.Value == T, F.Element.Error == E>(future: F) {
+    public func tryCompleteWith<F: FutureType where F.Value.Value == T, F.Value.Error == E>(future: F) {
         future.onComplete(Pure) { self.tryComplete($0) }
     }
     
