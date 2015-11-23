@@ -9,6 +9,7 @@
 import XCTest
 
 import PureFutures
+import enum Result.Result
 
 class FutureTests: XCTestCase {
     
@@ -764,7 +765,7 @@ class FutureTests: XCTestCase {
             switch result {
             case .Success(let value):
                 XCTAssertEqual(value, 42)
-            case .Error(_):
+            case .Failure(_):
                 XCTFail("an error occured")
             }
             expectation.fulfill()

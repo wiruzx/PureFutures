@@ -7,6 +7,7 @@
 //
 
 import typealias Foundation.NSTimeInterval
+import enum Result.Result
 
 // MARK:- future creation function
 
@@ -135,7 +136,7 @@ public final class Future<T, E: ErrorType>: FutureType {
         
     */
     public class func failed(error: E) -> Future {
-        return .completed(.Error(error))
+        return .completed(.Failure(error))
     }
     
     /// Creates a new Future with given Result<T, E>
@@ -195,7 +196,7 @@ public final class Future<T, E: ErrorType>: FutureType {
     public func onError(ec: ExecutionContextType, _ c: ErrorCallback) -> Future {
         return onComplete(ec) {
             switch $0 {
-            case .Error(let error):
+            case .Failure(let error):
                 c(error)
             default:
                 break

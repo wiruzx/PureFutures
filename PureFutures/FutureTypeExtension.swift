@@ -7,6 +7,7 @@
 //
 
 import typealias Foundation.NSTimeInterval
+import enum Result.Result
 
 // MARK: - Operators
 
@@ -63,7 +64,7 @@ extension FutureType {
             case .Success(let value):
                 p.success(value)
                 f(value)
-            case .Error(let error):
+            case .Failure(let error):
                 p.error(error)
             }
         }
@@ -102,7 +103,7 @@ extension FutureType {
             switch $0 {
             case .Success(let value):
                 p.success(s(value))
-            case .Error(let error):
+            case .Failure(let error):
                 p.error(e(error))
             }
         }
@@ -128,7 +129,7 @@ extension FutureType {
             switch $0 {
             case .Success(let value):
                 p.completeWith(f(value))
-            case .Error(let error):
+            case .Failure(let error):
                 p.error(error)
             }
         }
@@ -189,7 +190,7 @@ extension FutureType {
             switch $0 {
             case .Success(let value):
                 p.success(value)
-            case .Error(let error):
+            case .Failure(let error):
                 p.success(r(error))
             }
         }
@@ -213,7 +214,7 @@ extension FutureType {
             switch $0 {
             case .Success(let value):
                 p.success(value)
-            case .Error(let error):
+            case .Failure(let error):
                 p.completeWith(r(error))
             }
         }
@@ -251,7 +252,7 @@ extension FutureType {
             switch $0 {
             case .Success(let value):
                 p.complete(value)
-            case .Error(let error):
+            case .Failure(let error):
                 p.complete(r(error))
             }
         }
@@ -277,7 +278,7 @@ extension FutureType where Success: FutureType, Success.Error == Error {
             switch $0 {
             case .Success(let future):
                 p.completeWith(future)
-            case .Error(let error):
+            case .Failure(let error):
                 p.error(error)
             }
         }

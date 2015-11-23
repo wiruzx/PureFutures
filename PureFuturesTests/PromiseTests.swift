@@ -9,7 +9,7 @@
 import XCTest
 
 import class PureFutures.Promise
-import enum PureFutures.Result
+import enum Result.Result
 import enum PureFutures.ExecutionContext
 import class PureFutures.Future
 import func PureFutures.future
@@ -159,7 +159,7 @@ class PromiseTests: XCTestCase {
             switch result {
             case .Success(_):
                 XCTFail("This should not be called")
-            case .Error(let error):
+            case .Failure(let error):
                 XCTAssertEqual(error, TestErrorType.Error1)
             }
             
@@ -184,7 +184,7 @@ class PromiseTests: XCTestCase {
             switch $0 {
             case .Success(let value):
                 XCTAssertEqual(value, 42)
-            case .Error(_):
+            case .Failure(_):
                 XCTFail("Result should not be error")
             }
             expectation.fulfill()
@@ -206,7 +206,7 @@ class PromiseTests: XCTestCase {
             switch $0 {
             case .Success(let value):
                 XCTAssertEqual(value, 42)
-            case .Error(_):
+            case .Failure(_):
                 XCTFail("Result should not be error")
             }
             expectation.fulfill()
@@ -229,7 +229,7 @@ class PromiseTests: XCTestCase {
             switch $0 {
             case .Success(_):
                 XCTFail("Result should not be a value")
-            case .Error(let error):
+            case .Failure(let error):
                 XCTAssertEqual(error, TestErrorType.Error1)
             }
             expectation.fulfill()
@@ -259,7 +259,7 @@ class PromiseTests: XCTestCase {
             switch $0 {
             case .Success(let value):
                 XCTAssertEqual(value, 42)
-            case .Error(_):
+            case .Failure(_):
                 XCTFail("Result should not be error")
             }
             resultExp.fulfill()

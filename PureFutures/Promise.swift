@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
+import enum Result.Result
+
 /**
 
     A mutable container for the `Future`
@@ -91,7 +93,7 @@ public final class Promise<T, E: ErrorType> {
 
     */
     public func error(error: E) {
-        complete(.Error(error))
+        complete(.Failure(error))
     }
     
     // MARK:- Other methods
@@ -149,7 +151,7 @@ public final class Promise<T, E: ErrorType> {
 
     */
     public func tryError(error: E) -> Bool {
-        return tryComplete(.Error(error))
+        return tryComplete(.Failure(error))
     }
 
     /**
