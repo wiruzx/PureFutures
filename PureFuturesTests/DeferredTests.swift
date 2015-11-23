@@ -7,14 +7,7 @@
 //
 
 import XCTest
-
-import class PureFutures.Deferred
-import class PureFutures.PurePromise
-import enum PureFutures.Result
-import func PureFutures.deferred
-import enum PureFutures.ExecutionContext
-import func PureFutures.map
-import func PureFutures.|>
+import PureFutures
 
 class DeferredTests: XCTestCase {
     

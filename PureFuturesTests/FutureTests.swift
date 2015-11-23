@@ -299,9 +299,9 @@ class FutureTests: XCTestCase {
         
         let future = Future<Int, NSError>.succeed(42)
         
-        let result: Future<Int, NSError> = future.transform({
+        let result: Future<Int, NSError> = future.transform(s: {
             $0 / 2
-        }, { e in
+        }, e: { e in
             XCTFail("Error handler should not be called")
             return e
         })
@@ -320,9 +320,9 @@ class FutureTests: XCTestCase {
         
         let future = Future<Int, NSError>.failed(error)
         
-        let result = future.transform({ _ in
+        let result = future.transform(s: { _ in
             XCTFail("This should not be called")
-        }, { error in
+        }, e: { error in
             return NSError(domain: "FutureTests", code: 1, userInfo: nil)
         })
         
@@ -436,7 +436,7 @@ class FutureTests: XCTestCase {
         
         let future = NestedFuture.succeed(Future.succeed(42))
         
-        let flat = Future.flatten(future)
+        let flat = future.flatten()
         
         let expectation = futureIsCompleteExpectation()
         
@@ -454,7 +454,7 @@ class FutureTests: XCTestCase {
         
         let future = NestedFuture.failed(error)
         
-        let flat = Future.flatten(future)
+        let flat = future.flatten()
         
         let expectation = futureIsCompleteExpectation()
         
@@ -473,7 +473,7 @@ class FutureTests: XCTestCase {
         
         let future = NestedFuture.succeed(Future.failed(error))
         
-        let flat = Future.flatten(future)
+        let flat = future.flatten()
         
         let expectation = futureIsCompleteExpectation()
         
@@ -580,9 +580,7 @@ class FutureTests: XCTestCase {
     
     func testReduce() {
         
-        let futures = Array(1...9).map { Future<Int, NSError>.succeed($0) }
-        
-        let result = Future.reduce(futures, 0, +)
+        let result = Array(1...9).map { Future<Int, NSError>.succeed($0) }.reduce(initial: 0, combine: +)
         
         let expectation = futureIsCompleteExpectation()
         
@@ -599,7 +597,7 @@ class FutureTests: XCTestCase {
         var futures = Array(1...9).map { Future<Int, NSError>.succeed($0) }
         futures.append(.failed(error))
         
-        let result = Future.reduce(futures, 0, +)
+        let result = futures.reduce(initial: 0, combine: +)
         
         let expectation = futureIsCompleteExpectation()
         
@@ -615,9 +613,7 @@ class FutureTests: XCTestCase {
     
     func testTraverse() {
         
-        let xs = Array(1...9)
-        
-        let result = Future<Int, NSError>.traverse(xs) { Future.succeed($0 + 1) }
+        let result = Array(1...9).traverse { Future<Int, NSError>.succeed($0 + 1) }
         
         let expectation = futureIsCompleteExpectation()
         
@@ -631,10 +627,8 @@ class FutureTests: XCTestCase {
     
     func testTraverseWithFailed() {
         
-        let xs = Array(1...9)
-        
-        let result = Future<Int, NSError>.traverse(xs) { value -> Future<Int, NSError> in
-            return value == 9 ? Future.failed(self.error) : Future.succeed(value + 1)
+        let result = Array(1...9).traverse { value -> Future<Int, NSError> in
+            value == 9 ? .failed(self.error) : .succeed(value + 1)
         }
         
         let expectation = futureIsCompleteExpectation()
@@ -651,9 +645,7 @@ class FutureTests: XCTestCase {
     
     func testSequence() {
         
-        let futures = Array(1...9).map { Future<Int, NSError>.succeed($0) }
-        
-        let result = Future.sequence(futures)
+        let result = Array(1...9).map { Future<Int, NSError>.succeed($0) }.sequence()
         
         let expectation = futureIsCompleteExpectation()
         
@@ -667,11 +659,7 @@ class FutureTests: XCTestCase {
     
     func testSequenceWithFailed() {
         
-        let futures: [Future<Int, NSError>] = Array(1...9).map { value in
-            return value == 9 ? Future.failed(self.error) : Future.succeed(value)
-        }
-        
-        let result = Future.sequence(futures)
+        let result = Array(1...9).map { value in return value == 9 ? Future.failed(self.error) : Future.succeed(value) }.sequence()
         
         let expectation = futureIsCompleteExpectation()
         

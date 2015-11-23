@@ -9,3 +9,7 @@
 internal func identity<T>(value: T) -> T {
     return value
 }
+
+internal func constant<T, A>(value: T) -> A -> T {
+    return { _ in value }
+}
