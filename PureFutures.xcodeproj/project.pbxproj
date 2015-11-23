@@ -21,11 +21,10 @@
 		E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
 		E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72901A8AD1750094A4D4 /* Future.swift */; };
 		E615DFAD1B0C15F8005631A5 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
-		E615DFAE1B0C15F8005631A5 /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
-		E615DFAF1B0C15F8005631A5 /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
+		E615DFAE1B0C15F8005631A5 /* DeferredTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */; };
+		E615DFAF1B0C15F8005631A5 /* FutureTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */; };
 		E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
 		E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
-		E615DFB31B0C15F8005631A5 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
 		E615DFB41B0C15F8005631A5 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E615DFB51B0C15F8005631A5 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E615DFB61B0C15F8005631A5 /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
@@ -41,9 +40,8 @@
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
 		E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */; };
 		E6C0A9FA1AA36490006436AC /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
-		E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
-		E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
-		E6E79F821A8A432800F09BC6 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F811A8A432800F09BC6 /* Box.swift */; };
+		E6D362011A9D00DF003D5B2C /* DeferredTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */; };
+		E6D362031A9D03A2003D5B2C /* FutureTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */; };
 		E6E79F841A8A468500F09BC6 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
 		E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
@@ -81,9 +79,8 @@
 		E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseTests.swift; sourceTree = "<group>"; };
 		E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTests.swift; sourceTree = "<group>"; };
 		E6C0A9F91AA36490006436AC /* Other.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
-		E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTypeFunctions.swift; sourceTree = "<group>"; };
-		E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTypeFunctions.swift; sourceTree = "<group>"; };
-		E6E79F811A8A432800F09BC6 /* Box.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
+		E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTypeExtension.swift; sourceTree = "<group>"; };
+		E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTypeExtension.swift; sourceTree = "<group>"; };
 		E6E79F831A8A468500F09BC6 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		E6E79F911A8AB80E00F09BC6 /* Deferred.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deferred.swift; sourceTree = "<group>"; };
 		E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromise.swift; sourceTree = "<group>"; };
@@ -190,7 +187,6 @@
 		E6C9001C1AE15D3600117FBE /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				E6E79F811A8A432800F09BC6 /* Box.swift */,
 				E6E79F831A8A468500F09BC6 /* Result.swift */,
 				E6267DE11AA280940068A0A0 /* Await.swift */,
 				E6C0A9F91AA36490006436AC /* Other.swift */,
@@ -220,8 +216,8 @@
 		E6C9001F1AE15DB000117FBE /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
-				E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */,
-				E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */,
+				E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */,
+				E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */,
 			);
 			name = Implementation;
 			sourceTree = "<group>";
@@ -318,7 +314,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "Victor Shamanov";
 				TargetAttributes = {
 					E615DF8D1B0C1553005631A5 = {
@@ -387,12 +383,11 @@
 				E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */,
 				E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */,
 				E615DFAD1B0C15F8005631A5 /* Promise.swift in Sources */,
-				E615DFAE1B0C15F8005631A5 /* DeferredTypeFunctions.swift in Sources */,
-				E615DFAF1B0C15F8005631A5 /* FutureTypeFunctions.swift in Sources */,
+				E615DFAE1B0C15F8005631A5 /* DeferredTypeExtension.swift in Sources */,
+				E615DFAF1B0C15F8005631A5 /* FutureTypeExtension.swift in Sources */,
 				E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */,
 				E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */,
 				E6786C241B0E6D550072B6BF /* Operators.swift in Sources */,
-				E615DFB31B0C15F8005631A5 /* Box.swift in Sources */,
 				E615DFB41B0C15F8005631A5 /* Result.swift in Sources */,
 				E615DFB51B0C15F8005631A5 /* Await.swift in Sources */,
 				E615DFB61B0C15F8005631A5 /* Other.swift in Sources */,
@@ -409,16 +404,15 @@
 				E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */,
 				E60A729B1A8AE0C80094A4D4 /* DeferredType.swift in Sources */,
 				E60A72A11A8AE53B0094A4D4 /* FutureType.swift in Sources */,
-				E6E79F821A8A432800F09BC6 /* Box.swift in Sources */,
 				E60A72911A8AD1750094A4D4 /* Future.swift in Sources */,
-				E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */,
+				E6D362031A9D03A2003D5B2C /* FutureTypeExtension.swift in Sources */,
 				E6E79F961A8ABB8200F09BC6 /* PurePromise.swift in Sources */,
 				E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */,
 				E6786C231B0E6BB60072B6BF /* Operators.swift in Sources */,
 				E6267DE21AA280940068A0A0 /* Await.swift in Sources */,
 				E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */,
 				E608A34F1AE171B8009EAEF5 /* ExecutionContext.swift in Sources */,
-				E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */,
+				E6D362011A9D00DF003D5B2C /* DeferredTypeExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +460,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wiruzx.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -488,6 +483,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wiruzx.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -515,6 +511,8 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -562,6 +560,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -591,6 +590,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wiruzx.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -609,6 +609,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wiruzx.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -617,16 +618,14 @@
 		E65E6FD81A86BF41001B514C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = PureFuturesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wiruzx.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -634,12 +633,10 @@
 		E65E6FD91A86BF41001B514C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = PureFuturesTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.wiruzx.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

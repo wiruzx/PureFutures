@@ -13,7 +13,7 @@
     Allows you complete `Future` that it holds
 
 */
-public final class Promise<T, E> {
+public final class Promise<T, E: ErrorType> {
     
     // MARK:- Type declarations
     
@@ -62,8 +62,8 @@ public final class Promise<T, E> {
         - parameter future: Value that conforms to `FutureType` protocol
 
     */
-    public func completeWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {
-        future.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
+    public func completeWith<F: FutureType where F.Success == T, F.Error == E>(future: F) {
+        future.onComplete(Pure) { self.complete($0) }
     }
 
     /**
@@ -77,7 +77,7 @@ public final class Promise<T, E> {
 
     */
     public func success(value: T) {
-        complete(.success(value))
+        complete(.Success(value))
     }
     
     /**
@@ -91,7 +91,7 @@ public final class Promise<T, E> {
 
     */
     public func error(error: E) {
-        complete(.error(error))
+        complete(.Error(error))
     }
     
     // MARK:- Other methods
@@ -132,7 +132,7 @@ public final class Promise<T, E> {
 
     */
     public func trySuccess(value: T) -> Bool {
-        return tryComplete(.success(value))
+        return tryComplete(.Success(value))
     }
 
     /**
@@ -149,7 +149,7 @@ public final class Promise<T, E> {
 
     */
     public func tryError(error: E) -> Bool {
-        return tryComplete(.error(error))
+        return tryComplete(.Error(error))
     }
 
     /**
@@ -165,8 +165,8 @@ public final class Promise<T, E> {
         - returns: Bool which says if completing was successful or not
 
     */
-    public func tryCompleteWith<F: FutureType where F.SuccessType == T, F.ErrorType == E>(future: F) {
-        future.onComplete(ExecutionContext.DefaultPureOperationContext) { self.tryComplete($0) }
+    public func tryCompleteWith<F: FutureType where F.Success == T, F.Error == E>(future: F) {
+        future.onComplete(Pure) { self.tryComplete($0) }
     }
     
 }
