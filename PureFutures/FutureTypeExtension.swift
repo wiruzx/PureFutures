@@ -8,6 +8,8 @@
 
 import typealias Foundation.NSTimeInterval
 
+// MARK: - Operators
+
 /**
 
     Transforms Future to Deferred using future's success value or `x` in case when future was completed with error
@@ -37,6 +39,8 @@ public func ??<F: FutureType>(fx: F, x: F.Success) -> Deferred<F.Success> {
 public func ??<F: FutureType>(fx: F, x: F) -> Future<F.Success, F.Error> {
     return fx.recoverWith(Pure, r: constant(x))
 }
+
+// MARK: - Extension
 
 extension FutureType {
     
@@ -255,6 +259,8 @@ extension FutureType {
     }
 }
 
+// MARK: - Nested FutureType extension
+
 extension FutureType where Success: FutureType, Success.Error == Error {
     
     /**
@@ -281,6 +287,8 @@ extension FutureType where Success: FutureType, Success.Error == Error {
     
     
 }
+
+// MARK: - Sequence Extensions
 
 extension SequenceType where Generator.Element: FutureType {
     
