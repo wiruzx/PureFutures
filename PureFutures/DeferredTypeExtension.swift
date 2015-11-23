@@ -194,7 +194,7 @@ extension SequenceType where Generator.Element: DeferredType {
 
     */
     public func sequence() -> Deferred<[Generator.Element.Element]> {
-        return traverse(Pure, f: id)
+        return traverse(Pure, f: identity)
     }
     
 }

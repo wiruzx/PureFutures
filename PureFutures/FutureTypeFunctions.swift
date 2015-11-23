@@ -78,7 +78,7 @@ public func andThen<F: FutureType>(f: (F.Success -> Void), _ ec: ExecutionContex
 
 */
 public func map<F: FutureType, T>(f: (F.Success -> T), _ ec: ExecutionContextType = Pure) -> F -> Future<T, F.Error> {
-    return transform(f, id, ec)
+    return transform(f, identity, ec)
 }
 
 /**
@@ -246,7 +246,7 @@ public func traverse<S: SequenceType, F: FutureType>(f: (S.Generator.Element -> 
 
 */
 public func sequence<S: SequenceType where S.Generator.Element: FutureType>(fxs: S) -> Future<[S.Generator.Element.Success], S.Generator.Element.Error> {
-    return traverse(id, Pure)(fxs)
+    return traverse(identity, Pure)(fxs)
 }
 
 /**
