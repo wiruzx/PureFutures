@@ -7,37 +7,26 @@
 //
 
 import typealias Foundation.NSTimeInterval
+import class Foundation.NSError
+
 import enum Result.Result
 import protocol Result.ResultType
+import func Result.materialize
 
 // MARK:- future creation function
 
 /**
 
     Creates a new `Future<T, E>` whose value will be
-    result of execution `f` on background thread
-
-    - parameter f: function, which result will become value of returned Future
-
-    - returns: a new Future<T, E>
-    
-*/
-public func future<T, E>(f: () -> Result<T, E>) -> Future<T, E> {
-    return future(Pure, f: f)
-}
-
-/**
-
-    Creates a new `Future<T, E>` whose value will be
     result of execution `f` on `ec` execution context
 
-    - parameter ec: execution context of given function
+    - parameter ec: execution context of given function (global queue by default)
     - parameter f: function, which result will become value of returned Future
 
     - returns: a new Future<T, E>
     
 */
-public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Future<T, E> {
+public func future<T, E>(ec: ExecutionContextType = Pure, f: () -> Result<T, E>) -> Future<T, E> {
     let p = Promise<T, E>()
     
     ec.execute {
@@ -45,6 +34,19 @@ public func future<T, E>(ec: ExecutionContextType, f: () -> Result<T, E>) -> Fut
     }
     
     return p.future
+}
+
+/**
+     Creates a new `Future<T, E>` whose value will be
+     result of execution throwing function `f` on `ec` execution context
+     
+     - parameter ec: execution context of given function (global queue by default)
+     - parameter f: throwing function, which result will become value of returned Future
+     
+     - returns: a new Future<T, NSError>
+*/
+public func future<T>(ec: ExecutionContextType = Pure, f: () throws -> T) -> Future<T, NSError> {
+    return future { materialize(f) }
 }
 
 // MARK:- Future
