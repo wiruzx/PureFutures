@@ -21,7 +21,7 @@
 		E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
 		E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72901A8AD1750094A4D4 /* Future.swift */; };
 		E615DFAD1B0C15F8005631A5 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
-		E615DFAE1B0C15F8005631A5 /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
+		E615DFAE1B0C15F8005631A5 /* DeferredTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */; };
 		E615DFAF1B0C15F8005631A5 /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
 		E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E608A34E1AE171B8009EAEF5 /* ExecutionContext.swift */; };
 		E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDF1AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift */; };
@@ -40,7 +40,7 @@
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
 		E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */; };
 		E6C0A9FA1AA36490006436AC /* Other.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Other.swift */; };
-		E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */; };
+		E6D362011A9D00DF003D5B2C /* DeferredTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */; };
 		E6D362031A9D03A2003D5B2C /* FutureTypeFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */; };
 		E6E79F841A8A468500F09BC6 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F831A8A468500F09BC6 /* Result.swift */; };
 		E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
@@ -79,7 +79,7 @@
 		E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseTests.swift; sourceTree = "<group>"; };
 		E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTests.swift; sourceTree = "<group>"; };
 		E6C0A9F91AA36490006436AC /* Other.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Other.swift; sourceTree = "<group>"; };
-		E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTypeFunctions.swift; sourceTree = "<group>"; };
+		E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTypeExtension.swift; sourceTree = "<group>"; };
 		E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureTypeFunctions.swift; sourceTree = "<group>"; };
 		E6E79F831A8A468500F09BC6 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		E6E79F911A8AB80E00F09BC6 /* Deferred.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Deferred.swift; sourceTree = "<group>"; };
@@ -216,7 +216,7 @@
 		E6C9001F1AE15DB000117FBE /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
-				E6D362001A9D00DF003D5B2C /* DeferredTypeFunctions.swift */,
+				E6D362001A9D00DF003D5B2C /* DeferredTypeExtension.swift */,
 				E6D362021A9D03A2003D5B2C /* FutureTypeFunctions.swift */,
 			);
 			name = Implementation;
@@ -383,7 +383,7 @@
 				E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */,
 				E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */,
 				E615DFAD1B0C15F8005631A5 /* Promise.swift in Sources */,
-				E615DFAE1B0C15F8005631A5 /* DeferredTypeFunctions.swift in Sources */,
+				E615DFAE1B0C15F8005631A5 /* DeferredTypeExtension.swift in Sources */,
 				E615DFAF1B0C15F8005631A5 /* FutureTypeFunctions.swift in Sources */,
 				E615DFB01B0C15F8005631A5 /* ExecutionContext.swift in Sources */,
 				E615DFB21B0C15F8005631A5 /* NSOperationQueue+ExecutionContext.swift in Sources */,
@@ -412,7 +412,7 @@
 				E6267DE21AA280940068A0A0 /* Await.swift in Sources */,
 				E6267DE01AA2768F0068A0A0 /* NSOperationQueue+ExecutionContext.swift in Sources */,
 				E608A34F1AE171B8009EAEF5 /* ExecutionContext.swift in Sources */,
-				E6D362011A9D00DF003D5B2C /* DeferredTypeFunctions.swift in Sources */,
+				E6D362011A9D00DF003D5B2C /* DeferredTypeExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
