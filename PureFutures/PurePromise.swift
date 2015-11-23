@@ -59,7 +59,7 @@ public final class PurePromise<T> {
     
     */
     public func completeWith<D: DeferredType where D.Element == T>(deferred: D) {
-        deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.complete($0) }
+        deferred.onComplete(Pure) { self.complete($0) }
     }
     
     // MARK:- Other methods
@@ -100,7 +100,7 @@ public final class PurePromise<T> {
 
     */
     public func tryCompleteWith<D: DeferredType where D.Element == T>(deferred: D) {
-        deferred.onComplete(ExecutionContext.DefaultPureOperationContext) { self.tryComplete($0) }
+        deferred.onComplete(Pure) { self.tryComplete($0) }
     }
     
 }

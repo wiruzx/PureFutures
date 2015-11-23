@@ -19,14 +19,8 @@ public enum ExecutionContext {
     case Global(ExecutionType)
 }
 
-internal extension ExecutionContext {
-    
-    // Context for operations like `map` and `filter`
-    static let DefaultPureOperationContext = Global(.Async)
-    
-    // Context for operations like `onComplete` and `andThen`
-    static let DefaultSideEffectsContext = Main(.Async)
-}
+internal let Pure = ExecutionContext.Global(.Async)
+internal let SideEffects = ExecutionContext.Main(.Async)
 
 private extension ExecutionContext.ExecutionType {
     private func execute(queue: dispatch_queue_t, _ task: () -> Void) {

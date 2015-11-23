@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-internal func id<T>(value: T) -> T {
+internal func identity<T>(value: T) -> T {
     return value
+}
+
+internal func constant<T, A>(value: T) -> A -> T {
+    return { _ in value }
 }
