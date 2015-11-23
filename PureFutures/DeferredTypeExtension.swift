@@ -174,7 +174,7 @@ extension SequenceType where Generator.Element: DeferredType {
         - returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public func reduce<T>(ec: ExecutionContextType = Pure, combine: ((T, Generator.Element.Element) -> T), initial: T) -> Deferred<T> {
+    public func reduce<T>(ec: ExecutionContextType = Pure, initial: T, combine: ((T, Generator.Element.Element) -> T)) -> Deferred<T> {
         return reduce(.completed(initial)) { acc, d in
             d.flatMap(ec) { x in
                 acc.map(ec) { combine($0, x) }
@@ -213,6 +213,6 @@ extension SequenceType {
     */
     public func traverse<D: DeferredType>(ec: ExecutionContextType = Pure, f: Generator.Element -> D) -> Deferred<[D.Element]> {
         // TODO: Replace $0 + [$1] with the more efficient variant
-        return map(f).reduce(ec, combine: { $0 + [$1] }, initial: [])
+        return map(f).reduce(ec, initial: []) { $0 + [$1] }
     }
 }

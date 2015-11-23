@@ -370,7 +370,7 @@ class DeferredTests: XCTestCase {
         
         let defs = Array(1...9).map { Deferred.completed($0) }
         
-        let result = defs.reduce(combine: +, initial: 0)
+        let result = defs.reduce(initial: 0, combine: +)
         
         let expectation = deferredIsCompleteExpectation()
         
