@@ -18,13 +18,6 @@ And run `carthage update`
 
 Up to date instructions in [Carthage's README](https://github.com/Carthage/Carthage#adding-frameworks-to-an-application)
 
-###Git submodules
-
-* Add PureFutures submodule into your project `git submodule add https://github.com/wiruzx/PureFutures.git`
-* Drag `PureFutures.xcodeproj` file into your project
-* Add PureFutures as target dependency in **Build Phases** section
-* Add `PureFutures.framework` to **Link Binary With Libraries** section
-
 ##Alternatives:
 
 1. [BrightFutures](https://github.com/Thomvis/BrightFutures) ❤️
