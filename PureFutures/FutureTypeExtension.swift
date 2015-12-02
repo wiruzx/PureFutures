@@ -169,6 +169,21 @@ extension FutureType {
             }
         }
     }
+    
+    /**
+        Maps the result of the current future using the `f` function and zips it
+        with the current result of the future.
+     
+        - see: zip and map functions
+     
+        - parameter ec: Execution context of `f` function. By default is global queue
+        - parameter f: mapping function
+     
+        - returns: Future with tuple of current value and result of mapping
+    */
+    public func zip<U>(ec: ExecutionContextType = Pure, f: Success -> U) -> Future<(Success, U), Error> {
+        return zip(map(ec, f: f))
+    }
 
     /**
         Creates a new future that will handle error value that this future might contain
