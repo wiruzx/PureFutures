@@ -132,6 +132,21 @@ extension DeferredType {
             }
         }
     }
+    
+    /**
+        Maps the result of the current deferred using the `f` function and zips it 
+        with the current result of deferred.
+     
+        - see: zip and map functions
+     
+        - parameter ec: Execution context of `f` function. By default is global queue
+        - parameter f: mapping function
+     
+        - returns: Deferred with tuple of current value and result of mapping
+    */
+    public func zipMap<U>(ec: ExecutionContextType = Pure, f: Value -> U) -> Deferred<(Value, U)> {
+        return zip(map(ec, f: f))
+    }
 }
 
 // MARK: - Nested DeferredType extensions
