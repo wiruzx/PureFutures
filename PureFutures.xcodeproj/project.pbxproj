@@ -13,7 +13,6 @@
 		E60A72A11A8AE53B0094A4D4 /* FutureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A01A8AE53B0094A4D4 /* FutureType.swift */; };
 		E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
 		E612D18A1AA526C0006ED075 /* AwaitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E612D1891AA526C0006ED075 /* AwaitTests.swift */; };
-		E612D18B1AA526C5006ED075 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E615DFA71B0C15F8005631A5 /* DeferredType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */; };
 		E615DFA81B0C15F8005631A5 /* FutureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A01A8AE53B0094A4D4 /* FutureType.swift */; };
 		E615DFA91B0C15F8005631A5 /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
@@ -468,7 +467,6 @@
 				E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */,
 				E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */,
 				E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */,
-				E612D18B1AA526C5006ED075 /* Await.swift in Sources */,
 				E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
