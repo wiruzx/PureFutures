@@ -8,10 +8,7 @@
 
 import XCTest
 
-import class PureFutures.PurePromise
-import class PureFutures.Deferred
-import enum PureFutures.ExecutionContext
-import func PureFutures.deferred
+import PureFutures
 
 class PurePromiseTests: XCTestCase {
     

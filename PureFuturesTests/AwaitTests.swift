@@ -8,6 +8,8 @@
 
 import XCTest
 
+@testable import PureFutures
+
 func someAsyncWork(time: UInt32, compeltion: () -> Void) {
     dispatch_async(dispatch_get_global_queue(0, 0)) {
         sleep(time)

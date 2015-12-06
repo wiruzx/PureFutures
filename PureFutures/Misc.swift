@@ -1,5 +1,5 @@
 //
-//  Other.swift
+//  Misc.swift
 //  PureFutures
 //
 //  Created by Victor Shamanov on 3/1/15.
