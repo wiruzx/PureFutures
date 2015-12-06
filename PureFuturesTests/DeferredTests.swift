@@ -7,6 +7,7 @@
 //
 
 import XCTest
+
 import PureFutures
 
 class DeferredTests: XCTestCase {

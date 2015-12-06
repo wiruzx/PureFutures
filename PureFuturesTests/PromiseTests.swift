@@ -8,11 +8,8 @@
 
 import XCTest
 
-import class PureFutures.Promise
+import PureFutures
 import enum Result.Result
-import enum PureFutures.ExecutionContext
-import class PureFutures.Future
-import func PureFutures.future
 
 class PromiseTests: XCTestCase {
     

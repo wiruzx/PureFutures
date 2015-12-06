@@ -7,6 +7,7 @@
 //
 
 import XCTest
+
 @testable import PureFutures
 
 func someAsyncWork(time: UInt32, compeltion: () -> Void) {
