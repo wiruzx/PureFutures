@@ -32,7 +32,6 @@
 		E6267DE21AA280940068A0A0 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
-		E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */; };
 		E66D05391C03B26D0064C7A4 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66D05381C03B26D0064C7A4 /* ResultExtension.swift */; };
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
 		E6A3271B1C03945100481149 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A3271A1C03945100481149 /* Result.framework */; };
@@ -87,7 +86,6 @@
 		E65E6FC21A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E65E6FC91A86BF41001B514C /* PureFuturesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PureFuturesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FCF1A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PureFuturesTests.swift; sourceTree = "<group>"; };
 		E66D05381C03B26D0064C7A4 /* ResultExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultExtension.swift; sourceTree = "<group>"; };
 		E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurePromiseTests.swift; sourceTree = "<group>"; };
 		E6A3271A1C03945100481149 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = SOURCE_ROOT; };
@@ -174,7 +172,6 @@
 		E65E6FCD1A86BF41001B514C /* PureFuturesTests */ = {
 			isa = PBXGroup;
 			children = (
-				E65E6FD01A86BF41001B514C /* PureFuturesTests.swift */,
 				E612D1891AA526C0006ED075 /* AwaitTests.swift */,
 				E6B1E5101AAB486C002E4FBD /* DeferredTests.swift */,
 				E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */,
@@ -464,7 +461,6 @@
 			files = (
 				E61611431AE79D7F00D426C5 /* PromiseTests.swift in Sources */,
 				E612D18A1AA526C0006ED075 /* AwaitTests.swift in Sources */,
-				E65E6FD11A86BF41001B514C /* PureFuturesTests.swift in Sources */,
 				E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */,
 				E6B1E5111AAB486C002E4FBD /* DeferredTests.swift in Sources */,
 				E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */,
