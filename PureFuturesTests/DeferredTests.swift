@@ -358,6 +358,23 @@ class DeferredTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
+    func testZipMap() {
+        
+        let deferred = Deferred.completed(42)
+
+        let result = deferred.zipMap { "\($0)" }
+
+        let expectation = deferredIsCompleteExpectation()
+
+        result.onComplete { a, b in
+            XCTAssertEqual(a, 42)
+            XCTAssertEqual(b, "42")
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(0.1, handler: nil)
+    }
+    
     // MARK:- reduce
     
     func testReduce() {
