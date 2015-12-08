@@ -181,7 +181,7 @@ extension FutureType {
      
         - returns: Future with tuple of current value and result of mapping
     */
-    public func zip<U>(ec: ExecutionContextType = Pure, f: Success -> U) -> Future<(Success, U), Error> {
+    public func zipMap<U>(ec: ExecutionContextType = Pure, f: Success -> U) -> Future<(Success, U), Error> {
         return zip(map(ec, f: f))
     }
 

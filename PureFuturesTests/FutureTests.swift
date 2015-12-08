@@ -576,6 +576,22 @@ class FutureTests: XCTestCase {
         
         waitForExpectationsWithTimeout(1, handler: nil)
     }
+
+    func testZipMap() {
+        
+        let future = Future<Int, NSError>.succeed(42)
+        let result = future.zipMap { "\($0)" }
+
+        let expectation = futureIsCompleteExpectation()
+        
+        result.onSuccess { a, b in
+            XCTAssertEqual(a, 42)
+            XCTAssertEqual(b, "42")
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(0.1, handler: nil)
+    }
     
     // MARK:- reduce
     
