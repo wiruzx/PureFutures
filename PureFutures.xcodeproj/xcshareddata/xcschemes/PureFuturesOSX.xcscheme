@@ -14,23 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E65E6FBD1A86BF41001B514C"
-               BuildableName = "PureFutures.framework"
-               BlueprintName = "PureFutures"
-               ReferencedContainer = "container:PureFutures.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E65E6FC81A86BF41001B514C"
-               BuildableName = "PureFuturesTests.xctest"
-               BlueprintName = "PureFuturesTests"
+               BlueprintIdentifier = "E615DF8D1B0C1553005631A5"
+               BuildableName = "PureFuturesOSX.framework"
+               BlueprintName = "PureFuturesOSX"
                ReferencedContainer = "container:PureFutures.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,26 +28,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E65E6FC81A86BF41001B514C"
-               BuildableName = "PureFuturesTests.xctest"
-               BlueprintName = "PureFuturesTests"
-               ReferencedContainer = "container:PureFutures.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E65E6FBD1A86BF41001B514C"
-            BuildableName = "PureFutures.framework"
-            BlueprintName = "PureFutures"
-            ReferencedContainer = "container:PureFutures.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -78,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E65E6FBD1A86BF41001B514C"
-            BuildableName = "PureFutures.framework"
-            BlueprintName = "PureFutures"
+            BlueprintIdentifier = "E615DF8D1B0C1553005631A5"
+            BuildableName = "PureFuturesOSX.framework"
+            BlueprintName = "PureFuturesOSX"
             ReferencedContainer = "container:PureFutures.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -96,9 +63,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E65E6FBD1A86BF41001B514C"
-            BuildableName = "PureFutures.framework"
-            BlueprintName = "PureFutures"
+            BlueprintIdentifier = "E615DF8D1B0C1553005631A5"
+            BuildableName = "PureFuturesOSX.framework"
+            BlueprintName = "PureFuturesOSX"
             ReferencedContainer = "container:PureFutures.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
