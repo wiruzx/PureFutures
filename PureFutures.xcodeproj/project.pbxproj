@@ -33,6 +33,7 @@
 		E6322EC81AD41FDB00A00DE8 /* FutureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6322EC71AD41FDB00A00DE8 /* FutureTests.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E66D05391C03B26D0064C7A4 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66D05381C03B26D0064C7A4 /* ResultExtension.swift */; };
+		E68E1C751C1A2135004792DF /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66D05381C03B26D0064C7A4 /* ResultExtension.swift */; };
 		E6957C461AAB5D4F00A0A0D9 /* PurePromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6957C451AAB5D4F00A0A0D9 /* PurePromiseTests.swift */; };
 		E6A3271B1C03945100481149 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A3271A1C03945100481149 /* Result.framework */; };
 		E6A327201C03947600481149 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6A3271E1C03947600481149 /* Result.framework */; };
@@ -418,6 +419,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E68E1C751C1A2135004792DF /* ResultExtension.swift in Sources */,
 				E615DFA71B0C15F8005631A5 /* DeferredType.swift in Sources */,
 				E615DFA81B0C15F8005631A5 /* FutureType.swift in Sources */,
 				E615DFA91B0C15F8005631A5 /* ExecutionContextType.swift in Sources */,
