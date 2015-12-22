@@ -4,7 +4,7 @@
 
 A simple Futures and Promises library.
 
-##Instalation
+##Installation
 
 ###Carthage
 
