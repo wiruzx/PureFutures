@@ -147,6 +147,63 @@ class DeferredTests: XCTestCase {
         
     }
     
+    func testOnCompleteExecutionOrder() {
+        
+        var result: [Int] = []
+        let p: PurePromise<Void> = .init()
+        let deferred = p.deferred
+        
+        deferred.onComplete {
+            result.append(1)
+        }
+        
+        deferred.onComplete {
+            result.append(2)
+        }
+        
+        deferred.onComplete {
+            result.append(3)
+        }
+        
+        let expectation = expectationWithDescription("Deferred is completed")
+        
+        deferred.onComplete {
+            XCTAssertEqual(result, [1, 2, 3])
+            expectation.fulfill()
+        }
+        
+        p.complete()
+        
+        waitForExpectationsWithTimeout(0.1, handler: nil)
+    }
+    
+    func testOnCompleteExecutionOrderWithCompletedDeferred() {
+        
+        var result: [Int] = []
+        let deferred: Deferred<Void> = .completed()
+        
+        deferred.onComplete {
+            result.append(1)
+        }
+        
+        deferred.onComplete {
+            result.append(2)
+        }
+        
+        deferred.onComplete {
+            result.append(3)
+        }
+        
+        let expectation = expectationWithDescription("Deferred is completed")
+        
+        deferred.onComplete {
+            XCTAssertEqual(result, [1, 2, 3])
+            expectation.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(0.1, handler: nil)
+    }
+    
     // MARK:- forced
     
     func testForcedCompleted() {
