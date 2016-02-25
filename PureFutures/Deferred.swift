@@ -53,13 +53,7 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Type declarations
     
     public typealias Value = T
-    
     public typealias Callback = T -> Void
-    
-    // MARK:- Private properties
-    
-    private var callbacks: [Callback] = []
-    private let callbacksManagingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksManaging", DISPATCH_QUEUE_SERIAL)
     
     // MARK:- Public properties
     
@@ -70,6 +64,12 @@ public final class Deferred<T>: DeferredType {
     public var isCompleted: Bool {
         return value != nil
     }
+    
+    // MARK:- Private properties
+    
+    private var callbacks: [Callback] = []
+    private let callbacksManagingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksManaging", DISPATCH_QUEUE_SERIAL)
+    
     
     // MARK:- Initialization
     
