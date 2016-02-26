@@ -125,7 +125,7 @@ class PurePromiseTests: XCTestCase {
         promise.tryCompleteWith(deferred {
             sleep(1)
             return 10
-        }.andThen { _ in
+        }.onComplete { _ in
             exp1.fulfill()
         })
         

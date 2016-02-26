@@ -50,32 +50,6 @@ extension FutureType {
     
     /**
 
-        Applies the side-effecting function to the success result of this future,
-        and returns a new future with the result of this future
-
-        - parameter ec: execution context of `f` function. By default is main queue
-        - parameter f: side-effecting function that will be applied to result of `fx`
-
-        - returns: a new Future
-
-    */
-    public func andThen(ec: ExecutionContextType = SideEffects, f: Success -> Void) -> Future<Success, Error> {
-        let p = Promise<Value.Value, Value.Error>()
-        
-        onComplete(ec) { result in
-            result.analysis(ifSuccess: { value in
-                p.success(value)
-                f(value)
-            }, ifFailure: { error in
-                p.error(error)
-            })
-        }
-        
-        return p.future
-    }
-    
-    /**
-
         Creates a new future by applying a function `f` to the success result of this future.
 
         - parameter ec: Execution context of `f`. By default is global queue
