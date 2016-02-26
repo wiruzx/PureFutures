@@ -906,4 +906,96 @@ class FutureTests: XCTestCase {
         
         waitForExpectationsWithTimeout(1, handler: nil)   
     }
+    
+    // MARK: - retry 
+    
+    func testRetryWhenNoSuccessValues() {
+        
+        enum Error: ErrorType {
+            case First, Second
+        }
+        
+        let values: [Result<Int, Error>] = [.Failure(.First), .Failure(.First), .Failure(.Second), .Success(10)]
+        
+        var valuesGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        let result = Future.retry(3) { .completed(valuesGenerator.next()!) }
+        
+        result.onError { error in
+            XCTAssert(error == .Second)
+            exp.fulfill()
+        }.onSuccess { _ in
+            XCTFail()
+            exp.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testRetyWithSuccessValue() {
+        
+        struct Error: ErrorType {}
+        
+        let values: [Result<Int, Error>] = [.Failure(.init()), .Failure(.init()), .Success(10), .Success(20)]
+        var valueGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        Future.retry(4) { Future.completed(valueGenerator.next()!) }
+            .onSuccess {
+                XCTAssertEqual($0, 10)
+            }.onError { _ in
+                XCTFail()
+            }.onComplete { _ in
+                exp.fulfill()
+            }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testRetryWithLastSuccessValue() {
+        
+        struct Error: ErrorType {}
+        
+        let values: [Result<Int, Error>] = [.Failure(.init()), .Failure(.init()), .Success(10)]
+        var valueGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        Future.retry(3) { Future.completed(valueGenerator.next()!) }
+            .onSuccess {
+                XCTAssertEqual($0, 10)
+            }.onError { _ in
+                XCTFail()
+            }.onComplete { _ in
+                exp.fulfill()
+            }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testRetryWithFisrtSuccess() {
+        
+        struct Error: ErrorType {}
+        
+        let values: [Result<Int, Error>] = [.Success(10)]
+        var valueGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        Future.retry(2) { Future.completed(valueGenerator.next()!) }
+            .onSuccess {
+                XCTAssertEqual($0, 10)
+            }.onError { _ in
+                XCTFail()
+            }.onComplete { _ in
+                exp.fulfill()
+            }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    
 }
