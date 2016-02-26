@@ -50,32 +50,6 @@ extension FutureType {
     
     /**
 
-        Applies the side-effecting function to the success result of this future,
-        and returns a new future with the result of this future
-
-        - parameter ec: execution context of `f` function. By default is main queue
-        - parameter f: side-effecting function that will be applied to result of `fx`
-
-        - returns: a new Future
-
-    */
-    public func andThen(ec: ExecutionContextType = SideEffects, f: Success -> Void) -> Future<Success, Error> {
-        let p = Promise<Value.Value, Value.Error>()
-        
-        onComplete(ec) { result in
-            result.analysis(ifSuccess: { value in
-                p.success(value)
-                f(value)
-            }, ifFailure: { error in
-                p.error(error)
-            })
-        }
-        
-        return p.future
-    }
-    
-    /**
-
         Creates a new future by applying a function `f` to the success result of this future.
 
         - parameter ec: Execution context of `f`. By default is global queue
@@ -270,6 +244,26 @@ extension FutureType {
         }
         return p.deferred
     }
+    
+    
+    public static func retry(count: Int, f: () -> Self) -> Future<Value.Value, Value.Error> {
+        precondition(count > 0)
+        
+        let p = Promise<Value.Value, Value.Error>()
+        
+        f().onComplete { result in
+            result.analysis(ifSuccess: p.success, ifFailure: {
+                if count <= 1 {
+                    p.error($0)
+                } else {
+                    p.completeWith(retry(count - 1, f: f))
+                }
+            })
+        }
+        
+        return p.future
+    }
+    
 }
 
 // MARK: - Nested FutureType extension

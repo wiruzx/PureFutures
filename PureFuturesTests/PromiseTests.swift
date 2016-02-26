@@ -244,7 +244,7 @@ class PromiseTests: XCTestCase {
         promise.tryCompleteWith(future {
             sleep(1)
             return .Success(10)
-        }.andThen { _ in
+        }.onComplete { _ in
             firstExp.fulfill()
         })
         

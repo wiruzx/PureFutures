@@ -259,41 +259,6 @@ class FutureTests: XCTestCase {
         XCTAssertEqual(result.value!, 42)
     }
     
-    // MARK:- andThen
-    
-    func testAndThen() {
-        
-        let future = Future<Int, VoidError>.succeed(42)
-        
-        let expectation = futureIsCompleteExpectation()
-        
-        future.andThen { value in
-            XCTAssertEqual(value, 42)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
-    func testAndThenWithError() {
-        
-        let future = Future<Int, NSError>.failed(error)
-        
-        let expectation = futureIsCompleteExpectation()
-        
-        future.andThen { _ in
-            XCTFail("This should not be called")
-            expectation.fulfill()
-        }
-        
-        future.onError { error in
-            XCTAssertEqual(error, self.error)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
     // MARK:- transform
     
     func testTransformingSucceed() {
@@ -906,4 +871,96 @@ class FutureTests: XCTestCase {
         
         waitForExpectationsWithTimeout(1, handler: nil)   
     }
+    
+    // MARK: - retry 
+    
+    func testRetryWhenNoSuccessValues() {
+        
+        enum Error: ErrorType {
+            case First, Second
+        }
+        
+        let values: [Result<Int, Error>] = [.Failure(.First), .Failure(.First), .Failure(.Second), .Success(10)]
+        
+        var valuesGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        let result = Future.retry(3) { .completed(valuesGenerator.next()!) }
+        
+        result.onError { error in
+            XCTAssert(error == .Second)
+            exp.fulfill()
+        }.onSuccess { _ in
+            XCTFail()
+            exp.fulfill()
+        }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testRetyWithSuccessValue() {
+        
+        struct Error: ErrorType {}
+        
+        let values: [Result<Int, Error>] = [.Failure(.init()), .Failure(.init()), .Success(10), .Success(20)]
+        var valueGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        Future.retry(4) { Future.completed(valueGenerator.next()!) }
+            .onSuccess {
+                XCTAssertEqual($0, 10)
+            }.onError { _ in
+                XCTFail()
+            }.onComplete { _ in
+                exp.fulfill()
+            }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testRetryWithLastSuccessValue() {
+        
+        struct Error: ErrorType {}
+        
+        let values: [Result<Int, Error>] = [.Failure(.init()), .Failure(.init()), .Success(10)]
+        var valueGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        Future.retry(3) { Future.completed(valueGenerator.next()!) }
+            .onSuccess {
+                XCTAssertEqual($0, 10)
+            }.onError { _ in
+                XCTFail()
+            }.onComplete { _ in
+                exp.fulfill()
+            }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    func testRetryWithFisrtSuccess() {
+        
+        struct Error: ErrorType {}
+        
+        let values: [Result<Int, Error>] = [.Success(10)]
+        var valueGenerator = values.generate()
+        
+        let exp = futureIsCompleteExpectation()
+        
+        Future.retry(2) { Future.completed(valueGenerator.next()!) }
+            .onSuccess {
+                XCTAssertEqual($0, 10)
+            }.onError { _ in
+                XCTFail()
+            }.onComplete { _ in
+                exp.fulfill()
+            }
+        
+        waitForExpectationsWithTimeout(1, handler: nil)
+    }
+    
+    
 }

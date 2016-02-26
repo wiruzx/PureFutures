@@ -12,28 +12,6 @@ extension DeferredType {
     
     /**
 
-        Applies the side-effecting function to the result of this deferred,
-        and returns a new deferred with the result of this deferred
-
-        - parameter ec: execution context of `f` function. By default is main queue
-        - parameter f: side-effecting function that will be applied to result of `dx`
-
-        - returns: a new Deferred
-
-    */
-    public func andThen(ec: ExecutionContextType = SideEffects, f: Value -> Void) -> Deferred<Value> {
-        let p = PurePromise<Value>()
-        
-        onComplete(ec) { value in
-            p.complete(value)
-            f(value)
-        }
-        
-        return p.deferred
-    }
-    
-    /**
-
         Blocks the current thread, until value of `dx` becomes available
 
         - returns: value of deferred
