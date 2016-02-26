@@ -270,6 +270,26 @@ extension FutureType {
         }
         return p.deferred
     }
+    
+    
+    public static func retry(count: Int, f: () -> Self) -> Future<Value.Value, Value.Error> {
+        precondition(count > 0)
+        
+        let p = Promise<Value.Value, Value.Error>()
+        
+        f().onComplete { result in
+            result.analysis(ifSuccess: p.success, ifFailure: {
+                if count <= 1 {
+                    p.error($0)
+                } else {
+                    p.completeWith(retry(count - 1, f: f))
+                }
+            })
+        }
+        
+        return p.future
+    }
+    
 }
 
 // MARK: - Nested FutureType extension
