@@ -110,20 +110,6 @@ extension FutureType {
         
         return p.future
     }
-    
-    /**
-
-        Creates a new Future by filtering the value of the current Future with a predicate `p`
-
-        - parameter ec: Execution context of `p`. By default is global queue
-        - parameter p: Predicate function
-
-        - returns: A new Future with value or nil
-
-    */
-    public func filter(ec: ExecutionContextType = Pure, p: Success -> Bool) -> Future<Success?, Error> {
-        return map(ec) { x in p(x) ? x : nil }
-    }
 
     /**
 

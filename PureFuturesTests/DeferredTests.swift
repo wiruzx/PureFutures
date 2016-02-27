@@ -335,48 +335,6 @@ class DeferredTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
-    // MARK:- filter
-    
-    func testFilterPass() {
-        
-        let deferred = Deferred.completed(42)
-        
-        let result = deferred.filter { $0 % 2 == 0}
-        
-        let expectation = deferredIsCompleteExpectation()
-        
-        result.onComplete {
-            
-            if let value = $0 {
-                XCTAssertEqual(value, 42)
-            } else {
-                XCTFail("Value is nil")
-            }
-
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
-    func testFilterSkip() {
-        
-        let deferred = Deferred.completed(42)
-        
-        let result = deferred.filter { $0 % 2 != 0}
-        
-        let expectation = deferredIsCompleteExpectation()
-        
-        result.onComplete { value in
-            
-            XCTAssertNil(value)
-            
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
     // MARK:- zip
     
     func testZip() {

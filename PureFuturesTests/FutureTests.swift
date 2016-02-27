@@ -451,60 +451,6 @@ class FutureTests: XCTestCase {
         waitForExpectationsWithTimeout(1, handler: nil)
     }
     
-    // MARK:- filter
-    
-    func testFilterPass() {
-        
-        let future = Future<Int, NSError>.succeed(42)
-        
-        let result = future.filter { $0 % 2 == 0 }
-        
-        let expectation = futureIsCompleteExpectation()
-        
-        result.onSuccess { value in
-            if let value = value {
-                XCTAssertEqual(value, 42)
-            } else {
-                XCTFail("value is nil")
-            }
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
-    func testFilterSkip() {
-        
-        let future = Future<Int, NSError>.succeed(42)
-        
-        let result = future.filter { $0 % 2 != 0 }
-        
-        let expectation = futureIsCompleteExpectation()
-        
-        result.onSuccess { value in
-            XCTAssertNil(value)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
-    func testFilterWithError() {
-        
-        let future = Future<Int, NSError>.failed(error)
-        
-        let result = future.filter { _ in true }
-        
-        let expectation = futureIsCompleteExpectation()
-        
-        result.onError { error in
-            XCTAssertEqual(error, self.error)
-            expectation.fulfill()
-        }
-        
-        waitForExpectationsWithTimeout(1, handler: nil)
-    }
-    
     // MARK:- zip
     
     func testZip() {
