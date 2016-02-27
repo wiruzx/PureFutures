@@ -76,21 +76,7 @@ extension DeferredType {
         
         return p.deferred
     }
-    
-    /**
-
-        Creates a new Deferred by filtering the value of the current Deferred with a predicate `p`
-
-        - parameter ec: Execution context of `p`. By defalut is global queue
-        - parameter p: Predicate function
-
-        - returns: A new Deferred with value or nil
-
-    */
-    public func filter(ec: ExecutionContextType = Pure, p: Value -> Bool) -> Deferred<Value?> {
-        return map(ec) { x in p(x) ? x : nil }
-    }
-    
+   
     /**
 
         Zips with another Deferred and returns a new Deferred which contains a tuple of two elements
