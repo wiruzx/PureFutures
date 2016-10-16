@@ -43,7 +43,7 @@ public final class PurePromise<T> {
         - parameter value: value that deferred will be completed with
     
     */
-    public func complete(value: T) {
+    public func complete(_ value: T) {
         deferred.setValue(value)
     }
     
@@ -58,7 +58,7 @@ public final class PurePromise<T> {
         - parameter deferred: Value that conforms to `DeferredType` protocol
     
     */
-    public func completeWith<D: DeferredType where D.Value == T>(deferred: D) {
+    public func completeWith<D: DeferredType>(_ deferred: D) where D.Value == T {
         deferred.onComplete(Pure) { self.complete($0) }
     }
     
@@ -77,7 +77,8 @@ public final class PurePromise<T> {
         - returns: Bool which says if completing was successful or not
 
     */
-    public func tryComplete(value: T) -> Bool {
+    @discardableResult
+    public func tryComplete(_ value: T) -> Bool {
         if isCompleted {
             return false
         } else {
@@ -99,7 +100,8 @@ public final class PurePromise<T> {
         - returns: Bool which says if completing was successful or not
 
     */
-    public func tryCompleteWith<D: DeferredType where D.Value == T>(deferred: D) {
+    @discardableResult
+    public func tryCompleteWith<D: DeferredType>(_ deferred: D) where D.Value == T {
         deferred.onComplete(Pure) { self.tryComplete($0) }
     }
     

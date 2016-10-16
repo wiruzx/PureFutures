@@ -20,7 +20,7 @@ import Foundation
     - returns: a new Deferred<T>
     
 */
-public func deferred<T>(block: () -> T) -> Deferred<T> {
+public func deferred<T>(_ block: @escaping () -> T) -> Deferred<T> {
     return deferred(Pure, block: block)
 }
 
@@ -35,7 +35,7 @@ public func deferred<T>(block: () -> T) -> Deferred<T> {
     - returns: a new Deferred<T>
     
 */
-public func deferred<T>(ec: ExecutionContextType, block: () -> T) -> Deferred<T> {
+public func deferred<T>(_ ec: ExecutionContextType, block: @escaping () -> T) -> Deferred<T> {
     let p = PurePromise<T>()
     
     ec.execute {
@@ -53,7 +53,7 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Type declarations
     
     public typealias Value = T
-    public typealias Callback = T -> Void
+    public typealias Callback = (T) -> Void
     
     // MARK:- Public properties
     
@@ -68,7 +68,7 @@ public final class Deferred<T>: DeferredType {
     // MARK:- Private properties
     
     private var callbacks: [Callback] = []
-    private let callbacksManagingQueue = dispatch_queue_create("com.wiruzx.PureFutures.Deferred.callbacksManaging", DISPATCH_QUEUE_SERIAL)
+    private let callbacksManagingQueue = DispatchQueue(label: "com.wiruzx.PureFutures.Deferred.callbacksManaging", attributes: [])
     
     
     // MARK:- Initialization
@@ -76,12 +76,12 @@ public final class Deferred<T>: DeferredType {
     internal init() {
     }
     
-    public init<D: DeferredType where D.Value == T>(deferred: D) {
+    public init<D: DeferredType>(deferred: D) where D.Value == T {
         deferred.onComplete(Pure, setValue)
     }
     
     /// Creates immediately completed Deferred with given value
-    public static func completed(x: T) -> Deferred {
+    public static func completed(_ x: T) -> Deferred {
         let d = Deferred()
         d.value = x
         return d
@@ -99,7 +99,8 @@ public final class Deferred<T>: DeferredType {
         - returns: Returns itself for chaining operations
         
     */
-    public func onComplete(ec: ExecutionContextType, _ c: Callback) -> Deferred {
+    @discardableResult
+    public func onComplete(_ ec: ExecutionContextType, _ c: @escaping Callback) -> Deferred {
         
         let callbackInContext = { result in
             ec.execute {
@@ -107,7 +108,7 @@ public final class Deferred<T>: DeferredType {
             }
         }
         
-        dispatch_async(callbacksManagingQueue) {
+        callbacksManagingQueue.async {
             if let result = self.value {
                 callbackInContext(result)
             } else {
@@ -120,10 +121,10 @@ public final class Deferred<T>: DeferredType {
 
     // MARK:- Internal methods
 
-    internal func setValue(value: T) {
+    internal func setValue(_ value: T) {
         assert(self.value == nil, "Value can be set only once")
         
-        dispatch_sync(callbacksManagingQueue) {
+        callbacksManagingQueue.sync {
             
             self.value = value
             

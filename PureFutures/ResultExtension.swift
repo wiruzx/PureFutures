@@ -7,28 +7,23 @@
 //
 
 import enum Result.Result
-import protocol Result.ResultType
+import protocol Result.ResultProtocol
 
 extension Result {
-    init<R: ResultType where R.Value == Value, R.Error == Error>(result: R) {
-        
+    init<R: ResultProtocol>(result: R) where R.Value == Value, R.Error == Error {
         if let result = result as? Result {
             self = result
             return
         }
         
-        var res: Result<Value, Error>? {
-            didSet {
-                if oldValue != nil {
-                    fatalError("Setting result twice")
-                }
-            }
-        }
+        var res: Result<Value, Error>?
         
         result.analysis(ifSuccess: {
-            res = .Success($0)
+            guard res == nil else { fatalError("Setting result twice") }
+            res = .success($0)
         }, ifFailure: {
-            res = .Failure($0)
+            guard res == nil else { fatalError("Settings result twice") }
+            res = .failure($0)
         })
         
         guard let result = res else {
