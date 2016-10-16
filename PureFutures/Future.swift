@@ -26,7 +26,7 @@ import func Result.materialize
     - returns: a new Future<T, E>
     
 */
-public func future<T, E>(ec: ExecutionContextType = Pure, f: () -> Result<T, E>) -> Future<T, E> {
+public func future<T, E>(_ ec: ExecutionContextType = Pure, f: () -> Result<T, E>) -> Future<T, E> {
     let p = Promise<T, E>()
     
     ec.execute {
@@ -45,7 +45,7 @@ public func future<T, E>(ec: ExecutionContextType = Pure, f: () -> Result<T, E>)
      
      - returns: a new Future<T, NSError>
 */
-public func future<T>(ec: ExecutionContextType = Pure, f: () throws -> T) -> Future<T, NSError> {
+public func future<T>(_ ec: ExecutionContextType = Pure, f: @escaping () throws -> T) -> Future<T, NSError> {
     return future { materialize(f) }
 }
 
@@ -65,15 +65,15 @@ public func future<T>(ec: ExecutionContextType = Pure, f: () throws -> T) -> Fut
 
 */
 
-public final class Future<T, E: ErrorType>: FutureType {
+public final class Future<T, E: Error>: FutureType {
     
     // MARK:- Type declarations
     
     public typealias Value = Result<T, E>
     
-    public typealias CompleteCallback = Value -> Void
-    public typealias SuccessCallback = T -> Void
-    public typealias ErrorCallback = E -> Void
+    public typealias CompleteCallback = (Value) -> Void
+    public typealias SuccessCallback = (T) -> Void
+    public typealias ErrorCallback = (E) -> Void
     
     // MARK:- Private properties
     
@@ -106,7 +106,7 @@ public final class Future<T, E: ErrorType>: FutureType {
         self.deferred = deferred
     }
     
-    public init<F: FutureType where F.Value.Value == T, F.Value.Error == E>(future: F) {
+    public init<F: FutureType>(future: F) where F.Value.Value == T, F.Value.Error == E {
         deferred = future.map { Result(result: $0) }
     }
     
@@ -121,7 +121,7 @@ public final class Future<T, E: ErrorType>: FutureType {
         - returns: a new Future
 
     */
-    public class func succeed(value: T) -> Future {
+    public class func succeed(_ value: T) -> Future {
         return .completed(.Success(value))
     }
 
@@ -135,12 +135,12 @@ public final class Future<T, E: ErrorType>: FutureType {
         - returns: a new Future
         
     */
-    public class func failed(error: E) -> Future {
+    public class func failed(_ error: E) -> Future {
         return .completed(.Failure(error))
     }
     
     /// Creates a new Future with given Result<T, E>
-    public static func completed(x: Value) -> Future {
+    public static func completed(_ x: Value) -> Future {
         return Future(deferred: .completed(x))
     }
 
@@ -156,14 +156,14 @@ public final class Future<T, E: ErrorType>: FutureType {
         - returns: Returns itself for chaining operations
         
     */
-    public func onComplete(ec: ExecutionContextType = SideEffects, _ c: CompleteCallback) -> Future {
+    public func onComplete(_ ec: ExecutionContextType = SideEffects, _ c: CompleteCallback) -> Future {
         deferred.onComplete(ec, c)
         return self
     }
 
     // MARK:- Internal methods
     
-    internal func setValue<R: ResultType where R.Value == T, R.Error == E>(value: R) {
+    internal func setValue<R: ResultType>(_ value: R) where R.Value == T, R.Error == E {
         self.value = Result(result: value)
     }
     

@@ -8,8 +8,8 @@
 
 import class Foundation.NSOperationQueue
 
-extension NSOperationQueue: ExecutionContextType {
-    public func execute(task: () -> Void) {
-        addOperationWithBlock(task)
+extension OperationQueue: ExecutionContextType {
+    public func execute(_ task: () -> Void) {
+        addOperation(task)
     }
 }

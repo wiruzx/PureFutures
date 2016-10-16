@@ -9,5 +9,5 @@
 import protocol Result.ResultType
 
 public protocol FutureType: DeferredType {
-    typealias Value: ResultType
+    associatedtype Value: ResultType
 }

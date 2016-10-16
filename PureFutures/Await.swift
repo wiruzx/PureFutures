@@ -17,11 +17,11 @@ import Foundation
     - returns: dispatch_time_t value
 
 */
-private func timeFromTimeInterval(interval: NSTimeInterval) -> dispatch_time_t {
+private func timeFromTimeInterval(_ interval: TimeInterval) -> DispatchTime {
     if interval.isFinite {
-        return dispatch_time(DISPATCH_TIME_NOW, Int64(interval * Double(NSEC_PER_SEC)))
+        return .now() + Double(Int64(interval * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
     } else {
-        return DISPATCH_TIME_FOREVER
+        return .distantFuture
     }
 }
 
@@ -36,19 +36,19 @@ private func timeFromTimeInterval(interval: NSTimeInterval) -> dispatch_time_t {
     - returns: Optional value which will be nil if interval is over before value was set.
 
 */
-internal func await<T>(interval: NSTimeInterval, block: (T -> Void) -> Void) -> T? {
+internal func await<T>(_ interval: TimeInterval, block: ((T) -> Void) -> Void) -> T? {
     
-    let semaphore = dispatch_semaphore_create(0)
+    let semaphore = DispatchSemaphore(value: 0)
     
     var value: T? {
         didSet {
-            dispatch_semaphore_signal(semaphore)
+            semaphore.signal()
         }
     }
     
     block { value = $0 }
     
-    dispatch_semaphore_wait(semaphore, timeFromTimeInterval(interval))
+    semaphore.wait(timeout: timeFromTimeInterval(interval))
     
     return value
 }

@@ -10,7 +10,7 @@ import enum Result.Result
 import protocol Result.ResultType
 
 extension Result {
-    init<R: ResultType where R.Value == Value, R.Error == Error>(result: R) {
+    init<R: ResultType>(result: R) where R.Value == Value, R.Error == Error {
         
         if let result = result as? Result {
             self = result

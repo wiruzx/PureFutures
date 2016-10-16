@@ -11,35 +11,35 @@ import Foundation
 public enum ExecutionContext {
     
     public enum ExecutionType {
-        case Sync
-        case Async
+        case sync
+        case async
     }
     
-    case Main(ExecutionType)
-    case Global(ExecutionType)
+    case main(ExecutionType)
+    case global(ExecutionType)
 }
 
-internal let Pure = ExecutionContext.Global(.Async)
-internal let SideEffects = ExecutionContext.Main(.Async)
+internal let pure = ExecutionContext.global(.async)
+internal let sideEffects = ExecutionContext.main(.async)
 
 private extension ExecutionContext.ExecutionType {
-    private func execute(queue: dispatch_queue_t, _ task: () -> Void) {
+    func execute(_ queue: DispatchQueue, _ task: @escaping () -> Void) {
         switch self {
-        case .Sync:
-            return dispatch_sync(queue, task)
-        case .Async:
-            return dispatch_async(queue, task)
+        case .sync:
+            return queue.sync(execute: task)
+        case .async:
+            return queue.async(execute: task)
         }
     }
 }
 
 extension ExecutionContext: ExecutionContextType {
-    public func execute(task: () -> Void) {
+    public func execute(_ task: @escaping () -> Void) {
         switch self {
-        case .Main(let type):
-            type.execute(dispatch_get_main_queue(), task)
-        case .Global(let type):
-            type.execute(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), task)
+        case .main(let type):
+            type.execute(DispatchQueue.main, task)
+        case .global(let type):
+            type.execute(DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default), task)
         }
     }
 }
