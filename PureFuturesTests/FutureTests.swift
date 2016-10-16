@@ -13,7 +13,7 @@ import enum Result.Result
 
 class FutureTests: XCTestCase {
     
-    enum VoidError: ErrorType {}
+    enum VoidError: Error {}
     
     var promise: Promise<Int, NSError>!
     let error = NSError(domain: "FutureTests", code: 0, userInfo: nil)
@@ -25,14 +25,14 @@ class FutureTests: XCTestCase {
     }
 
     private func futureIsCompleteExpectation() -> XCTestExpectation {
-        return expectationWithDescription("Future is completed")
+        return expectation(description:"Future is completed")
     }
     
     // MARK:- future
     
     func testFutureWithDefaultExecutionContext() {
         
-        let f = future { Result<Int, VoidError>.Success(42) }
+        let f = future { Result<Int, VoidError>.success(42) }
         
         let expectation = futureIsCompleteExpectation()
         
@@ -41,19 +41,19 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testFutureWithExecutionContext() {
         
-        let f1: Future<Int, VoidError> = future(ExecutionContext.Global(.Async)) {
-            XCTAssertFalse(NSThread.isMainThread())
-            return .Success(42)
+        let f1: Future<Int, VoidError> = future(ExecutionContext.global(.async)) {
+            XCTAssertFalse(Thread.isMainThread)
+            return .success(42)
         }
         
-        let f2: Future<Int, VoidError> = future(ExecutionContext.Main(.Async)) {
-            XCTAssertTrue(NSThread.isMainThread())
-            return .Success(42)
+        let f2: Future<Int, VoidError> = future(ExecutionContext.main(.async)) {
+            XCTAssertTrue(Thread.isMainThread)
+            return .success(42)
         }
         
         let firstExpectation = futureIsCompleteExpectation()
@@ -69,7 +69,7 @@ class FutureTests: XCTestCase {
             secondExpectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- isCompleted
@@ -87,7 +87,7 @@ class FutureTests: XCTestCase {
     
     func testOnCompleteImmediate() {
         
-        promise.complete(Result.Success(42))
+        promise.complete(Result.success(42))
         
         let expectation = futureIsCompleteExpectation()
         
@@ -97,7 +97,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testOnCompleteAfterSomeTime() {
@@ -110,48 +110,48 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             sleep(1)
-            self.promise.complete(Result.Success(42))
+            self.promise.complete(Result.success(42))
         }
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testOnCompleteOnMainThread() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(Result.Success(42))
+        DispatchQueue.global().async {
+            self.promise.complete(Result.success(42))
         }
         
         let expectation = futureIsCompleteExpectation()
         
-        promise.future.onComplete(ExecutionContext.Main(.Async)) { result in
-            XCTAssertTrue(NSThread.isMainThread())
+        promise.future.onComplete(ExecutionContext.main(.async)) { result in
+            XCTAssertTrue(Thread.isMainThread)
             XCTAssertNotNil(result.value)
             XCTAssertEqual(result.value!, 42)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testOnCompleteOnBackgroundThread() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
-            self.promise.complete(Result.Success(42))
+        DispatchQueue.global().async {
+            self.promise.complete(Result.success(42))
         }
         
         let expectation = futureIsCompleteExpectation()
         
-        promise.future.onComplete(ExecutionContext.Global(.Async)) { result in
-            XCTAssertFalse(NSThread.isMainThread())
+        promise.future.onComplete(ExecutionContext.global(.async)) { result in
+            XCTAssertFalse(Thread.isMainThread)
             XCTAssertNotNil(result.value)
             XCTAssertEqual(result.value!, 42)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- onSuccess
@@ -174,7 +174,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- onError
@@ -197,7 +197,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- forced
@@ -214,7 +214,7 @@ class FutureTests: XCTestCase {
     
     func testForcedWithInterval() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             self.promise.success(42)
         }
         
@@ -227,14 +227,14 @@ class FutureTests: XCTestCase {
     
     func testForcedWithIntervalOnBackgroundThread() {
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             sleep(1)
             self.promise.success(42)
         }
         
         let expectation = futureIsCompleteExpectation()
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             if let value = self.promise.future.forced(2)?.value {
                 XCTAssertEqual(value, 42)
             } else {
@@ -243,12 +243,12 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(3, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
     }
     
     func testForcedInfinite() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             sleep(1)
             self.promise.success(42)
         }
@@ -279,7 +279,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testTransformingFailed() {
@@ -299,7 +299,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- map
@@ -322,7 +322,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testMappingFailed() {
@@ -343,7 +343,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- flatMap
@@ -366,7 +366,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testFlatMapWithError() {
@@ -391,7 +391,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     // MARK:- flatten
@@ -411,7 +411,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testFlattenFailed() {
@@ -429,7 +429,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     
@@ -448,7 +448,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- zip
@@ -468,7 +468,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testZipWithFailed() {
@@ -485,7 +485,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testZipMap() {
@@ -501,7 +501,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(0.1, handler: nil)
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
     
     // MARK:- reduce
@@ -517,7 +517,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testReduceWithFailed() {
@@ -534,7 +534,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- traverse
@@ -550,7 +550,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testTraverseWithFailed() {
@@ -566,7 +566,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- sequence
@@ -582,7 +582,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testSequenceWithFailed() {
@@ -596,7 +596,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- recover
@@ -617,7 +617,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testRecoverSucceed() {
@@ -636,7 +636,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- recoverWith
@@ -657,7 +657,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testRecoverSucceedWith() {
@@ -676,7 +676,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- toDeferred
@@ -690,15 +690,15 @@ class FutureTests: XCTestCase {
         
         deferred.onComplete { result in
             switch result {
-            case .Success(let value):
+            case .success(let value):
                 XCTAssertEqual(value, 42)
-            case .Failure(_):
+            case .failure(_):
                 XCTFail("an error occured")
             }
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testToDeferred() {
@@ -714,7 +714,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testToDeferredWithError() {
@@ -729,7 +729,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- ?? operator
@@ -747,7 +747,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
 
     func testCoalescingToDeferredWithFailed() {
@@ -763,7 +763,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
         
     }
     
@@ -781,7 +781,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testCoalescingToFutureWithFirstFailed() {
@@ -798,7 +798,7 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testCoalescingToFutureWithBothFailed() {
@@ -815,46 +815,46 @@ class FutureTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)   
+        waitForExpectations(timeout: 1, handler: nil)   
     }
     
     // MARK: - retry 
     
     func testRetryWhenNoSuccessValues() {
         
-        enum Error: ErrorType {
-            case First, Second
+        enum TestError: Error {
+            case first, second
         }
         
-        let values: [Result<Int, Error>] = [.Failure(.First), .Failure(.First), .Failure(.Second), .Success(10)]
+        let values: [Result<Int, TestError>] = [.failure(.first), .failure(.first), .failure(.second), .success(10)]
         
-        var valuesGenerator = values.generate()
+        var valuesGenerator = values.makeIterator()
         
         let exp = futureIsCompleteExpectation()
         
-        let result = Future.retry(3) { .completed(valuesGenerator.next()!) }
+        let result = Future.retry(count: 3) { .completed(valuesGenerator.next()!) }
         
         result.onError { error in
-            XCTAssert(error == .Second)
+            XCTAssert(error == .second)
             exp.fulfill()
         }.onSuccess { _ in
             XCTFail()
             exp.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testRetyWithSuccessValue() {
         
-        struct Error: ErrorType {}
+        struct TestError: Error {}
         
-        let values: [Result<Int, Error>] = [.Failure(.init()), .Failure(.init()), .Success(10), .Success(20)]
-        var valueGenerator = values.generate()
+        let values: [Result<Int, TestError>] = [.failure(.init()), .failure(.init()), .success(10), .success(20)]
+        var valueGenerator = values.makeIterator()
         
         let exp = futureIsCompleteExpectation()
         
-        Future.retry(4) { Future.completed(valueGenerator.next()!) }
+        Future.retry(count: 4) { Future.completed(valueGenerator.next()!) }
             .onSuccess {
                 XCTAssertEqual($0, 10)
             }.onError { _ in
@@ -863,19 +863,19 @@ class FutureTests: XCTestCase {
                 exp.fulfill()
             }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testRetryWithLastSuccessValue() {
         
-        struct Error: ErrorType {}
+        struct TestError: Error {}
         
-        let values: [Result<Int, Error>] = [.Failure(.init()), .Failure(.init()), .Success(10)]
-        var valueGenerator = values.generate()
+        let values: [Result<Int, TestError>] = [.failure(.init()), .failure(.init()), .success(10)]
+        var valueGenerator = values.makeIterator()
         
         let exp = futureIsCompleteExpectation()
         
-        Future.retry(3) { Future.completed(valueGenerator.next()!) }
+        Future.retry(count: 3) { Future.completed(valueGenerator.next()!) }
             .onSuccess {
                 XCTAssertEqual($0, 10)
             }.onError { _ in
@@ -884,19 +884,19 @@ class FutureTests: XCTestCase {
                 exp.fulfill()
             }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testRetryWithFisrtSuccess() {
         
-        struct Error: ErrorType {}
+        struct TestError: Error {}
         
-        let values: [Result<Int, Error>] = [.Success(10)]
-        var valueGenerator = values.generate()
+        let values: [Result<Int, TestError>] = [.success(10)]
+        var valueGenerator = values.makeIterator()
         
         let exp = futureIsCompleteExpectation()
         
-        Future.retry(2) { Future.completed(valueGenerator.next()!) }
+        Future.retry(count: 2) { Future.completed(valueGenerator.next()!) }
             .onSuccess {
                 XCTAssertEqual($0, 10)
             }.onError { _ in
@@ -905,7 +905,7 @@ class FutureTests: XCTestCase {
                 exp.fulfill()
             }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     

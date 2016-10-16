@@ -8,7 +8,7 @@
 
 public protocol DeferredType {
     
-    typealias Value
+    associatedtype Value
     
     /**
         Register an callback which should be called when Deferred completed
@@ -18,6 +18,8 @@ public protocol DeferredType {
     
         - returns: Returns itself for chaining operations
     */
-    func onComplete(ec: ExecutionContextType, _ c: Value -> Void) -> Self
+    
+    @discardableResult
+    func onComplete(_ ec: ExecutionContextType, _ c: @escaping (Value) -> Void) -> Self
     
 }

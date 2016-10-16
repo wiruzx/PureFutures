@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import typealias Foundation.NSTimeInterval
+import typealias Foundation.TimeInterval
 
 extension DeferredType {
     
@@ -18,7 +18,7 @@ extension DeferredType {
 
     */
     public func forced() -> Value {
-        return forced(NSTimeInterval.infinity)!
+        return forced(.infinity)!
     }
     
     /**
@@ -30,7 +30,7 @@ extension DeferredType {
         - returns: Value of deferred or nil if it hasn't become available yet
 
     */
-    public func forced(interval: NSTimeInterval) -> Value? {
+    public func forced(_ interval: TimeInterval) -> Value? {
         return await(interval) { completion in
             self.onComplete(Pure, completion)
             return
@@ -47,7 +47,7 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func map<T>(ec: ExecutionContextType = Pure, f: Value -> T) -> Deferred<T> {
+    public func map<T>(_ ec: ExecutionContextType = Pure, f: @escaping (Value) -> T) -> Deferred<T> {
         let p = PurePromise<T>()
         
         onComplete(ec) { x in
@@ -67,7 +67,7 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func flatMap<D: DeferredType>(ec: ExecutionContextType = Pure, f: Value -> D) -> Deferred<D.Value> {
+    public func flatMap<D: DeferredType>(_ ec: ExecutionContextType = Pure, f: @escaping (Value) -> D) -> Deferred<D.Value> {
         let p = PurePromise<D.Value>()
         
         onComplete(ec) { x in
@@ -86,7 +86,7 @@ extension DeferredType {
         - returns: Deferred with resuls of two deferreds
 
     */
-    public func zip<D: DeferredType>(d: D) -> Deferred<(Value, D.Value)> {
+    public func zip<D: DeferredType>(_ d: D) -> Deferred<(Value, D.Value)> {
         
         let ec = Pure
         
@@ -108,7 +108,7 @@ extension DeferredType {
      
         - returns: Deferred with tuple of current value and result of mapping
     */
-    public func zipMap<U>(ec: ExecutionContextType = Pure, f: Value -> U) -> Deferred<(Value, U)> {
+    public func zipMap<U>(_ ec: ExecutionContextType = Pure, f: @escaping (Value) -> U) -> Deferred<(Value, U)> {
         return zip(map(ec, f: f))
     }
 }
@@ -140,7 +140,7 @@ extension DeferredType where Value: DeferredType {
 
 // MARK: - SequenceTyep extensions
 
-extension SequenceType where Generator.Element: DeferredType {
+extension Sequence where Iterator.Element: DeferredType {
     
     /**
 
@@ -153,7 +153,7 @@ extension SequenceType where Generator.Element: DeferredType {
         - returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public func reduce<T>(ec: ExecutionContextType = Pure, initial: T, combine: ((T, Generator.Element.Value) -> T)) -> Deferred<T> {
+    public func reduce<T>(_ ec: ExecutionContextType = Pure, initial: T, combine: @escaping ((T, Iterator.Element.Value) -> T)) -> Deferred<T> {
         return reduce(.completed(initial)) { acc, d in
             d.flatMap(ec) { x in
                 acc.map(ec) { combine($0, x) }
@@ -172,13 +172,13 @@ extension SequenceType where Generator.Element: DeferredType {
         - returns: Deferred with array of values
 
     */
-    public func sequence() -> Deferred<[Generator.Element.Value]> {
+    public func sequence() -> Deferred<[Iterator.Element.Value]> {
         return traverse(Pure, f: identity)
     }
     
 }
 
-extension SequenceType {
+extension Sequence {
     
     /**
 
@@ -190,7 +190,7 @@ extension SequenceType {
         - returns: a new Deferred
 
     */
-    public func traverse<D: DeferredType>(ec: ExecutionContextType = Pure, f: Generator.Element -> D) -> Deferred<[D.Value]> {
+    public func traverse<D: DeferredType>(_ ec: ExecutionContextType = Pure, f: (Iterator.Element) -> D) -> Deferred<[D.Value]> {
         // TODO: Replace $0 + [$1] with the more efficient variant
         return map(f).reduce(ec, initial: []) { $0 + [$1] }
     }
@@ -199,7 +199,9 @@ extension SequenceType {
 // MARK: - Convenience extension
 
 extension DeferredType {
-    public func onComplete(c: Value -> Void) -> Self {
+    
+    @discardableResult
+    public func onComplete(_ c: @escaping (Value) -> Void) -> Self {
         return onComplete(SideEffects, c)
     }
 }
