@@ -36,7 +36,7 @@ private func timeFromTimeInterval(_ interval: TimeInterval) -> DispatchTime {
     - returns: Optional value which will be nil if interval is over before value was set.
 
 */
-internal func await<T>(_ interval: TimeInterval, block: ((T) -> Void) -> Void) -> T? {
+internal func await<T>(_ interval: TimeInterval, block: (@escaping (T) -> Void) -> Void) -> T? {
     
     let semaphore = DispatchSemaphore(value: 0)
     
@@ -48,7 +48,7 @@ internal func await<T>(_ interval: TimeInterval, block: ((T) -> Void) -> Void) -
     
     block { value = $0 }
     
-    semaphore.wait(timeout: timeFromTimeInterval(interval))
+    _ = semaphore.wait(timeout: timeFromTimeInterval(interval))
     
     return value
 }

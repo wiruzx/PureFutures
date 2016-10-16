@@ -18,6 +18,8 @@ public protocol DeferredType {
     
         - returns: Returns itself for chaining operations
     */
-    func onComplete(_ ec: ExecutionContextType, _ c: (Value) -> Void) -> Self
+    
+    @discardableResult
+    func onComplete(_ ec: ExecutionContextType, _ c: @escaping (Value) -> Void) -> Self
     
 }

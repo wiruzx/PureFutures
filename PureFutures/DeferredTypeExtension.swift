@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import typealias Foundation.NSTimeInterval
+import typealias Foundation.TimeInterval
 
 extension DeferredType {
     
@@ -199,7 +199,9 @@ extension Sequence {
 // MARK: - Convenience extension
 
 extension DeferredType {
-    public func onComplete(_ c: (Value) -> Void) -> Self {
+    
+    @discardableResult
+    public func onComplete(_ c: @escaping (Value) -> Void) -> Self {
         return onComplete(SideEffects, c)
     }
 }

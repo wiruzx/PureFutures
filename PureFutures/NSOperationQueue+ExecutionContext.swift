@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import class Foundation.NSOperationQueue
+import class Foundation.OperationQueue
 
 extension OperationQueue: ExecutionContextType {
-    public func execute(_ task: () -> Void) {
+    public func execute(_ task: @escaping () -> Void) {
         addOperation(task)
     }
 }

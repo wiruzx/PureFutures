@@ -10,7 +10,7 @@ import typealias Foundation.NSTimeInterval
 import class Foundation.NSError
 
 import enum Result.Result
-import protocol Result.ResultType
+import protocol Result.ResultProtocol
 import func Result.materialize
 
 // MARK:- future creation function
@@ -26,7 +26,7 @@ import func Result.materialize
     - returns: a new Future<T, E>
     
 */
-public func future<T, E>(_ ec: ExecutionContextType = Pure, f: () -> Result<T, E>) -> Future<T, E> {
+public func future<T, E>(_ ec: ExecutionContextType = Pure, f: @escaping () -> Result<T, E>) -> Future<T, E> {
     let p = Promise<T, E>()
     
     ec.execute {
@@ -122,7 +122,7 @@ public final class Future<T, E: Error>: FutureType {
 
     */
     public class func succeed(_ value: T) -> Future {
-        return .completed(.Success(value))
+        return .completed(.success(value))
     }
 
 
@@ -136,7 +136,7 @@ public final class Future<T, E: Error>: FutureType {
         
     */
     public class func failed(_ error: E) -> Future {
-        return .completed(.Failure(error))
+        return .completed(.failure(error))
     }
     
     /// Creates a new Future with given Result<T, E>
@@ -156,14 +156,15 @@ public final class Future<T, E: Error>: FutureType {
         - returns: Returns itself for chaining operations
         
     */
-    public func onComplete(_ ec: ExecutionContextType = SideEffects, _ c: CompleteCallback) -> Future {
+    @discardableResult
+    public func onComplete(_ ec: ExecutionContextType = SideEffects, _ c: @escaping CompleteCallback) -> Future {
         deferred.onComplete(ec, c)
         return self
     }
 
     // MARK:- Internal methods
     
-    internal func setValue<R: ResultType>(_ value: R) where R.Value == T, R.Error == E {
+    internal func setValue<R: ResultProtocol>(_ value: R) where R.Value == T, R.Error == E {
         self.value = Result(result: value)
     }
     

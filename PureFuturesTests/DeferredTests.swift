@@ -21,7 +21,7 @@ class DeferredTests: XCTestCase {
     }
     
     private func deferredIsCompleteExpectation() -> XCTestExpectation {
-        return expectationWithDescription("Deferred is completed")
+        return expectation(description:"Deferred is completed")
     }
     
     // MARK:- deferred
@@ -37,18 +37,18 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testDeferredWithMainThreadExecutionContext() {
         
-        let d1: Deferred<Int> = deferred(ExecutionContext.Main(.Async)) {
-            XCTAssertTrue(NSThread.isMainThread())
+        let d1: Deferred<Int> = deferred(ExecutionContext.main(.async)) {
+            XCTAssertTrue(Thread.isMainThread)
             return 42
         }
         
-        let d2: Deferred<Int> = deferred(ExecutionContext.Global(.Async)) {
-            XCTAssertFalse(NSThread.isMainThread())
+        let d2: Deferred<Int> = deferred(ExecutionContext.global(.async)) {
+            XCTAssertFalse(Thread.isMainThread)
             return 42
         }
         
@@ -65,7 +65,7 @@ class DeferredTests: XCTestCase {
             secondDeferredExpectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- isCompleted
@@ -92,7 +92,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testOnCompleteAfterSomeTime() {
@@ -104,46 +104,46 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             sleep(1)
             self.promise.complete(42)
         }
         
-        waitForExpectationsWithTimeout(2, handler: nil)
+        waitForExpectations(timeout: 2, handler: nil)
     }
     
     func testOnCompleteOnMainThread() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             self.promise.complete(42)
         }
         
         let expectation = deferredIsCompleteExpectation()
         
-        self.promise.deferred.onComplete(ExecutionContext.Main(.Async)) { value in
-            XCTAssertTrue(NSThread.isMainThread())
+        self.promise.deferred.onComplete(ExecutionContext.main(.async)) { value in
+            XCTAssertTrue(Thread.isMainThread)
             XCTAssertEqual(value, 42)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testOnCompleteOnBackgroundThread() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             self.promise.complete(42)
         }
         
         let expectation = deferredIsCompleteExpectation()
         
-        self.promise.deferred.onComplete(ExecutionContext.Global(.Async)) { value in
-            XCTAssertFalse(NSThread.isMainThread())
+        self.promise.deferred.onComplete(ExecutionContext.global(.async)) { value in
+            XCTAssertFalse(Thread.isMainThread)
             XCTAssertEqual(value, 42)
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
         
     }
     
@@ -165,16 +165,16 @@ class DeferredTests: XCTestCase {
             result.append(3)
         }
         
-        let expectation = expectationWithDescription("Deferred is completed")
+        let exp = expectation(description:"Deferred is completed")
         
         deferred.onComplete {
             XCTAssertEqual(result, [1, 2, 3])
-            expectation.fulfill()
+            exp.fulfill()
         }
         
         p.complete()
         
-        waitForExpectationsWithTimeout(0.1, handler: nil)
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
     
     func testOnCompleteExecutionOrderWithCompletedDeferred() {
@@ -194,14 +194,14 @@ class DeferredTests: XCTestCase {
             result.append(3)
         }
         
-        let expectation = expectationWithDescription("Deferred is completed")
+        let exp = expectation(description:"Deferred is completed")
         
         deferred.onComplete {
             XCTAssertEqual(result, [1, 2, 3])
-            expectation.fulfill()
+            exp.fulfill()
         }
         
-        waitForExpectationsWithTimeout(0.1, handler: nil)
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
     
     // MARK:- forced
@@ -219,7 +219,7 @@ class DeferredTests: XCTestCase {
     
     func testForcedWithInterval() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             sleep(1)
             self.promise.complete(42)
         }
@@ -233,14 +233,14 @@ class DeferredTests: XCTestCase {
     
     func testForcedWithIntervalOnBackgroundThred() {
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             sleep(1)
             self.promise.complete(42)
         }
         
         let expectation = deferredIsCompleteExpectation()
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             if let result = self.promise.deferred.forced(2) {
                 XCTAssertEqual(result, 42)
             } else {
@@ -249,13 +249,13 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(3, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
         
     }
     
     func testForcedInfinite() {
         
-        dispatch_async(dispatch_get_global_queue(0, 0)) {
+        DispatchQueue.global().async {
             sleep(1)
             self.promise.complete(42)
         }
@@ -283,7 +283,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
         
     }
     
@@ -304,7 +304,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- flatten
@@ -332,7 +332,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- zip
@@ -354,7 +354,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testZipMap() {
@@ -371,7 +371,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(0.1, handler: nil)
+        waitForExpectations(timeout: 0.1, handler: nil)
     }
     
     // MARK:- reduce
@@ -391,7 +391,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- traverse
@@ -409,7 +409,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     // MARK:- sequence
@@ -429,7 +429,7 @@ class DeferredTests: XCTestCase {
             expectation.fulfill()
         }
         
-        waitForExpectationsWithTimeout(1, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
 }

@@ -10,10 +10,10 @@ import XCTest
 
 @testable import PureFutures
 
-func someAsyncWork(time: UInt32, compeltion: () -> Void) {
-    dispatch_async(dispatch_get_global_queue(0, 0)) {
+func someAsyncWork(_ time: UInt32, completion: @escaping () -> Void) {
+    DispatchQueue.global().async {
         sleep(time)
-        compeltion()
+        completion()
     }
 }
 
@@ -34,7 +34,7 @@ class AwaitTests: XCTestCase {
     }
     
     func testAwaitInifinite() {
-        let result = await(NSTimeInterval.infinity) { completion in
+        let result = await(TimeInterval.infinity) { completion in
             someAsyncWork(3) {
                 completion(42)
             }

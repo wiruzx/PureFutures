@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Victor Shamanov. All rights reserved.
 //
 
-import protocol Result.ResultType
+import protocol Result.ResultProtocol
 
 public protocol FutureType: DeferredType {
-    associatedtype Value: ResultType
+    associatedtype Value: ResultProtocol
 }

@@ -7,7 +7,7 @@
 //
 
 import enum Result.Result
-import protocol Result.ResultType
+import protocol Result.ResultProtocol
 
 /**
 
@@ -46,7 +46,7 @@ public final class Promise<T, E: Error> {
         - parameter value: value, that future will be completed with
 
     */
-    public func complete<R: ResultType>(_ value: R) where R.Value == T, R.Error == E {
+    public func complete<R: ResultProtocol>(_ value: R) where R.Value == T, R.Error == E {
         future.setValue(value)
     }
 
@@ -76,7 +76,7 @@ public final class Promise<T, E: Error> {
 
     */
     public func success(_ value: T) {
-        complete(Result.Success(value))
+        complete(Result.success(value))
     }
     
     /**
@@ -90,7 +90,7 @@ public final class Promise<T, E: Error> {
 
     */
     public func error(_ error: E) {
-        complete(Result.Failure(error))
+        complete(Result.failure(error))
     }
     
     // MARK:- Other methods
@@ -108,7 +108,8 @@ public final class Promise<T, E: Error> {
         - returns: Bool which says if completing was successful or not
 
     */
-    public func tryComplete<R: ResultType>(_ value: R) -> Bool where R.Value == T, R.Error == E {
+    @discardableResult
+    public func tryComplete<R: ResultProtocol>(_ value: R) -> Bool where R.Value == T, R.Error == E {
         if isCompleted {
             return false
         } else {
@@ -130,8 +131,9 @@ public final class Promise<T, E: Error> {
         - returns: Bool which says if completing was successful or not
 
     */
+    @discardableResult
     public func trySuccess(_ value: T) -> Bool {
-        return tryComplete(Result.Success(value))
+        return tryComplete(Result.success(value))
     }
 
     /**
@@ -147,8 +149,9 @@ public final class Promise<T, E: Error> {
         - returns: Bool which says if completing was successful or not
 
     */
+    @discardableResult
     public func tryError(_ error: E) -> Bool {
-        return tryComplete(Result.Failure(error))
+        return tryComplete(Result.failure(error))
     }
 
     /**
@@ -164,6 +167,7 @@ public final class Promise<T, E: Error> {
         - returns: Bool which says if completing was successful or not
 
     */
+    @discardableResult
     public func tryCompleteWith<F: FutureType>(_ future: F) where F.Value.Value == T, F.Value.Error == E {
         future.onComplete(Pure) { self.tryComplete($0) }
     }

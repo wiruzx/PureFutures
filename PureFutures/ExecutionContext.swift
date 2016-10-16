@@ -19,8 +19,9 @@ public enum ExecutionContext {
     case global(ExecutionType)
 }
 
-internal let pure = ExecutionContext.global(.async)
-internal let sideEffects = ExecutionContext.main(.async)
+// TODO: Lowercase it
+internal let Pure = ExecutionContext.global(.async)
+internal let SideEffects = ExecutionContext.main(.async)
 
 private extension ExecutionContext.ExecutionType {
     func execute(_ queue: DispatchQueue, _ task: @escaping () -> Void) {
@@ -39,7 +40,7 @@ extension ExecutionContext: ExecutionContextType {
         case .main(let type):
             type.execute(DispatchQueue.main, task)
         case .global(let type):
-            type.execute(DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default), task)
+            type.execute(DispatchQueue.global(), task)
         }
     }
 }

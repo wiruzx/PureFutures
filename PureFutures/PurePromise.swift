@@ -77,6 +77,7 @@ public final class PurePromise<T> {
         - returns: Bool which says if completing was successful or not
 
     */
+    @discardableResult
     public func tryComplete(_ value: T) -> Bool {
         if isCompleted {
             return false
@@ -99,6 +100,7 @@ public final class PurePromise<T> {
         - returns: Bool which says if completing was successful or not
 
     */
+    @discardableResult
     public func tryCompleteWith<D: DeferredType>(_ deferred: D) where D.Value == T {
         deferred.onComplete(Pure) { self.tryComplete($0) }
     }

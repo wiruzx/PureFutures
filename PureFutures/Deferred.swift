@@ -99,6 +99,7 @@ public final class Deferred<T>: DeferredType {
         - returns: Returns itself for chaining operations
         
     */
+    @discardableResult
     public func onComplete(_ ec: ExecutionContextType, _ c: @escaping Callback) -> Deferred {
         
         let callbackInContext = { result in
