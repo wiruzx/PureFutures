@@ -1,0 +1,3 @@
+[submodule "submodules/Result"]
+	path = submodules/Result
+	url = https://github.com/antitypical/Result.git
