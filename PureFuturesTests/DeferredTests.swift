@@ -172,7 +172,7 @@ class DeferredTests: XCTestCase {
             exp.fulfill()
         }
         
-        p.complete()
+        p.complete(())
         
         waitForExpectations(timeout: 0.1, handler: nil)
     }
@@ -180,7 +180,7 @@ class DeferredTests: XCTestCase {
     func testOnCompleteExecutionOrderWithCompletedDeferred() {
         
         var result: [Int] = []
-        let deferred: Deferred<Void> = .completed()
+        let deferred: Deferred<Void> = .completed(())
         
         deferred.onComplete {
             result.append(1)
