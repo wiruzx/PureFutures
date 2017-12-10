@@ -20,8 +20,8 @@ public enum ExecutionContext {
 }
 
 // TODO: Lowercase it
-internal let Pure = ExecutionContext.global(.async)
-internal let SideEffects = ExecutionContext.main(.async)
+public let Pure = ExecutionContext.global(.async)
+public let SideEffects = ExecutionContext.main(.async)
 
 private extension ExecutionContext.ExecutionType {
     func execute(_ queue: DispatchQueue, _ task: @escaping () -> Void) {

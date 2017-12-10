@@ -8,6 +8,6 @@
 
 import protocol Result.ResultProtocol
 
-public protocol FutureType: DeferredType {
-    associatedtype Value: ResultProtocol
+public protocol FutureType: DeferredType where Value: ResultProtocol {
+    
 }
