@@ -101,8 +101,12 @@ public final class PurePromise<T> {
 
     */
     @discardableResult
-    public func tryCompleteWith<D: DeferredType>(_ deferred: D) where D.Value == T {
+    public func tryCompleteWith<D: DeferredType>(_ deferred: D) -> Bool where D.Value == T {
+        if isCompleted {
+            return false
+        }
         deferred.onComplete(Pure) { self.tryComplete($0) }
+        return true
     }
     
 }

@@ -168,8 +168,12 @@ public final class Promise<T, E: Error> {
 
     */
     @discardableResult
-    public func tryCompleteWith<F: FutureType>(_ future: F) where F.Value.Value == T, F.Value.Error == E {
+    public func tryCompleteWith<F: FutureType>(_ future: F) -> Bool where F.Value.Value == T, F.Value.Error == E {
+        if isCompleted {
+            return false
+        }
         future.onComplete(Pure) { self.tryComplete($0) }
+        return true
     }
     
 }
