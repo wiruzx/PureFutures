@@ -46,7 +46,7 @@ public func future<T, E>(_ ec: ExecutionContextType = Pure, f: @escaping () -> R
      - returns: a new Future<T, NSError>
 */
 public func future<T>(_ ec: ExecutionContextType = Pure, f: @escaping () throws -> T) -> Future<T, NSError> {
-    return future { materialize(f) }
+    return future { Result(attempt: f) }
 }
 
 // MARK:- Future
