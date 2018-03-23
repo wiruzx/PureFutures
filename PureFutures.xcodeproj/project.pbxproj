@@ -13,7 +13,6 @@
 		E60A72A31A8AE7330094A4D4 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A21A8AE7330094A4D4 /* Promise.swift */; };
 		E615DFA71B0C15F8005631A5 /* DeferredType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */; };
 		E615DFA81B0C15F8005631A5 /* FutureType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72A01A8AE53B0094A4D4 /* FutureType.swift */; };
-		E615DFA91B0C15F8005631A5 /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
 		E615DFAA1B0C15F8005631A5 /* Deferred.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F911A8AB80E00F09BC6 /* Deferred.swift */; };
 		E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E79F951A8ABB8200F09BC6 /* PurePromise.swift */; };
 		E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60A72901A8AD1750094A4D4 /* Future.swift */; };
@@ -22,7 +21,6 @@
 		E615DFAF1B0C15F8005631A5 /* FutureTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D362021A9D03A2003D5B2C /* FutureTypeExtension.swift */; };
 		E615DFB51B0C15F8005631A5 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E615DFB61B0C15F8005631A5 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C0A9F91AA36490006436AC /* Misc.swift */; };
-		E6267DDC1AA21F300068A0A0 /* ExecutionContextType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */; };
 		E6267DE21AA280940068A0A0 /* Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6267DE11AA280940068A0A0 /* Await.swift */; };
 		E65E6FCA1A86BF41001B514C /* PureFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E65E6FBE1A86BF41001B514C /* PureFutures.framework */; };
 		E66D05391C03B26D0064C7A4 /* ResultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66D05381C03B26D0064C7A4 /* ResultExtension.swift */; };
@@ -67,7 +65,6 @@
 		E60A72A01A8AE53B0094A4D4 /* FutureType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FutureType.swift; sourceTree = "<group>"; };
 		E60A72A21A8AE7330094A4D4 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		E615DF8E1B0C1553005631A5 /* PureFuturesOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureFuturesOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExecutionContextType.swift; sourceTree = "<group>"; };
 		E6267DE11AA280940068A0A0 /* Await.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Await.swift; sourceTree = "<group>"; };
 		E65E6FBE1A86BF41001B514C /* PureFutures.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PureFutures.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E65E6FC21A86BF41001B514C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -220,7 +217,6 @@
 			children = (
 				E60A729A1A8AE0C80094A4D4 /* DeferredType.swift */,
 				E60A72A01A8AE53B0094A4D4 /* FutureType.swift */,
-				E6267DDB1AA21F300068A0A0 /* ExecutionContextType.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -393,7 +389,6 @@
 				E68E1C751C1A2135004792DF /* ResultExtension.swift in Sources */,
 				E615DFA71B0C15F8005631A5 /* DeferredType.swift in Sources */,
 				E615DFA81B0C15F8005631A5 /* FutureType.swift in Sources */,
-				E615DFA91B0C15F8005631A5 /* ExecutionContextType.swift in Sources */,
 				E615DFAA1B0C15F8005631A5 /* Deferred.swift in Sources */,
 				E615DFAB1B0C15F8005631A5 /* PurePromise.swift in Sources */,
 				E615DFAC1B0C15F8005631A5 /* Future.swift in Sources */,
@@ -409,7 +404,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6267DDC1AA21F300068A0A0 /* ExecutionContextType.swift in Sources */,
 				E6C0A9FA1AA36490006436AC /* Misc.swift in Sources */,
 				E6E79F921A8AB80F00F09BC6 /* Deferred.swift in Sources */,
 				E60A729B1A8AE0C80094A4D4 /* DeferredType.swift in Sources */,

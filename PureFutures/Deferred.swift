@@ -63,19 +63,12 @@ public final class Deferred<T>: DeferredType {
         
     */
     @discardableResult
-    public func onComplete(_ ec: ExecutionContextType, _ c: @escaping Callback) -> Deferred {
-        
-        let callbackInContext = { result in
-            ec.execute {
-                c(result)
-            }
-        }
-        
+    public func onComplete(_ c: @escaping Callback) -> Deferred {
         callbacksManagingQueue.async {
             if let result = self.value {
-                callbackInContext(result)
+                c(result)
             } else {
-                self.callbacks.append(callbackInContext)
+                self.callbacks.append(c)
             }
         }
         
