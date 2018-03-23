@@ -13,42 +13,6 @@ import enum Result.Result
 import protocol Result.ResultProtocol
 import func Result.materialize
 
-// MARK:- future creation function
-
-/**
-
-    Creates a new `Future<T, E>` whose value will be
-    result of execution `f` on `ec` execution context
-
-    - parameter ec: execution context of given function (global queue by default)
-    - parameter f: function, which result will become value of returned Future
-
-    - returns: a new Future<T, E>
-    
-*/
-public func future<T, E>(_ ec: ExecutionContextType = Pure, f: @escaping () -> Result<T, E>) -> Future<T, E> {
-    let p = Promise<T, E>()
-    
-    ec.execute {
-        p.complete(f())
-    }
-    
-    return p.future
-}
-
-/**
-     Creates a new `Future<T, E>` whose value will be
-     result of execution throwing function `f` on `ec` execution context
-     
-     - parameter ec: execution context of given function (global queue by default)
-     - parameter f: throwing function, which result will become value of returned Future
-     
-     - returns: a new Future<T, NSError>
-*/
-public func future<T>(_ ec: ExecutionContextType = Pure, f: @escaping () throws -> T) -> Future<T, NSError> {
-    return future { Result(attempt: f) }
-}
-
 // MARK:- Future
 
 /**
@@ -157,8 +121,8 @@ public final class Future<T, E: Error>: FutureType {
         
     */
     @discardableResult
-    public func onComplete(_ ec: ExecutionContextType = SideEffects, _ c: @escaping CompleteCallback) -> Future {
-        deferred.onComplete(ec, c)
+    public func onComplete(_ c: @escaping CompleteCallback) -> Future {
+        deferred.onComplete(c)
         return self
     }
 

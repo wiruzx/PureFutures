@@ -20,6 +20,6 @@ public protocol DeferredType {
     */
     
     @discardableResult
-    func onComplete(_ ec: ExecutionContextType, _ c: @escaping (Value) -> Void) -> Self
+    func onComplete(_ c: @escaping (Value) -> Void) -> Self
     
 }

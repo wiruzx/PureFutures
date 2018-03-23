@@ -8,43 +8,6 @@
 
 import Foundation
 
-// MARK:- deferred creation functions
-
-/**
-
-    Creates a new Deferred<T> whose value become
-    result of execution `block` on background thread
-
-    - parameter block: function, which result become value of Deferred
-
-    - returns: a new Deferred<T>
-    
-*/
-public func deferred<T>(_ block: @escaping () -> T) -> Deferred<T> {
-    return deferred(Pure, block: block)
-}
-
-/**
-
-    Creates a new Deferred<T> whose value become
-    result of execution `block` on `ec` execution context
-
-    - parameter ec: execution context of block
-    - parameter block: function, which result become value of Deferred
-
-    - returns: a new Deferred<T>
-    
-*/
-public func deferred<T>(_ ec: ExecutionContextType, block: @escaping () -> T) -> Deferred<T> {
-    let p = PurePromise<T>()
-    
-    ec.execute {
-        p.complete(block())
-    }
-    
-    return p.deferred
-}
-
 // MARK:- Deferred
 
 /// Represents a value that will be available in the future.
@@ -77,7 +40,7 @@ public final class Deferred<T>: DeferredType {
     }
     
     public init<D: DeferredType>(deferred: D) where D.Value == T {
-        deferred.onComplete(Pure, setValue)
+        deferred.onComplete(setValue)
     }
     
     /// Creates immediately completed Deferred with given value

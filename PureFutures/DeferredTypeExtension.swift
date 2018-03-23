@@ -32,7 +32,7 @@ extension DeferredType {
     */
     public func forced(_ interval: TimeInterval) -> Value? {
         return await(interval) { completion in
-            self.onComplete(Pure, completion)
+            self.onComplete(completion)
             return
         }
     }
@@ -47,10 +47,10 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func map<T>(_ ec: ExecutionContextType = Pure, f: @escaping (Value) -> T) -> Deferred<T> {
+    public func map<T>(f: @escaping (Value) -> T) -> Deferred<T> {
         let p = PurePromise<T>()
         
-        onComplete(ec) { x in
+        onComplete { x in
             p.complete(f(x))
         }
         
@@ -67,10 +67,10 @@ extension DeferredType {
         - returns: a new Deferred
 
     */
-    public func flatMap<D: DeferredType>(_ ec: ExecutionContextType = Pure, f: @escaping (Value) -> D) -> Deferred<D.Value> {
+    public func flatMap<D: DeferredType>(f: @escaping (Value) -> D) -> Deferred<D.Value> {
         let p = PurePromise<D.Value>()
         
-        onComplete(ec) { x in
+        onComplete { x in
             p.completeWith(f(x))
         }
         
@@ -88,10 +88,9 @@ extension DeferredType {
     */
     public func zip<D: DeferredType>(_ d: D) -> Deferred<(Value, D.Value)> {
         
-        let ec = Pure
-        
-        return flatMap(ec) { a in
-            d.map(ec) { b in
+
+        return flatMap { a in
+            d.map { b in
                 (a, b)
             }
         }
@@ -108,8 +107,8 @@ extension DeferredType {
      
         - returns: Deferred with tuple of current value and result of mapping
     */
-    public func zipMap<U>(_ ec: ExecutionContextType = Pure, f: @escaping (Value) -> U) -> Deferred<(Value, U)> {
-        return zip(map(ec, f: f))
+    public func zipMap<U>(f: @escaping (Value) -> U) -> Deferred<(Value, U)> {
+        return zip(map(f: f))
     }
 }
 
@@ -128,9 +127,7 @@ extension DeferredType where Value: DeferredType {
     public func flatten() -> Deferred<Value.Value> {
         let p = PurePromise<Value.Value>()
         
-        let ec = Pure
-        
-        onComplete(ec) { d in
+        onComplete { d in
             p.completeWith(d)
         }
         
@@ -153,10 +150,10 @@ extension Sequence where Iterator.Element: DeferredType {
         - returns: Deferred which will contain result of reducing sequence of deferreds
 
     */
-    public func reduce<T>(_ ec: ExecutionContextType = Pure, initial: T, combine: @escaping ((T, Iterator.Element.Value) -> T)) -> Deferred<T> {
+    public func reduce<T>(initial: T, combine: @escaping ((T, Iterator.Element.Value) -> T)) -> Deferred<T> {
         return reduce(.completed(initial)) { acc, d in
-            d.flatMap(ec) { x in
-                acc.map(ec) { combine($0, x) }
+            d.flatMap { x in
+                acc.map { combine($0, x) }
             }
         }
     }
@@ -173,7 +170,7 @@ extension Sequence where Iterator.Element: DeferredType {
 
     */
     public func sequence() -> Deferred<[Iterator.Element.Value]> {
-        return traverse(Pure, f: identity)
+        return traverse(f: identity)
     }
     
 }
@@ -190,9 +187,9 @@ extension Sequence {
         - returns: a new Deferred
 
     */
-    public func traverse<D: DeferredType>(_ ec: ExecutionContextType = Pure, f: (Iterator.Element) -> D) -> Deferred<[D.Value]> {
+    public func traverse<D: DeferredType>(f: (Iterator.Element) -> D) -> Deferred<[D.Value]> {
         // TODO: Replace $0 + [$1] with the more efficient variant
-        return map(f).reduce(ec, initial: []) { $0 + [$1] }
+        return map(f).reduce(initial: []) { $0 + [$1] }
     }
 }
 
@@ -202,6 +199,6 @@ extension DeferredType {
     
     @discardableResult
     public func onComplete(_ c: @escaping (Value) -> Void) -> Self {
-        return onComplete(SideEffects, c)
+        return onComplete(c)
     }
 }

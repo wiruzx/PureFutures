@@ -62,7 +62,7 @@ public final class Promise<T, E: Error> {
 
     */
     public func completeWith<F: FutureType>(_ future: F) where F.Value.Value == T, F.Value.Error == E {
-        future.onComplete(Pure) { self.complete($0) }
+        future.onComplete { self.complete($0) }
     }
 
     /**
@@ -172,7 +172,7 @@ public final class Promise<T, E: Error> {
         if isCompleted {
             return false
         }
-        future.onComplete(Pure) { self.tryComplete($0) }
+        future.onComplete { self.tryComplete($0) }
         return true
     }
     

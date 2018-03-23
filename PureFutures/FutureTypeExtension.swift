@@ -38,7 +38,7 @@ public func ??<F: FutureType>(fx: F, x: F.Value.Value) -> Deferred<F.Value.Value
 
 */
 public func ??<F: FutureType>(fx: F, x: F) -> Future<F.Value.Value, F.Value.Error> {
-    return fx.recoverWith(Pure, r: constant(x))
+    return fx.recoverWith(r: constant(x))
 }
 
 // MARK: - Extension
@@ -58,8 +58,8 @@ extension FutureType {
         - returns: a new Future
 
     */
-    public func map<T>(_ ec: ExecutionContextType = Pure, f: @escaping (Success) -> T) -> Future<T, ErrorType> {
-        return transform(ec, s: f, e: identity)
+    public func map<T>(f: @escaping (Success) -> T) -> Future<T, ErrorType> {
+        return transform(s: f, e: identity)
     }
     
     /**
@@ -72,10 +72,10 @@ extension FutureType {
 
         - returns: a new Future
     */
-    public func transform<S, E: Error>(_ ec: ExecutionContextType = Pure, s: @escaping (Success) -> S, e: @escaping (ErrorType) -> E) -> Future<S, E> {
+    public func transform<S, E: Error>(s: @escaping (Success) -> S, e: @escaping (ErrorType) -> E) -> Future<S, E> {
         let p = Promise<S, E>()
         
-        onComplete(ec) { result in
+        onComplete { result in
             result.analysis(ifSuccess: { value in
                 p.success(s(value))
             }, ifFailure: { error in
@@ -97,10 +97,10 @@ extension FutureType {
         - returns: a new Future
 
     */
-    public func flatMap<F: FutureType>(_ ec: ExecutionContextType = Pure, f: @escaping (Success) -> F) -> Future<F.Value.Value, ErrorType> where F.Value.Error == ErrorType {
+    public func flatMap<F: FutureType>(f: @escaping (Success) -> F) -> Future<F.Value.Value, ErrorType> where F.Value.Error == ErrorType {
         let p = Promise<F.Value.Value, ErrorType>()
         
-        onComplete(ec) { result in
+        onComplete { result in
             result.analysis(ifSuccess: { value in
                 p.completeWith(f(value))
             }, ifFailure: { error in
@@ -120,11 +120,8 @@ extension FutureType {
         - returns: Future with resuls of two futures
     */
     public func zip<F: FutureType>(_ x: F) -> Future<(Success, F.Value.Value), ErrorType> where F.Value.Error == ErrorType {
-        
-        let ec = Pure
-        
-        return flatMap(ec) { a in
-            x.map(ec) { b in
+        return flatMap { a in
+            x.map { b in
                 (a, b)
             }
         }
@@ -141,8 +138,8 @@ extension FutureType {
      
         - returns: Future with tuple of current value and result of mapping
     */
-    public func zipMap<U>(_ ec: ExecutionContextType = Pure, f: @escaping (Success) -> U) -> Future<(Success, U), ErrorType> {
-        return zip(map(ec, f: f))
+    public func zipMap<U>(f: @escaping (Success) -> U) -> Future<(Success, U), ErrorType> {
+        return zip(map(f: f))
     }
 
     /**
@@ -158,10 +155,10 @@ extension FutureType {
         - returns: a new Future that will never fail
 
     */
-    public func recover(_ ec: ExecutionContextType = Pure, r: @escaping (ErrorType) -> Success) -> Future<Success, ErrorType> {
+    public func recover(r: @escaping (ErrorType) -> Success) -> Future<Success, ErrorType> {
         let p = Promise<Success, ErrorType>()
         
-        onComplete(ec) { result in
+        onComplete { result in
             result.analysis(ifSuccess: { value in
                 p.success(value)
             }, ifFailure: { error in
@@ -182,9 +179,9 @@ extension FutureType {
         - returns: a new Future
 
     */
-    public func recoverWith(_ ec: ExecutionContextType = Pure, r: @escaping (Value.Error) -> Self) -> Future<Success, ErrorType> {
+    public func recoverWith(r: @escaping (Value.Error) -> Self) -> Future<Success, ErrorType> {
         let p = Promise<Success, ErrorType>()
-        onComplete(ec) { result in
+        onComplete { result in
             result.analysis(ifSuccess: { value in
                 p.success(value)
             }, ifFailure: { error in
@@ -203,7 +200,7 @@ extension FutureType {
     */
     public func toDeferred() -> Deferred<Result<Success, ErrorType>> {
         let p = PurePromise<Result<Success, ErrorType>>()
-        onComplete(Pure) { result in
+        onComplete { result in
             p.complete(Result(result: result))
         }
         return p.deferred
@@ -219,9 +216,9 @@ extension FutureType {
         - returns: Deferred with success value of `fx` or result of `r`
 
     */
-    public func toDeferred(_ ec: ExecutionContextType = Pure, r: @escaping (Error) -> Success) -> Deferred<Success> {
+    public func toDeferred(r: @escaping (Error) -> Success) -> Deferred<Success> {
         let p = PurePromise<Success>()
-        onComplete(ec) { result in
+        onComplete { result in
             result.analysis(ifSuccess: { value in
                 p.complete(value)
             }, ifFailure: { error in
@@ -268,7 +265,7 @@ extension FutureType where Value.Value: FutureType, Value.Value.Value.Error == V
     public func flatten() -> Future<InnerFuture.Value.Value, Value.Error> {
         let p = Promise<InnerFuture.Value.Value, Value.Error>()
         
-        onComplete(Pure) { result in
+        onComplete { result in
             result.analysis(ifSuccess: { value in
                 p.completeWith(value)
             }, ifFailure: { error in
@@ -297,11 +294,11 @@ extension Sequence where Iterator.Element: FutureType {
         - returns: Future which will contain result of reducing sequence of futures
 
     */
-    public func reduce<T>(_ ec: ExecutionContextType = Pure, initial: T, combine: @escaping (T, Iterator.Element.Value.Value) -> T) -> Future<T, Iterator.Element.Value.Error> {
+    public func reduce<T>(initial: T, combine: @escaping (T, Iterator.Element.Value.Value) -> T) -> Future<T, Iterator.Element.Value.Error> {
         
         return reduce(.succeed(initial)) { acc, future in
-            future.flatMap(ec) { value in
-                acc.map(ec) {
+            future.flatMap { value in
+                acc.map {
                     combine($0, value)
                 }
             }
@@ -318,7 +315,7 @@ extension Sequence where Iterator.Element: FutureType {
 
     */
     public func sequence() -> Future<[Iterator.Element.Value.Value], Iterator.Element.Value.Error> {
-        return traverse(Pure, f: identity)
+        return traverse(f: identity)
     }
 
 }
@@ -335,9 +332,9 @@ extension Sequence {
         - returns: a new Future
 
     */
-    public func traverse<F: FutureType>(_ ec: ExecutionContextType = Pure, f: @escaping (Iterator.Element) -> F) -> Future<[F.Value.Value], F.Value.Error> {
+    public func traverse<F: FutureType>(f: @escaping (Iterator.Element) -> F) -> Future<[F.Value.Value], F.Value.Error> {
         // TODO: Replace $0 + [$1] with the more efficien impl
-        return map(f).reduce(ec, initial: []) { $0 + [$1] }
+        return map(f).reduce(initial: []) { $0 + [$1] }
     }
     
 }
@@ -347,8 +344,8 @@ extension Sequence {
 public extension FutureType {
     
     @discardableResult
-    func onSuccess(ec: ExecutionContextType = SideEffects, _ c: @escaping (Value.Value) -> Void) -> Self {
-        return onComplete(ec) { result in
+    func onSuccess(_ c: @escaping (Value.Value) -> Void) -> Self {
+        return onComplete { result in
             if let value = result.value {
                 c(value)
             }
@@ -356,8 +353,8 @@ public extension FutureType {
     }
     
     @discardableResult
-    func onError(ec: ExecutionContextType = SideEffects, _ c: @escaping (Value.Error) -> Void) -> Self {
-        return onComplete(ec) { result in
+    func onError(_ c: @escaping (Value.Error) -> Void) -> Self {
+        return onComplete { result in
             if let error = result.error {
                 c(error)
             }
